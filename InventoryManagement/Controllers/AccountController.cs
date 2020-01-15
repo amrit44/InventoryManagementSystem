@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using InventoryManagement.Models;
+using System.Collections.Generic;
+using InventoryManagement.Helper;
+using System.Data.Entity;
 
 namespace InventoryManagement.Controllers
 {
@@ -75,10 +78,12 @@ namespace InventoryManagement.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
+                
                 case SignInStatus.Success:
+                   
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -134,24 +139,41 @@ namespace InventoryManagement.Controllers
             }
         }
 
+        public ActionResult RegisteredAccounts()
+        {
+            List<ApplicationUser> _user = null;
+            using (var ctx = new ApplicationDbContext())
+            {
+                _user = ctx.Users.Include(x => x._StoreMaster).Include(x => x._CompanyMaster).ToList();
+            }
+
+            return View(_user);
+        }
         //
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            ApplicationUser user = new ApplicationUser();
+            return View(user);
         }
 
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(ApplicationUser model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                Guid CompanyId = new Guid();
+                if(Request.Cookies["CompanyId"] !=null)
+                {
+                    CompanyId =new Guid(Commonhelper.GetCookie("CompanyId"));
+                }
+                
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, Password = model.Password, FirstName = model.FirstName, LastName = model.LastName, MobileNo = model.MobileNo, createdby = User.Identity.GetUserId(), Datecreated = DateTime.Now, Status = true,StoreId=model.StoreId,CompanyId= CompanyId };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -387,12 +409,20 @@ namespace InventoryManagement.Controllers
 
         //
         // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
+
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            HttpCookie nameCookie = Request.Cookies["CompanyId"];
+
+            //Set the Expiry date to past date.
+            nameCookie.Expires = DateTime.Now.AddDays(-1);
+
+            //Update the Cookie in Browser.
+            Response.Cookies.Add(nameCookie);
+            return RedirectToAction("Login", "Account");
+           
         }
 
         //

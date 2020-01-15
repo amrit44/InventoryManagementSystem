@@ -1,15 +1,32 @@
-﻿using System;
+﻿using InventoryManagement.Helper;
+using InventoryManagement.Models;
+using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
-
+using Microsoft.Owin.Security.Cookies;
 namespace InventoryManagement.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public HomeController()
         {
+        }
+        
+       
+        [Authorize]
+        public async System.Threading.Tasks.Task<ActionResult> Index()
+        {
+
+            var UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = await UserManager.FindByNameAsync(User.Identity.Name);
+
+            Commonhelper.SetCookie("CompanyId", user.CompanyId.ToString(), TimeSpan.FromHours(30));
+            Commonhelper.GetStores();
             return View();
         }
 
