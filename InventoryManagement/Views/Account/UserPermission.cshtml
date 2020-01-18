@@ -1,0 +1,132 @@
+﻿@using InventoryManagement.Helper;
+@model InventoryManagement.Models.Permissionviewmodel
+
+@{
+    ViewBag.Title = "UserPermission";
+}
+
+@using (Ajax.BeginForm("UserPermission", "Account", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "permission", OnSuccess = "Response" }))
+{
+    <div class="row">
+        <div class="col-md-4">
+            <label>Users</label>
+            @Html.DropDownListFor(x => x.PermissionMaster.UserId, new SelectList(Commonhelper.GetUsers(), "Value", "Text"), "Select", new { @class = "form-control" })
+            @*@Html.DropDownList("UserId", new SelectList(Commonhelper.GetUsers(), "Value", "Text"), "Select", new { @class = "form-control" })*@
+
+        </div>
+
+        <div class="col-md-4" style="padding:2rem;">
+            <label></label><br />
+            <input type="submit" class="btn btn-primary" value="Save" id="Save" name="Save" />
+        </div>
+
+    </div>
+
+
+
+    <br />
+    <div class="row">
+        <div id="permission">
+            @Html.Action("GetMenu")
+            <br />
+
+        </div>
+    </div>
+
+
+
+}
+
+
+@section Scripts
+{
+    <script>
+        (function ($) {
+            function Tree() {
+                var $this = this;
+
+                function treeNodeClick() {
+                    $(document).on('click', '.tree1 li a input[type="checkbox"]', function () {
+                        $(this).closest('li').find('ul input[type="checkbox"]').prop('checked', $(this).is(':checked'));
+                    }).on('click', '.node-item', function () {
+                        var parentNode = $(this).parents('.tree1 ul');
+                        if ($(this).is(':checked')) {
+                            parentNode.find('li a .parent').prop('checked', true);
+                        } else {
+                            var elements = parentNode.find('ul input[type="checkbox"]:checked');
+                            if (elements.length == 0) {
+                                parentNode.find('li a .parent').prop('checked', false);
+                            }
+                        }
+                    });
+                };
+
+                $this.init = function () {
+                    treeNodeClick();
+                }
+            }
+            $(function () {
+                var self = new Tree();
+                self.init();
+            })
+        }(jQuery))
+    </script>
+    <script>
+        function Response(res) {
+
+        }
+    </script>
+    <script>
+
+        $("#IsAddall").click(function () {
+            $('.addfocus').not(this).prop('checked', this.checked);
+
+        });
+    </script>
+    <script>
+
+        $("#IsEditall").click(function () {
+            $('.editfocus').not(this).prop('checked', this.checked);
+        });
+    </script>
+    <script>
+
+        $("#IsViewall").click(function () {
+            $('.viewfocus').not(this).prop('checked', this.checked);
+        });
+    </script>
+    <script>
+
+        $("#IsDeleteall").click(function () {
+            $('.deletefocus').not(this).prop('checked', this.checked);
+        });
+
+
+    </script>
+ 
+    <script>
+        $(function () {
+
+            // add multiple select / deselect functionality
+            $(".parent").click(function () {
+                var _class = this.className;
+                var fields = _class.split('_');
+                var menu = "." + fields[1];
+                $(menu).attr('checked', this.checked);
+            });
+
+            // if all checkbox are selected, check the selectall checkbox
+            // and viceversa
+            $(".case").click(function () {
+
+                if ($(".case").length == $(".case:checked").length) {
+                    $("#selectall").attr("checked", "checked");
+                } else {
+                    $("#selectall").removeAttr("checked");
+                }
+
+            });
+        });
+    </script>
+   
+}

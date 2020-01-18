@@ -24,9 +24,17 @@ namespace InventoryManagement.Controllers
 
             var UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var user = await UserManager.FindByNameAsync(User.Identity.Name);
-
-            Commonhelper.SetCookie("CompanyId", user.CompanyId.ToString(), TimeSpan.FromHours(30));
-            Commonhelper.GetStores();
+            if(user!=null)
+            {
+                Commonhelper.SetCookie("CompanyId", user.CompanyId.ToString(), TimeSpan.FromHours(30));
+                Commonhelper.GetStores();
+                Commonhelper.GetUserRole();
+            }
+            else
+            {
+                Commonhelper.GetUserRole();
+            }
+           
             return View();
         }
 

@@ -1,0 +1,54 @@
+﻿@model List<InventoryManagement.Models.PermissionMaster>
+@using InventoryManagement.Helper;
+@{
+    ViewBag.Title = "UserLevelPermission";
+    List<string> activityGuids = new List<string>();
+    string mainmodule = string.Empty;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        @Html.ActionLink("Add New", "UserPermission", "Account", new { @class = "btn btn-primary" })
+
+    </div>
+</div>
+    <br />
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box table-responsive no-padding">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Sno</th>
+                            <th>User</th>
+                            <th>Module</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+
+                            var index = Model.IndexOf(item);
+                            <tr>
+                                <td>@(index + 1)</td>
+                                <td>@item._User.UserName</td>
+                                @foreach (var module in item._Permission.Where(x => x.Isactive == true))
+                                {
+                                    mainmodule += @Commonhelper.Getmenuname(module.MenuId) + ",";
+
+
+                                }
+
+                                <td>@mainmodule.Trim(',')</td>
+                                <td>
+                                    @Html.ActionLink("Edit", "EditPermission", "Account", new { id = item.Id }, new { @class = "btn btn-default", data_val = item.Id })
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

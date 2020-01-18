@@ -1,0 +1,87 @@
+﻿@model InventoryManagement.Models.PermissionMaster
+@using InventoryManagement.Helper;
+@{
+    ViewBag.Title = "EditPermission";
+}
+
+@using (Ajax.BeginForm("Updatepermission", "Account", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "permission", OnSuccess = "Response" }))
+{
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    <div class="col-md-4">
+        <label>User</label>
+        @Html.DropDownListFor(x => x.UserId, new SelectList(Commonhelper.GetUser(), "Value", "Text", Model.UserId), "Select", new { @class = "form-control", @disabled = "disabled" })
+        @Html.HiddenFor(x => x.UserId)
+        @Html.HiddenFor(x => x.Id)
+    </div>
+    <div class="col-md-4" style="padding:2rem;">
+        <label></label><br />
+        <input type="submit" class="btn btn-primary" value="Update" id="Save" name="Save" />
+    </div>
+
+    <br />
+    @Html.Partial("_Userpermissionrights")
+}
+
+@section Scripts
+{
+
+    <script>
+        function Response(response) {
+
+            window.location.href = response.url;
+        }
+    </script>
+    <script>
+
+        $("#IsAddall").click(function () {
+            $('.addfocus').not(this).prop('checked', this.checked);
+
+        });
+    </script>
+    <script>
+
+        $("#IsEditall").click(function () {
+            $('.editfocus').not(this).prop('checked', this.checked);
+        });
+    </script>
+    <script>
+
+        $("#IsViewall").click(function () {
+            $('.viewfocus').not(this).prop('checked', this.checked);
+        });
+    </script>
+    <script>
+
+        $("#IsDeleteall").click(function () {
+            $('.deletefocus').not(this).prop('checked', this.checked);
+        });
+
+
+    </script>
+
+    <script>
+        $(function () {
+
+            // add multiple select / deselect functionality
+            $(".parent").click(function () {
+                var _class = this.className;
+                var fields = _class.split('_');
+                var menu = "." + fields[1];
+                $(menu).attr('checked', this.checked);
+            });
+
+            // if all checkbox are selected, check the selectall checkbox
+            // and viceversa
+            $(".case").click(function () {
+
+                if ($(".case").length == $(".case:checked").length) {
+                    $("#selectall").attr("checked", "checked");
+                } else {
+                    $("#selectall").removeAttr("checked");
+                }
+
+            });
+        });
+    </script>
+}

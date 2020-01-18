@@ -1,4 +1,5 @@
 ﻿@model List<InventoryManagement.Models.ApplicationUser>
+@using InventoryManagement.Helper;
 @{
     ViewBag.Title = "RegisteredAccounts";
 }
@@ -13,68 +14,80 @@
 </div>
 <br />
 <br />
-<div class="col-md-12">
-   
-    <table class="display nowrap" id="tblusers">
-        <thead>
-            <tr>
-                <th>Sno</th>
-                <th>User Name</th>
-                <th>Company</th>
-                <th>Store</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Contact</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                var index = Model.IndexOf(item);
-            <tr>
-                <td>@(index + 1)</td>
-                <td>@item.UserName</td>
-                <td>@item._CompanyMaster.CompanyName</td>
-                <td>@item._StoreMaster.StoreName</td>
-                <td>@item.FirstName</td>
-                <td>@item.LastName</td>
-                <td>@item.MobileNo</td>
-                <td>
-                    @if (item.Status == true)
-                    {
-                        <span>Active</span>
-                    }
-                    else
-                    {
-                        <span>In Active</span>
-                    }
-                </td>
-                <td>
-                    <input type="button" value="Edit" class="btn btn-default" />
-                    <input type="button" value="Delete" class="btn btn-danger" />
-                </td>
-            </tr>
+<div class="col-xs-12">
+    <div class="box table-responsive no-padding">
+        <table class="display nowrap" id="tblusers">
+            <thead>
+                <tr>
+                    <th>Sno</th>
+                    <th>User Name</th>
+                    <th>Company</th>
 
-            }
+                    <th>Store</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Contact</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var index = Model.IndexOf(item);
+                    <tr>
+                        <td>@(index + 1)</td>
+                        <td>@item.UserName</td>
+                        <td>@item._CompanyMaster.CompanyName</td>
 
-        </tbody>
-    </table>
+                        @if (item.StoreId == null)
+                        {
+
+                            <td></td>
+                        }
+                        else
+                        {
+                            <td>@item._StoreMaster.StoreName</td>
+                        }
+
+                        <td>@item.FirstName</td>
+                        <td>@item.LastName</td>
+                        <td>@item.MobileNo</td>
+                        <td>
+                            @if (item.Status == true)
+                            {
+                                <span>Active</span>
+                            }
+                            else
+                            {
+                                <span>In Active</span>
+                            }
+                        </td>
+                        <td>
+                            <input type="button" value="Edit" class="btn btn-default" />
+                            <input type="button" value="Delete" class="btn btn-danger" />
+                        </td>
+                    </tr>
+
+                }
+
+            </tbody>
+        </table>
+    </div>
 </div>
 
 @section Scripts
 {
-    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+        <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
 
 
-    <script>
-        $(document).ready(function () {
-            $('#tblusers').DataTable({
-                responsive: true
+        <script>
+            $(document).ready(function () {
+                $('#tblusers').DataTable({
+                    responsive: true
+                });
             });
-        });
-    </script>
+        </script>
 
 
-}
+  }

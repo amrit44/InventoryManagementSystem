@@ -2585,6 +2585,8 @@
     <Content Include="Scripts\jquery-jvectormap-world-mill-en.js" />
     <Content Include="Scripts\jquery.slimscroll.min.js" />
     <Content Include="Scripts\jquery.sparkline.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -2627,6 +2629,11 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_UserLayout.cshtml" />
     <Content Include="Views\Account\RegisteredAccounts.cshtml" />
+    <Content Include="Views\Account\UserPermission.cshtml" />
+    <Content Include="Views\Account\_Permission.cshtml" />
+    <Content Include="Views\Account\UserLevelPermission.cshtml" />
+    <Content Include="Views\Account\EditPermission.cshtml" />
+    <Content Include="Views\Account\_Userpermissionrights.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
