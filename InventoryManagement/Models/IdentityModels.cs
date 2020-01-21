@@ -87,12 +87,14 @@ namespace InventoryManagement.Models
         public Guid CompanyId { get; set; }
         public CompanyMaster _CompanyMaster { get; set; }
         public string Name { get; set; }
-        public int order { get; set; }
+        public int DisplayOrder { get; set; }
         public bool status { get; set; }
 
         public List<SubMenumaster> _SubMenumaster { get; set; }
         [NotMapped]
         public bool IsSelect{ get; set; }
+        public string DisplayName { get; set; }
+        public string Displayclass { get; set; }
 
     }
     [Table("SubMenumaster")]
@@ -115,6 +117,9 @@ namespace InventoryManagement.Models
         public bool IsAdd { get; set; }
         [NotMapped]
         public bool Isdelete { get; set; }
+        public string DisplayName { get; set; }
+        public string Displayclass { get; set; }
+        public string DisplayLink { get; set; }
 
     }
     [Table("PermissionMaster")]
@@ -122,7 +127,7 @@ namespace InventoryManagement.Models
     {
         public PermissionMaster()
         {
-            _Permission = new List<Permission>();
+     
             _ModulePermission = new List<ModulePermission>();
         }
         [Key]
@@ -139,26 +144,28 @@ namespace InventoryManagement.Models
         [ForeignKey("_CompanyMaster")]
         public Guid CompanyId { get; set; }
         public CompanyMaster _CompanyMaster { get; set; }
-        public List<Permission> _Permission { get; set; }
         public List<ModulePermission> _ModulePermission { get; set; }
+   
     }
-    [Table("Permission")]
-    public class Permission
-    {
+    //[Table("Permission")]
+    //public class Permission
+    //{
        
-        [Key]
-        public Guid Id { get; set; }
+    //    [Key]
+    //    public Guid Id { get; set; }
 
-        public Guid MenuId { get; set; }
-        [ForeignKey("MenuId")]
-        public virtual Menumaster _Menumaster { get; set; }
-        public Guid PermissionMasterId { get; set; }
-        [ForeignKey("PermissionMasterId")]
-        public virtual PermissionMaster PermissionMaster { get; set; }
+    //    public Guid MenuId { get; set; }
+    //    [ForeignKey("MenuId")]
+    //    public virtual Menumaster _Menumaster { get; set; }
+    //    public Guid PermissionMasterId { get; set; }
+    //    [ForeignKey("PermissionMasterId")]
+    //    public virtual PermissionMaster PermissionMaster { get; set; }
        
-        public bool Isactive { get; set; }
-        public int DisplayOrder { get; set; }
-    }
+    //    public bool Isactive { get; set; }
+    //    public int DisplayOrder { get; set; }
+    //    public string DisplayName { get; set; }
+    //    public string Displayclass { get; set; }
+    //}
     [Table("ModulePermission")]
     public class ModulePermission
     {
@@ -180,6 +187,8 @@ namespace InventoryManagement.Models
         public bool Isdelete { get; set; }
 
         public int DisplayOrder { get; set; }
+        public string DisplayName { get; set; }
+        public string Displayclass { get; set; }
     }
     [Table("StoreMaster")]
     public class StoreMaster
@@ -201,10 +210,12 @@ namespace InventoryManagement.Models
     {
         public Permissionviewmodel()
         {
-            
+            PermissionMaster = new PermissionMaster();
             Menumaster = new List<Menumaster>();
             _pm = new List<ModulePermission>();
         }
+        public Guid Id { get; set; }
+        public string UserId { get; set; }
         public PermissionMaster PermissionMaster { get; set; }
         public List<Menumaster> Menumaster { get; set; }
         public List<ModulePermission> _pm { get; set; }
@@ -223,7 +234,7 @@ namespace InventoryManagement.Models
         public DbSet<SubMenumaster> SubMenumaster { get; set; }
         public DbSet<StoreMaster> StoreMaster { get; set; }
         public DbSet<PermissionMaster> PermissionMaster { get; set; }
-        public DbSet<Permission> Permission { get; set; }
+      
         public DbSet<ModulePermission> ModulePermission { get; set; }
         public static ApplicationDbContext Create()
         {

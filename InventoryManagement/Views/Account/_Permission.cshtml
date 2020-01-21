@@ -10,18 +10,60 @@
                     <thead style="background-color:#FFFFFF">
                         <tr>
                             <th colspan="2"><h5 style="color:blue"><strong>Module Name</strong></h5></th>
+                            <th>
+                                <div class="checkbox checkbox-success">
+                                    <input type="checkbox" value="true" id="IsAddall" name="IsAddall" />
+                                    <label for="IsAddall">
+                                        ADD
+                                    </label>
+                                </div>
+                                @*<input type="checkbox" value="true" id="IsAddall" name="IsAddall" />
 
-                            <th><input type="checkbox" value="true" id="IsAddall" name="IsAddall" /><h6>ADD</h6></th>
-                            <th><input type="checkbox" value="true" id="IsEditall" name="IsEditall" /><h6>EDIT</h6></th>
-                            <th><input type="checkbox" value="true" id="IsViewall" name="IsViewall" /><h6>VIEW</h6></th>
 
-                            <th><input type="checkbox" value="true" id="IsDeleteall" name="IsDeleteall" /><h6>DELETE</h6></th>
+            <h6>ADD</h6>*@
+
+
+                            </th>
+                            <th>
+                                <div class="checkbox checkbox-success">
+                                    <input type="checkbox" value="true" id="IsEditall" name="IsEditall" />
+                                    <label for="IsEditall">
+                                        EDIT
+                                    </label>
+                                </div>
+                                @*<input type="checkbox" value="true" id="IsEditall" name="IsEditall" />
+
+            <h6>EDIT</h6>*@
+                            </th>
+                            <th>
+                                <div class="checkbox checkbox-success">
+                                    <input type="checkbox" value="true" id="IsViewall" name="IsViewall" />
+                                    <label for="IsViewall">
+                                        VIEW
+                                    </label>
+                                </div>
+                                @*<input type="checkbox" value="true" id="IsViewall" name="IsViewall" /><h6>VIEW</h6>*@
+
+                            </th>
+
+                            <th>
+                                <div class="checkbox checkbox-success">
+                                    <input type="checkbox" value="true" id="IsDeleteall" name="IsDeleteall" />
+                                    <label for="IsDeleteall">
+                                        DELETE
+                                    </label>
+                                </div>
+                                @*<input type="checkbox" value="true" id="IsDeleteall" name="IsDeleteall" /><h6>DELETE</h6>*@
+                            </th>
+                            @*<th><input type="checkbox" value="true" id="IsAddall" name="IsAddall" /><h6>ADD</h6></th>
+        <th><input type="checkbox" value="true" id="IsEditall" name="IsEditall" /><h6>EDIT</h6></th>
+        <th><input type="checkbox" value="true" id="IsViewall" name="IsViewall" /><h6>VIEW</h6></th>
+
+        <th><input type="checkbox" value="true" id="IsDeleteall" name="IsDeleteall" /><h6>DELETE</h6></th>*@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (Model.PermissionMaster == null)
-                        {
-                            foreach (var item in Model.Menumaster.OrderBy(x => x.order))
+                          @foreach (var item in Model.Menumaster.OrderBy(x => x.DisplayOrder))
                             {
                                 var mainindex = Model.Menumaster.IndexOf(item);
                                 string dynamicclass = string.Empty;
@@ -31,10 +73,10 @@
                                     <td hidden><input type="hidden" id="FormID" name="FormID" /></td>
 
                                     <td style="color:black;background-color:#EEF1F5;width:200px">
-                                        @Html.CheckBoxFor(model => Model.Menumaster[mainindex].IsSelect, new { @class ="parent "+"_"+dynamicclass+"", @id = Model.Menumaster[mainindex].MenuId })<h6 style="font-size:1.5rem;">@item.Name</h6>
+                                        @Html.CheckBoxFor(model => Model.Menumaster[mainindex].IsSelect, new { @class = "parent " + "_" + dynamicclass + "", @id = Model.Menumaster[mainindex].MenuId })<h6 style="font-size:1.5rem;">@item.Name</h6>
                                         @Html.HiddenFor(model => Model.Menumaster[mainindex].MenuId)
-                                        @Html.HiddenFor(model => Model.Menumaster[mainindex].order)
-
+                                        @Html.HiddenFor(model => Model.Menumaster[mainindex].DisplayOrder)
+                                        @Html.HiddenFor(model => Model.Menumaster[mainindex].Displayclass)
                                         @*<input type="checkbox" id="@item.Name" name="@item.Name" class="@item.Name focus_@item.Name" value="@item.Name" /><h6>@item.Name</h6>*@
 
                                     </td>
@@ -43,7 +85,7 @@
 
                                     <td hidden></td>
                                     <td hidden></td>
-                                    <td><input type="hidden" id="select_all" value="true" name="IsAdd" class="addfocus"/></td>
+                                    <td><input type="hidden" id="select_all" value="true" name="IsAdd" class="addfocus" /></td>
                                     <td><input type="hidden" id="editselect_all" value="true" name="IsEdit" /></td>
                                     <td><input type="hidden" id="viewselect_all" value="true" name="IsView" /></td>
                                     <td><input type="hidden" id="deleteselect_all" value="true" name="IsDelete" /></td>
@@ -51,8 +93,9 @@
                                 foreach (var child in item._SubMenumaster)
                                 {
                                     var index = item._SubMenumaster.IndexOf(child);
-                                    
+
                                     @Html.HiddenFor(model => Model.Menumaster[mainindex]._SubMenumaster[index].SubMenumasterId)
+                                    @Html.HiddenFor(model => Model.Menumaster[mainindex]._SubMenumaster[index].Displayclass)
                                     <tr>
                                         <td hidden><input type="hidden" id="FormID" name="FormID" value="@child.SubMenumasterId" /></td>
                                         <td hidden style="color:black;background-color:#EEF1F5;"><input type="checkbox" id="@child.Action" name="@child.Action" class="@child.Action focus_@child.Action" value="@child.Action" /><h6 style="font-size:1.5rem;">@Html.DisplayFor(model => item._SubMenumaster[index].Action)</h6></td>
@@ -65,16 +108,16 @@
                                         </td>
                                         <td>
 
-                                            @Html.CheckBoxFor(model => Model.Menumaster[mainindex]._SubMenumaster[index].IsAdd, new { @class = "addfocus "+ dynamicclass+"" })
+                                            @Html.CheckBoxFor(model => Model.Menumaster[mainindex]._SubMenumaster[index].IsAdd, new { @class = "addfocus " + dynamicclass + "" })
                                         </td>
                                         <td>
-                                            @Html.CheckBoxFor(model => Model.Menumaster[mainindex]._SubMenumaster[index].IsEdit, new { @class = "editfocus " + dynamicclass +"" })
+                                            @Html.CheckBoxFor(model => Model.Menumaster[mainindex]._SubMenumaster[index].IsEdit, new { @class = "editfocus " + dynamicclass + "" })
                                         </td>
                                         <td>
                                             @Html.CheckBoxFor(model => Model.Menumaster[mainindex]._SubMenumaster[index].Isview, new { @class = "viewfocus " + dynamicclass + "" })
                                         </td>
                                         <td>
-                                            @Html.CheckBoxFor(model => Model.Menumaster[mainindex]._SubMenumaster[index].Isdelete, new { @class = "deletefocus " + dynamicclass + ""})
+                                            @Html.CheckBoxFor(model => Model.Menumaster[mainindex]._SubMenumaster[index].Isdelete, new { @class = "deletefocus " + dynamicclass + "" })
                                         </td>
                                     </tr>
 
@@ -82,69 +125,10 @@
                             }
 
 
-                        }
-                        else if (Model.PermissionMaster != null)
-                        {
-                            foreach (var item in Model.PermissionMaster._Permission.OrderBy(x => x.DisplayOrder))
-                            {
-                                var mainindex = Model.PermissionMaster._Permission.IndexOf(item);
-                                string mainmenu = Commonhelper.Getmenuname(item.MenuId);
-                                <tr>
+                        
+                        
 
-
-                                    <td style="color:black;background-color:#EEF1F5;width:200px">
-
-                                        @Html.CheckBoxFor(model => Model.PermissionMaster._Permission[mainindex].Isactive)<h6 style="font-size:1.5rem;">@mainmenu</h6>
-                                        @Html.HiddenFor(model => Model.PermissionMaster._Permission[mainindex].MenuId)
-                                        @Html.HiddenFor(model => Model.PermissionMaster._Permission[mainindex].DisplayOrder)
-
-
-                                    </td>
-
-
-
-                                    <td hidden></td>
-                                    <td hidden></td>
-                                    <td><input type="hidden" id="select_all" value="true" name="IsAdd" /></td>
-                                    <td><input type="hidden" id="editselect_all" value="true" name="IsEdit" /></td>
-                                    <td><input type="hidden" id="viewselect_all" value="true" name="IsView" /></td>
-                                    <td><input type="hidden" id="deleteselect_all" value="true" name="IsDelete" /></td>
-                                </tr>
-                                foreach (var child in Model.PermissionMaster._ModulePermission.Where(x=>x.MenuId==item.MenuId).OrderBy(x=>x.DisplayOrder).ToList())
-                                {
-                                    var index = Model.PermissionMaster._ModulePermission.IndexOf(child);
-                                    @Html.HiddenFor(model => Model.PermissionMaster._ModulePermission[mainindex].SubMenuId)
-                                    string Submenu = Commonhelper.GetSubmenuname(child.SubMenuId);
-                                    <tr>
-                                        <td hidden><input type="hidden" id="FormID" name="FormID" value="@child.SubMenuId" /></td>
-                                        <td hidden style="color:black;background-color:#EEF1F5;"><input type="checkbox" id="@Submenu" name="@Submenu" class="@Submenu focus_@Submenu" value="@Submenu" /><h6 style="font-size:1.5rem;">@Submenu</h6></td>
-                                        <td style="text-align:right">
-                                            <h5>@(index + 1)</h5>
-
-                                        </td>
-                                        <td>
-                                            <h6 style="font-size:1.5rem;">@Submenu</h6>
-                                        </td>
-                                        <td>
-
-                                            @Html.CheckBoxFor(model => Model.PermissionMaster._ModulePermission[index].IsAdd, new { @class = "addfocus" })
-                                        </td>
-                                        <td>
-                                            @Html.CheckBoxFor(model => Model.PermissionMaster._ModulePermission[index].IsEdit, new { @class = "addfocus" })
-                                        </td>
-                                        <td>
-                                            @Html.CheckBoxFor(model => Model.PermissionMaster._ModulePermission[index].Isview, new { @class = "addfocus" })
-                                        </td>
-                                        <td>
-                                            @Html.CheckBoxFor(model => Model.PermissionMaster._ModulePermission[index].Isdelete, new { @class = "addfocus" })
-                                        </td>
-                                    </tr>
-
-                                }
-
-                            }
-
-                        }
+                        
                     </tbody>
                 </table>
             </div>

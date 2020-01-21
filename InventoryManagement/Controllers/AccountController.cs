@@ -12,6 +12,7 @@ using InventoryManagement.Models;
 using System.Collections.Generic;
 using InventoryManagement.Helper;
 using System.Data.Entity;
+using InventoryManagement.Filter;
 
 namespace InventoryManagement.Controllers
 {
@@ -408,6 +409,7 @@ namespace InventoryManagement.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
+        [PermissionsAttribute(Action= "UserLevelPermission", Permission = "Isview")]
         public ActionResult UserLevelPermission()
         {
             List<PermissionMaster> _Permission  = new List<PermissionMaster>();
@@ -415,6 +417,7 @@ namespace InventoryManagement.Controllers
 
             return View(_Permission);
         }
+        [PermissionsAttribute(Action = "UserLevelPermission", Permission = "IsAdd")]
         public ActionResult UserPermission()
         {
 
@@ -431,7 +434,7 @@ namespace InventoryManagement.Controllers
             }
             else
             {
-                vm = Commonhelper.Getmenu(UserId);
+               // vm = Commonhelper.Getmenu(UserId);
             }
             return PartialView("_Permission", vm);
         }
@@ -442,8 +445,7 @@ namespace InventoryManagement.Controllers
             PermissionMaster _master = new PermissionMaster();
             List<ModulePermission> p = new List<ModulePermission>();
             Permissionviewmodel searchmodel = new Permissionviewmodel();
-            if (Save!=null)
-            {
+           
                 Guid CompanyId = new Guid();
                 if (Request.Cookies["CompanyId"] != null)
                 {
@@ -464,22 +466,12 @@ namespace InventoryManagement.Controllers
                 {
                     foreach (var item in vm.Menumaster)
                     {
-                        Permission permission = new Permission();
-                        permission.Id = Guid.NewGuid();
-                        permission.MenuId = item.MenuId;
-                        permission.DisplayOrder = item.order;
-                        if (item.IsSelect==true)
-                        {
-                            permission.Isactive = true;
-                        }
-                        else
-                        {
-                            permission.Isactive = false;
-                        }
+                        
 
-                        foreach (var child in item._SubMenumaster)
+                     foreach (var child in item._SubMenumaster)
+                      {
+                        if(child.IsAdd==true || child.IsEdit==true || child.Isview==true || child.Isdelete==true)
                         {
-                           
                             ModulePermission mp = new ModulePermission();
                             mp.Id = Guid.NewGuid();
                             mp.MenuId = item.MenuId;
@@ -489,110 +481,170 @@ namespace InventoryManagement.Controllers
                             mp.Isview = child.Isview;
                             mp.Isdelete = child.Isdelete;
                             mp.DisplayOrder = child.order;
-                           
+                            mp.Displayclass = child.Displayclass;
+                            mp.DisplayName = child.DisplayName;
                             _master._ModulePermission.Add(mp);
                         }
-                        _master._Permission.Add(permission);
+                           
+                        }
+                       
                     }
                     try
                     {
                         Commonhelper.SavePermission(_master);
+                    return Content("<script language='javascript' type='text/javascript'>alert('permission saved successfully!');</script>");
 
-                        result.Add("Permission save successfully...");
-                       
-
+    
                     }
                     catch (Exception ex)
                     {
 
                     }
-                }
-               
-            }
-            else if (Search != null)
-            {
-
-                searchmodel= Commonhelper.Getmenu(vm.PermissionMaster.UserId);
-                return PartialView("_Permission", searchmodel);
-            }
-            return Json(result, JsonRequestBehavior.AllowGet);
+                   }
+                  return Json(result, JsonRequestBehavior.AllowGet);
+        
+           
+           
             ///return View();
         }
         //
         // POST: /Account/LogOff
 
-
+        [PermissionsAttribute(Action = "UserLevelPermission", Permission = "IsEdit")]
         public ActionResult EditPermission(Guid Id)
         {
            PermissionMaster _Permission = new PermissionMaster();
-            _Permission = Commonhelper.GetpermissionById(Id);
-            return View(_Permission);
+            Permissionviewmodel vm = new Permissionviewmodel();
+            vm = Commonhelper.GetpermissionById(Id);
+            return View(vm);
         }
 
         [HttpPost]
-        public ActionResult Updatepermission(PermissionMaster pm)
+        public ActionResult Updatepermission(Permissionviewmodel vm)
         {
             List<string> result = new List<string>();
-            List<Permission> permissions = new List<Permission>();
-            List<ModulePermission> _MPermission = new List<ModulePermission>();
-            try
+            PermissionMaster _master = new PermissionMaster();
+            List<ModulePermission> p = new List<ModulePermission>();
+            Permissionviewmodel searchmodel = new Permissionviewmodel();
+            if (vm.PermissionMaster != null)
             {
-                if(pm!=null)
-                {
-                    pm.Datemodified = DateTime.Now;
-                    pm.ModifiedBy = User.Identity.GetUserId();
-                    if (pm._Permission.Count() > 0)
-                    {
-                        foreach(var item in pm._Permission)
-                        {
-                            Permission p = new Permission();
-                            p.DisplayOrder = item.DisplayOrder;
-                            p.Id = Guid.NewGuid();
-                            p.Isactive = item.Isactive;
-                            p.MenuId = item.MenuId;
-                            p.PermissionMasterId = pm.Id;
-                            permissions.Add(p);
+                _master.Id = vm.Id;
+         
+                _master.UserId = vm.UserId;
+                _master.ModifiedBy = User.Identity.GetUserId();
+                _master.Datemodified = DateTime.Now;
+                _master.Workstation = Commonhelper.GetStation();
 
-                        }
-                        pm._Permission.Clear();
-                        pm._Permission = permissions;
-                        foreach(var child in pm._ModulePermission)
+
+            }
+            if (vm.Menumaster.Count() > 0)
+            {
+                foreach (var item in vm.Menumaster)
+                {
+                  
+                   
+                    foreach (var child in item._SubMenumaster)
+                    {
+                        if (child.IsAdd == true || child.IsEdit == true || child.Isview == true || child.Isdelete == true)
                         {
                             ModulePermission mp = new ModulePermission();
                             mp.Id = Guid.NewGuid();
-                            mp.PermissionMasterId = pm.Id;
-                            mp.MenuId = child.MenuId;
-                            mp.SubMenuId = child.SubMenuId;
+                            mp.MenuId = item.MenuId;
+                            mp.SubMenuId = child.SubMenumasterId;
                             mp.IsAdd = child.IsAdd;
                             mp.IsEdit = child.IsEdit;
                             mp.Isview = child.Isview;
                             mp.Isdelete = child.Isdelete;
-                            mp.DisplayOrder = child.DisplayOrder;
-                            _MPermission.Add(mp);
+                            mp.DisplayOrder = child.order;
+                            mp.Displayclass = child.Displayclass;
+                            mp.DisplayName = child.DisplayName;
+                            _master._ModulePermission.Add(mp);
+
+
                         }
-                        pm._ModulePermission.Clear();
-                        pm._ModulePermission.AddRange(_MPermission);
-                        try
-                        {
-                            Commonhelper.UpdatePermission(pm);
-                        }
-                        catch(Exception ex)
-                        {
-                            result.Add("Internal server Issue try again.");
-                        }
+                           
                     }
+                   
+                }
+                try
+                {
+                    Commonhelper.UpdatePermission(_master);
+
+                    return Content("<script language='javascript' type='text/javascript'>alert('permission update successfully!');</script>");
+
 
                 }
-                result.Add("permission update successfully.");
-                ModelState.Clear();
-                return Json(new { url = Url.Action("UserLevelPermission") });
-                
-            }
-            catch(Exception ex)
-            {
-                result.Add("Internal server Issue try again.");
+                catch (Exception ex)
+                {
 
+                }
             }
+            //List<Permission> permissions = new List<Permission>();
+            //List<ModulePermission> _MPermission = new List<ModulePermission>();
+            //try
+            //{
+            //    if(pm!=null)
+            //    {
+            //        pm.Datemodified = DateTime.Now;
+            //        pm.ModifiedBy = User.Identity.GetUserId();
+            //        if (pm._Permission.Count() > 0)
+            //        {
+            //            foreach(var item in pm._Permission)
+            //            {
+            //                Permission p = new Permission();
+            //                p.DisplayOrder = item.DisplayOrder;
+            //                p.Id = Guid.NewGuid();
+            //                p.Isactive = item.Isactive;
+            //                p.MenuId = item.MenuId;
+            //                p.PermissionMasterId = pm.Id;
+            //                p.Displayclass = item.Displayclass;
+            //                p.DisplayName = item.DisplayName;
+            //                permissions.Add(p);
+
+            //            }
+            //            pm._Permission.Clear();
+            //            pm._Permission = permissions;
+            //            foreach(var child in pm._ModulePermission)
+            //            {
+            //                ModulePermission mp = new ModulePermission();
+            //                mp.Id = Guid.NewGuid();
+            //                mp.PermissionMasterId = pm.Id;
+            //                mp.MenuId = child.MenuId;
+            //                mp.SubMenuId = child.SubMenuId;
+            //                mp.IsAdd = child.IsAdd;
+            //                mp.IsEdit = child.IsEdit;
+            //                mp.Isview = child.Isview;
+            //                mp.Isdelete = child.Isdelete;
+            //                mp.DisplayOrder = child.DisplayOrder;
+            //                mp.Displayclass = child.Displayclass;
+            //                mp.DisplayName = child.DisplayName;
+            //                _MPermission.Add(mp);
+            //            }
+            //            pm._ModulePermission.Clear();
+            //            pm._ModulePermission.AddRange(_MPermission);
+            //            try
+            //            {
+            //                Commonhelper.SavePermission(_master);
+            //                /// Commonhelper.UpdatePermission(pm);
+            //            }
+            //            catch(Exception ex)
+            //            {
+            //                result.Add("Internal server Issue try again.");
+            //            }
+            //        }
+
+            //    }
+            //    return Content("<script language='javascript' type='text/javascript'>alert('permission update successfully!');</script>");
+            //    //result.Add("permission update successfully.");
+            //    //ModelState.Clear();
+            //    //return Json(new { url = Url.Action("UserLevelPermission") });
+
+            //}
+            //catch(Exception ex)
+            //{
+            //    result.Add("Internal server Issue try again.");
+
+            //}
 
 
             return Json(result);
@@ -669,6 +721,12 @@ namespace InventoryManagement.Controllers
                 return Redirect(returnUrl);
             }
             return RedirectToAction("Index", "Home");
+        }
+        public ActionResult Unauthorised()
+        {
+
+
+            return View();
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

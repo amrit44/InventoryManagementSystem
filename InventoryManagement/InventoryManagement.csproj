@@ -175,6 +175,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MasterController.cs" />
+    <Compile Include="Filter\PermissionsAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2634,6 +2636,9 @@
     <Content Include="Views\Account\UserLevelPermission.cshtml" />
     <Content Include="Views\Account\EditPermission.cshtml" />
     <Content Include="Views\Account\_Userpermissionrights.cshtml" />
+    <Content Include="Views\Account\Unauthorised.cshtml" />
+    <Content Include="Views\Master\CreateItem.cshtml" />
+    <Content Include="Views\Master\Item.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -109,4 +109,35 @@ namespace InventoryManagement.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+    public class Modulemenu
+    {
+        
+        public PermissionMaster _PermissionMaster { get; set; }
+        public List<Menumaster> _Menumaster { get; set; }
+        public List<SubMenumaster> _SubMenumaster { get; set; }
+    }
+    public class ModuleViewModel
+    {
+        public ModuleViewModel()
+        {
+            _Actionviewmodel = new List<Actionviewmodel>();
+        }
+        public string ModuleName { get; set; }
+        public string Displayclass { get; set; }
+        public int Order { get; set; }
+        public List<Actionviewmodel> _Actionviewmodel { get; set; }
+    }
+    public class Actionviewmodel
+    {
+        public string Controller { get; set; }
+        public string Action { get; set; }
+        public int Order { get; set; }
+        public string DisplayName { get; set; }
+        public string Displayclass { get; set; }
+        public string DisplayLink { get; set; }
+        public bool Isview { get; set; }
+        public bool IsEdit { get; set; }
+        public bool IsAdd { get; set; }
+        public bool Isdelete { get; set; }
+    }
 }
