@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -16,7 +17,7 @@ namespace InventoryManagement.Models
 
         [ForeignKey("_CompanyMaster")]
 
-        public Guid CompanyId { get; set; }
+        public string CompanyId { get; set; }
         public CompanyMaster _CompanyMaster { get; set; }
 
         public string StoreId { get; set; }
@@ -53,7 +54,7 @@ namespace InventoryManagement.Models
     public class CompanyMaster
     {
         [Key]
-        public Guid CompanyId { get; set; }
+        public string CompanyId { get; set; }
         [Required]
         public string CompanyCode { get; set; }
         [Required]
@@ -84,7 +85,7 @@ namespace InventoryManagement.Models
         [Key]
         public Guid MenuId { get; set; }
         [ForeignKey("_CompanyMaster")]
-        public Guid CompanyId { get; set; }
+        public string CompanyId { get; set; }
         public CompanyMaster _CompanyMaster { get; set; }
         public string Name { get; set; }
         public int DisplayOrder { get; set; }
@@ -131,7 +132,7 @@ namespace InventoryManagement.Models
             _ModulePermission = new List<ModulePermission>();
         }
         [Key]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         public virtual ApplicationUser _User { get; set; }
@@ -142,7 +143,7 @@ namespace InventoryManagement.Models
         public string ModifiedBy { get; set; }
         public string Workstation { get; set; }
         [ForeignKey("_CompanyMaster")]
-        public Guid CompanyId { get; set; }
+        public string CompanyId { get; set; }
         public CompanyMaster _CompanyMaster { get; set; }
         public List<ModulePermission> _ModulePermission { get; set; }
    
@@ -152,8 +153,8 @@ namespace InventoryManagement.Models
     public class ModulePermission
     {
         [Key]
-        public Guid Id { get; set; }
-        public Guid PermissionMasterId { get; set; }
+        public string Id { get; set; }
+        public string PermissionMasterId { get; set; }
         [ForeignKey("PermissionMasterId")]
         public virtual PermissionMaster PermissionMaster { get; set; }
 
@@ -177,16 +178,79 @@ namespace InventoryManagement.Models
     {
         [Key]
         public string Id { get; set; }
-        public Guid CompanyId { get; set; }
+        public string CompanyId { get; set; }
         [ForeignKey("CompanyId")]
         public CompanyMaster _CompanyMaster { get; set; }
         public string StoreName { get; set; }
         public int FinancialYear { get; set; }
         public string workstation { get; set; }
         public DateTime CreatedDate { get; set; }
-        public Guid CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
-        public Guid? ModifiedBy { get; set; }
+        public string ModifiedBy { get; set; }
+    }
+    [Table("CategoryMaster")]
+    public class CategoryMaster
+    {
+        [Key]
+        public string Id { get; set; }
+
+        public string StoreId { get; set; }
+        [ForeignKey("StoreId")]
+        public StoreMaster _StoreMaster { get; set; }
+        public string CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
+        public CompanyMaster _CompanyMaster { get; set; }
+        public string Name { get; set; }
+        public int FinancialYear { get; set; }
+        public string workstation { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string ModifiedBy { get; set; }
+    }
+    [Table("SubCategoryMaster")]
+    public class SubCategoryMaster
+    {
+        [Key]
+        public string Id { get; set; }
+        public string CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public CompanyMaster _CompanyMaster { get; set; }
+
+        public string CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
+        public CategoryMaster _CategoryMaster { get; set; }
+        public string StoreId { get; set; }
+        [ForeignKey("StoreId")]
+        public StoreMaster _StoreMaster { get; set; }
+        public string Name { get; set; }
+        public int FinancialYear { get; set; }
+        public string workstation { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string ModifiedBy { get; set; }
+    }
+    [Table("BrandMaster")]
+    public class BrandMaster
+    {
+        [Key]
+        public string Id { get; set; }
+
+        public string StoreId { get; set; }
+        [ForeignKey("StoreId")]
+        public StoreMaster _StoreMaster { get; set; }
+        public string CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
+        public CompanyMaster _CompanyMaster { get; set; }
+        public string Name { get; set; }
+        public int FinancialYear { get; set; }
+        public string workstation { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string ModifiedBy { get; set; }
     }
     [Table("ItemMaster")]
     public class ItemMaster
@@ -203,16 +267,18 @@ namespace InventoryManagement.Models
         public string StoreId { get; set; }
         public string CompanyId { get; set; }
         [Required(ErrorMessage = "Product Code Required")]
+        [Remote("CheckProductcode", "Master", ErrorMessage = "Product Code in use.")]
         public string ProductCode { get; set; }
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Bar Code Required")]
-
+        [Remote("CheckBarcode", "Master", ErrorMessage = "Bar Code in use.")]
         public string BarCode { get; set; }
         [Required(ErrorMessage = "Sku Code Required")]
-
+        [Remote("CheckSkucode", "Master", ErrorMessage = "Sku Code in use.")]
         public string SkuCode { get; set; }
         [Required(ErrorMessage = "Sap Code Required")]
+        [Remote("Checksapcode", "Master", ErrorMessage = "Sap Code in use.")]
 
         public string SapCode { get; set; }
         [Required(ErrorMessage = "Category Required")]
@@ -261,9 +327,9 @@ namespace InventoryManagement.Models
         [Required(ErrorMessage = "Order Required")]
         public int ItemOrder { get; set; }
         public DateTime CreatedDate { get; set; }
-        public Guid CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
-        public Guid? ModifiedBy { get; set; }
+        public string ModifiedBy { get; set; }
         public List<ItemOptionalDetails> ItemOptionalDetails { get; set; }
 
         [NotMapped]
@@ -297,7 +363,7 @@ namespace InventoryManagement.Models
 
         //public string OptionalFieldsId { get; set; }
         //public  OptionalFields _OptionalFields { get; set; }
-        //public string OptionalValue { get; set; }
+        public string OptionalValue { get; set; }
 
 
     }
@@ -318,6 +384,9 @@ namespace InventoryManagement.Models
         public DbSet<ModulePermission> ModulePermission { get; set; }
         public DbSet<ItemMaster> ItemMaster { get; set; }
         public DbSet<OptionalFields> OptionalFields { get; set; }
+        public DbSet<CategoryMaster> CategoryMaster { get; set; }
+        public DbSet<SubCategoryMaster> SubCategoryMaster { get; set; }
+        public DbSet<BrandMaster> BrandMaster { get; set; }
 
         public static ApplicationDbContext Create()
         {

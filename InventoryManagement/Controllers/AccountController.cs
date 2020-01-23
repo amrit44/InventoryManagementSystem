@@ -174,7 +174,7 @@ namespace InventoryManagement.Controllers
                     CompanyId =new Guid(Commonhelper.GetCookie("CompanyId"));
                 }
                 
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, Password = model.Password, FirstName = model.FirstName, LastName = model.LastName, MobileNo = model.MobileNo, createdby = User.Identity.GetUserId(), Datecreated = DateTime.Now, Status = true,StoreId=model.StoreId,CompanyId= CompanyId };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, Password = model.Password, FirstName = model.FirstName, LastName = model.LastName, MobileNo = model.MobileNo, createdby = User.Identity.GetUserId(), Datecreated = DateTime.Now, Status = true,StoreId=model.StoreId,CompanyId= CompanyId.ToString() };
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -409,7 +409,7 @@ namespace InventoryManagement.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
-        [PermissionsAttribute(Action= "UserLevelPermission", Permission = "Isview")]
+        [PermissionsAttribute(Action = "UserLevelPermission", Permission = "Isview")]
         public ActionResult UserLevelPermission()
         {
             List<PermissionMaster> _Permission  = new List<PermissionMaster>();
@@ -453,8 +453,8 @@ namespace InventoryManagement.Controllers
                 }
                 if (vm.PermissionMaster!=null)
                 {
-                    _master.Id = Guid.NewGuid();
-                    _master.CompanyId = CompanyId;
+                    _master.Id = Guid.NewGuid().ToString();
+                    _master.CompanyId = CompanyId.ToString();
                     _master.UserId = vm.PermissionMaster.UserId;
                     _master.CreatedBy= User.Identity.GetUserId();
                     _master.DateCreated = DateTime.Now;
@@ -473,7 +473,7 @@ namespace InventoryManagement.Controllers
                         if(child.IsAdd==true || child.IsEdit==true || child.Isview==true || child.Isdelete==true)
                         {
                             ModulePermission mp = new ModulePermission();
-                            mp.Id = Guid.NewGuid();
+                            mp.Id = Guid.NewGuid().ToString();
                             mp.MenuId = item.MenuId;
                             mp.SubMenuId = child.SubMenumasterId;
                             mp.IsAdd = child.IsAdd;
@@ -548,7 +548,7 @@ namespace InventoryManagement.Controllers
                         if (child.IsAdd == true || child.IsEdit == true || child.Isview == true || child.Isdelete == true)
                         {
                             ModulePermission mp = new ModulePermission();
-                            mp.Id = Guid.NewGuid();
+                            mp.Id = Guid.NewGuid().ToString();
                             mp.MenuId = item.MenuId;
                             mp.SubMenuId = child.SubMenumasterId;
                             mp.IsAdd = child.IsAdd;

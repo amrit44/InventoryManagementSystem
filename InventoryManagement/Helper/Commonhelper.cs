@@ -100,7 +100,13 @@ namespace InventoryManagement.Helper
 
 
         }
+        public static ApplicationUser GetCurrentUserDetails()
+        {
+            var Usermanager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var currentuser = Usermanager.FindByName(HttpContext.Current.User.Identity.Name);
 
+            return currentuser;
+        }
 
         public static List<SelectListItem> GetUsers()
         {
@@ -111,14 +117,7 @@ namespace InventoryManagement.Helper
             using (var db = new ApplicationDbContext())
             {
                 _userslist = db.Database.SqlQuery<SelectListItem>("EXEC sp_GetUserList").ToList();
-                //var result = db.Users.Select(x => new { x.Id, x.UserName }).ToList();
-                //if (result.Count() > 0)
-                //{
-                //    foreach (var item in result)
-                //    {
-                //        _userslist.Add(new SelectListItem { Text = item.UserName, Value = item.Id.ToString() });
-                //    }
-                //}
+            
             }
 
             return _userslist;
@@ -160,21 +159,7 @@ namespace InventoryManagement.Helper
             return vm;
         }
 
-        //public static Permissionviewmodel Getmenu(string UserId)
-        //{
         
-        //    Permissionviewmodel vm = new Permissionviewmodel();
-        //    PermissionMaster _pm = new PermissionMaster();
-        //    var Usermanager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
-        //    var currentuser = Usermanager.FindByName(HttpContext.Current.User.Identity.Name);
-
-        //    using (var db = new ApplicationDbContext())
-        //    {
-        //        _pm = db.PermissionMaster.Where(x => x.UserId == UserId).Include(x => x._Permission).Include(x => x._ModulePermission).FirstOrDefault();
-        //    }
-        //    vm.PermissionMaster = _pm;
-        //    return vm;
-        //}
         public static string GetStation()
         {
             string hostName = Dns.GetHostName(); // Retrive the Name of HOST  
@@ -321,7 +306,7 @@ namespace InventoryManagement.Helper
             vm._pm = _pm;
             using (var db = new ApplicationDbContext())
             {
-                _Permission = db.PermissionMaster.Where(x => x.Id == Id).Include(x=>x._ModulePermission).FirstOrDefault();
+                _Permission = db.PermissionMaster.Where(x => x.Id == Id.ToString()).Include(x=>x._ModulePermission).FirstOrDefault();
                
             }
             if(_menulist.Count>0)
@@ -380,7 +365,7 @@ namespace InventoryManagement.Helper
                   
                 }
             }
-            vmlst.Id = _Permission.Id;
+            vmlst.Id = _Permission.Id.ToString();
             vmlst.UserId = _Permission.UserId;
             vmlst.Menumaster = _menulst.OrderBy(x => x.DisplayOrder).ToList();
             return vmlst;
@@ -427,7 +412,7 @@ namespace InventoryManagement.Helper
             {
                 SubMenumaster m = ctx.SubMenumaster.Where(x => x.Action == action).FirstOrDefault();
                 PermissionMaster p = ctx.PermissionMaster.Where(x => x.UserId == userid).FirstOrDefault();
-                ModulePermission mp = ctx.ModulePermission.Where(x => x.PermissionMasterId == p.Id && x.MenuId == m.ParentId && x.SubMenuId == m.SubMenumasterId).FirstOrDefault();
+                ModulePermission mp = ctx.ModulePermission.Where(x => x.PermissionMasterId == p.Id.ToString() && x.MenuId == m.ParentId && x.SubMenuId == m.SubMenumasterId).FirstOrDefault();
                 if (mp != null)
                 {
                     if (permission == "IsAdd")
@@ -471,40 +456,32 @@ namespace InventoryManagement.Helper
             {
                 _Permission = db.PermissionMaster.Where(x => x.UserId == currentuser.Id).Include(x => x._ModulePermission).FirstOrDefault();
             }
-            foreach (var _m in _Permission._ModulePermission.ToList())
+            if(_Permission!=null)
             {
-                MenuGroup mg = new MenuGroup();
-                mg.Id = _m.MenuId;
-                lst.Add(mg);
-            }
-           var resultlambaorderbyelement = lst.GroupBy(stu => stu.Id).Select(g => new { Key = g.Key});
-
-            foreach (var _menu in resultlambaorderbyelement)
-            {
-                Menumaster _Menumaster = new Menumaster();
-                _Menumaster = GetmenuById(_menu.Key);
-                foreach(var item in _Permission._ModulePermission.Where(x=>x.MenuId==_menu.Key).ToList())
+                foreach (var _m in _Permission._ModulePermission.ToList())
                 {
-                    sm= GetSubmenuById(item.SubMenuId);
-                    _Menumaster._SubMenumaster.Add(sm);
+                    MenuGroup mg = new MenuGroup();
+                    mg.Id = _m.MenuId;
+                    lst.Add(mg);
                 }
-                
-                _PermissionMaster.Menumaster.Add(_Menumaster);
+                var resultlambaorderbyelement = lst.GroupBy(stu => stu.Id).Select(g => new { Key = g.Key });
+
+                foreach (var _menu in resultlambaorderbyelement)
+                {
+                    Menumaster _Menumaster = new Menumaster();
+                    _Menumaster = GetmenuById(_menu.Key);
+                    foreach (var item in _Permission._ModulePermission.Where(x => x.MenuId == _menu.Key).ToList())
+                    {
+                        sm = GetSubmenuById(item.SubMenuId);
+                        _Menumaster._SubMenumaster.Add(sm);
+                    }
+
+                    _PermissionMaster.Menumaster.Add(_Menumaster);
+                }
             }
-               // _Menumaster.DisplayName=GetmenuById(itemmenu)
-                //if (_Permission._ModulePermission.Count() > 0)
-                //{
-                //    foreach (var item in _Permission._ModulePermission.ToList())
-                //    {
-
-
-                //        _Menumaster = GetmenuById(item.MenuId);
-                //        _PermissionMaster.Menumaster.Add(_Menumaster);
-                //    }
-                  
-                //}
-            
-            
+           
+          
+              
            
             return _PermissionMaster;
         }
@@ -536,6 +513,109 @@ namespace InventoryManagement.Helper
             }
 
             
+        }
+
+        public static bool GetBarcode(string barcode)
+        {
+            bool check = false;
+
+            using (var db = new ApplicationDbContext())
+            {
+                check = db.ItemMaster.Any(x => x.BarCode == barcode);
+            }
+            return check;
+        }
+        public static bool CheckHsncode(string Hsncode)
+        {
+            bool check = false;
+
+            using (var db = new ApplicationDbContext())
+            {
+                check = db.ItemMaster.Any(x => x.HsnCode == Hsncode);
+            }
+            return check;
+        }
+        public static bool CheckProductcode(string productcode)
+        {
+            bool check = false;
+
+            using (var db = new ApplicationDbContext())
+            {
+                check = db.ItemMaster.Any(x => x.ProductCode == productcode);
+            }
+            return check;
+        }
+        public static bool Checkskucode(string skucode)
+        {
+            bool check = false;
+
+            using (var db = new ApplicationDbContext())
+            {
+                check = db.ItemMaster.Any(x => x.SkuCode == skucode);
+            }
+            return check;
+        }
+        public static bool Checksapcode(string sapcode)
+        {
+            bool check = false;
+
+            using (var db = new ApplicationDbContext())
+            {
+                check = db.ItemMaster.Any(x => x.SapCode == sapcode);
+            }
+            return check;
+        }
+        public static List<CategoryMaster> GetCategory()
+        {
+
+            List<CategoryMaster> _master = new List<CategoryMaster>();
+            using (var db = new ApplicationDbContext())
+            {
+                _master = db.CategoryMaster.ToList(); 
+
+            }
+
+            return _master;
+        }
+        public static List<DropDownControl> GetSubCategoryByCategory(string CategoryId)
+        {
+
+            List<SubCategoryMaster> _master = new List<SubCategoryMaster>();
+            List<DropDownControl> dopdownlst = new List<DropDownControl>();
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                    _master = db.SubCategoryMaster.Where(x => x.CategoryId == CategoryId).ToList();
+                    if(_master.Count()>0)
+                    {
+                        foreach(var subcat in _master.ToList())
+                        {
+                            dopdownlst.Add(new DropDownControl { Name=subcat.Name,Id=subcat.Id });
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+            return dopdownlst;
+        }
+        public static List<BrandMaster> GetBrandMaster()
+        {
+
+            List<BrandMaster> _master = new List<BrandMaster>();
+            using (var db = new ApplicationDbContext())
+            {
+                _master = db.BrandMaster.ToList();
+
+            }
+
+            return _master;
         }
     }
 }

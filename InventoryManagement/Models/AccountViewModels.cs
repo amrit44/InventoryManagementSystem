@@ -149,7 +149,7 @@ namespace InventoryManagement.Models
             Menumaster = new List<Menumaster>();
             _pm = new List<ModulePermission>();
         }
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string UserId { get; set; }
         public PermissionMaster PermissionMaster { get; set; }
         public List<Menumaster> Menumaster { get; set; }
@@ -160,5 +160,10 @@ namespace InventoryManagement.Models
     {
         public Guid Id { get; set; }
 
+    }
+    public class DropDownControl
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
     }
 }

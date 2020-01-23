@@ -1,4 +1,5 @@
 ﻿@model InventoryManagement.Models.ItemMaster
+@using InventoryManagement.Helper;
 @{
     ViewBag.Title = "CreateItem";
 }
@@ -7,7 +8,7 @@
         color: red;
     }
 </style>
-@using (Ajax.BeginForm("CreateItem", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "permission", OnSuccess = "Response" }))
+@using (Ajax.BeginForm("CreateItem", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "",OnSuccess= "Response" ,LoadingElementId= "progress"}))
 {
     <div class="fa-heading" style="font-family:fantasy;">Create Item </div>
     <div class="row">
@@ -45,8 +46,8 @@
 
             </div>
             <div class="col-md-4" style="padding:1rem;">
-                <label>Desciption</label>
-                @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
+                <label>Hsn-Code</label>
+                @Html.TextBoxFor(x => x.HsnCode, new { @class = "form-control" })
 
             </div>
         </div>
@@ -77,17 +78,17 @@
         <div class="col-md-12">
             <div class="col-md-4" style="padding:1rem;">
                 <label>Category</label>
-                @Html.DropDownListFor(m => m.Category, new List<SelectListItem> { new SelectListItem { Text = "Select", Value = "" } }, Model.Category, new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.Category, new SelectList(Commonhelper.GetCategory(),"Id", "Name", Model.Category),"Select", new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.Category)
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Sub Category</label>
-                @Html.DropDownListFor(m => m.SubCategory, new List<SelectListItem> { new SelectListItem { Text = "Select", Value = "" } }, Model.Category, new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.SubCategory, new List<SelectListItem> { new SelectListItem { Text = "Select", Value = "" } }, Model.SubCategory, new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.SubCategory)
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Brand</label>
-                @Html.DropDownListFor(m => m.Brand, new List<SelectListItem> { new SelectListItem { Text = "Select", Value = "" } }, Model.Category, new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.Brand, new SelectList(Commonhelper.GetBrandMaster(),"Id","Name",Model.Brand), "Select", new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.Brand)
             </div>
         </div>
@@ -201,7 +202,7 @@
 
         </div>
     </div>
- 
+
     <br />
     if (Model.OptionalFields.Count > 0)
     {
@@ -220,17 +221,47 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-   <script>
-       $(document).ready(function(){
-           $("#ItemOrder").val('')
-           $("#Mrp").val('')
-           $("#Sellprice").val('')
-           $("#Costprice").val('')
-           $("#Gst").val('')
-           $("#offer").val('')
-           $("#MaximumQuantity").val('')
-           $("#MinimumQuantity").val('')
-           $("#BoxQuantity").val('')
-       })
+    <script>
+        $(document).ready(function () {
+            $("#ItemOrder").val('')
+            $("#Mrp").val('')
+            $("#Sellprice").val('')
+            $("#Costprice").val('')
+            $("#Gst").val('')
+            $("#offer").val('')
+            $("#MaximumQuantity").val('')
+            $("#MinimumQuantity").val('')
+            $("#BoxQuantity").val('')
+        })
+    </script>
+    <script>
+        $(document).on('change','#Category', function () {
+
+            var Category = $("#Category").val();
+            var url = '@Url.Action("GetSubcategory", "Master")';
+
+            $.ajax({
+                url: url,
+                method:'Get',
+                data: { category: Category},
+                success: function (response) {
+                    $("#SubCategory").empty();
+                    $("#SubCategory").append($("<option></option>").val('').html('Select'));  
+
+                    $.each(response, function (i,value) {
+                        $("#SubCategory").append($("<option></option>").val(value.Id).html(value.Name));  
+                    })
+                },
+                failure: function (fail) {
+
+                }
+            })
+        })
+    </script>
+
+       <script>
+        function Response(res) {
+            window.location.href = "./Item";
+        }
     </script>
 }
