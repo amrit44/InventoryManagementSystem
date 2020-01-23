@@ -33,7 +33,7 @@ namespace InventoryManagement.Filter
             object actionname = lst[1];
             bool check = false;
             check = Commonhelper.checkpermission(currentuser.Id, Action, Permission);
-            return check;
+            return true;
             //check your permissions
         }
         public override void OnAuthorization(AuthorizationContext filterContext)

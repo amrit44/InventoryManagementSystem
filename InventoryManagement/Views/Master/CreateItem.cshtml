@@ -1,7 +1,236 @@
-﻿
+﻿@model InventoryManagement.Models.ItemMaster
 @{
     ViewBag.Title = "CreateItem";
 }
+<style>
+    .field-validation-error {
+        color: red;
+    }
+</style>
+@using (Ajax.BeginForm("CreateItem", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "permission", OnSuccess = "Response" }))
+{
+    <div class="fa-heading" style="font-family:fantasy;">Create Item </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4">
 
-<h2>CreateItem</h2>
+            </div>
+            <div class="col-md-4">
 
+            </div>
+            <div class="col-md-4">
+                <label>
+
+                </label>
+
+                <input type="submit" value="Create" class="btn btn-primary" style="float:right;" />
+
+            </div>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Product code</label>
+                @Html.TextBoxFor(x => x.ProductCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.ProductCode)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Product Name</label>
+                @Html.TextBoxFor(x => x.ProductName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.ProductName)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Desciption</label>
+                @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
+
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Bar Code</label>
+                @Html.TextBoxFor(x => x.BarCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.BarCode)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Sku code</label>
+                @Html.TextBoxFor(x => x.SkuCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.SkuCode)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Sap Code</label>
+                @Html.TextBoxFor(x => x.SapCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.SapCode)
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Category</label>
+                @Html.DropDownListFor(m => m.Category, new List<SelectListItem> { new SelectListItem { Text = "Select", Value = "" } }, Model.Category, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Category)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Sub Category</label>
+                @Html.DropDownListFor(m => m.SubCategory, new List<SelectListItem> { new SelectListItem { Text = "Select", Value = "" } }, Model.Category, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.SubCategory)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Brand</label>
+                @Html.DropDownListFor(m => m.Brand, new List<SelectListItem> { new SelectListItem { Text = "Select", Value = "" } }, Model.Category, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Brand)
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Size</label>
+                @Html.TextBoxFor(x => x.Size, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Size)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Quality/Style</label>
+                @Html.TextBoxFor(x => x.Quality, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Quality)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Item-Order</label>
+                @Html.TextBoxFor(x => x.ItemOrder, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.ItemOrder)
+
+            </div>
+        </div>
+
+    </div>
+    <br />
+    <div class="fa-heading" style="font-family:fantasy;">Price Details</div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Maximum Retail Price(Mrp)</label>
+                @Html.TextBoxFor(x => x.Mrp, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Mrp)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Selling Price</label>
+                @Html.TextBoxFor(x => x.Sellprice, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Sellprice)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Cost Price</label>
+                @Html.TextBoxFor(x => x.Costprice, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Costprice)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Gst</label>
+                @Html.TextBoxFor(x => x.Gst, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Gst)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Offer(%)</label>
+                @Html.TextBoxFor(x => x.offer, new { @class = "form-control" })
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Re-orderLevel</label>
+                @Html.TextBoxFor(x => x.Reorderlevel, new { @class = "form-control" })
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Max Quantity</label>
+                @Html.TextBoxFor(x => x.MaximumQuantity, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.MaximumQuantity)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Min Quantity</label>
+                @Html.TextBoxFor(x => x.MinimumQuantity, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.MinimumQuantity)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Box-Quantity</label>
+                @Html.TextBoxFor(x => x.BoxQuantity, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.BoxQuantity)
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Measurement Unit</label>
+                @Html.TextBoxFor(x => x.Mou, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Mou)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>SubMeasurement Unit</label>
+                @Html.TextBoxFor(x => x.SubMou, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.SubMou)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Unique Transaction</label>
+                <br />
+                @Html.CheckBoxFor(x => x.IsUnique)
+
+                @Html.ValidationMessageFor(x => x.IsUnique)
+            </div>
+
+        </div>
+    </div>
+ 
+    <br />
+    if (Model.OptionalFields.Count > 0)
+    {
+        <div class="fa-heading" style="font-family:fantasy;">Optional Details</div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                @Html.Partial("_OptionalFields")
+            </div>
+        </div>
+
+    }
+
+
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+   <script>
+       $(document).ready(function(){
+           $("#ItemOrder").val('')
+           $("#Mrp").val('')
+           $("#Sellprice").val('')
+           $("#Costprice").val('')
+           $("#Gst").val('')
+           $("#offer").val('')
+           $("#MaximumQuantity").val('')
+           $("#MinimumQuantity").val('')
+           $("#BoxQuantity").val('')
+       })
+    </script>
+}

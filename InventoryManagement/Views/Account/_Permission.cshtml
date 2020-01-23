@@ -72,7 +72,7 @@
 
                                     <td hidden><input type="hidden" id="FormID" name="FormID" /></td>
 
-                                    <td style="color:black;background-color:#EEF1F5;width:200px">
+                                    <td style="color:black;background-color:#EEF1F5;width:15rem;">
                                         @Html.CheckBoxFor(model => Model.Menumaster[mainindex].IsSelect, new { @class = "parent " + "_" + dynamicclass + "", @id = Model.Menumaster[mainindex].MenuId })<h6 style="font-size:1.5rem;">@item.Name</h6>
                                         @Html.HiddenFor(model => Model.Menumaster[mainindex].MenuId)
                                         @Html.HiddenFor(model => Model.Menumaster[mainindex].DisplayOrder)
@@ -81,10 +81,6 @@
 
                                     </td>
 
-
-
-                                    <td hidden></td>
-                                    <td hidden></td>
                                     <td><input type="hidden" id="select_all" value="true" name="IsAdd" class="addfocus" /></td>
                                     <td><input type="hidden" id="editselect_all" value="true" name="IsEdit" /></td>
                                     <td><input type="hidden" id="viewselect_all" value="true" name="IsView" /></td>

@@ -1,0 +1,32 @@
+﻿
+@model InventoryManagement.Models.ItemMaster
+
+
+<table class="table nowrap">
+    <thead>
+        <tr>
+            <th>Sno</th>
+            <th>Property</th>
+            <th>Value</th>
+        </tr>
+        @foreach (var item in Model.OptionalFields.ToList())
+        {
+            var index = Model.OptionalFields.IndexOf(item);
+        <tr>
+            <td>@(index + 1)</td>
+            <td>
+                @Html.HiddenFor(x=>x.OptionalFields[index].Id)
+                @Html.TextBoxFor(x => x.OptionalFields[index].option1, new { @class = "form-control",@readonly=true })
+
+
+
+            </td>
+            <td>
+                @Html.TextBoxFor(x => x.OptionalFields[index].Description, new { @class = "form-control" })
+
+            </td>
+
+        </tr>
+        }
+    </thead>
+</table>  

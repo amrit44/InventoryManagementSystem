@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace InventoryManagement.Models
@@ -139,5 +140,25 @@ namespace InventoryManagement.Models
         public bool IsEdit { get; set; }
         public bool IsAdd { get; set; }
         public bool Isdelete { get; set; }
+    }
+    public class Permissionviewmodel
+    {
+        public Permissionviewmodel()
+        {
+            PermissionMaster = new PermissionMaster();
+            Menumaster = new List<Menumaster>();
+            _pm = new List<ModulePermission>();
+        }
+        public Guid Id { get; set; }
+        public string UserId { get; set; }
+        public PermissionMaster PermissionMaster { get; set; }
+        public List<Menumaster> Menumaster { get; set; }
+        public List<ModulePermission> _pm { get; set; }
+    }
+   
+    public class MenuGroup
+    {
+        public Guid Id { get; set; }
+
     }
 }

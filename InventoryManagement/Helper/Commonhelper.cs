@@ -262,13 +262,13 @@ namespace InventoryManagement.Helper
 
             return _vm;
         }
-        public static List<SubMenumaster> GetSubmenuById(Guid Id)
+        public static SubMenumaster GetSubmenuById(Guid Id)
         {
 
-            List<SubMenumaster> _master = new List<SubMenumaster>();
+          SubMenumaster _master = new SubMenumaster();
             using (var db = new ApplicationDbContext())
             {
-                _master = db.SubMenumaster.Where(x => x.SubMenumasterId == Id).ToList();
+                _master = db.SubMenumaster.Where(x => x.SubMenumasterId == Id).FirstOrDefault();
                
             }
 
@@ -460,43 +460,82 @@ namespace InventoryManagement.Helper
             List<Menumaster> _menulist = new List<Menumaster>();
             List<Menumaster> _menulst = new List<Menumaster>();
             List<SubMenumaster> _SubMenumasterlist = new List<SubMenumaster>();
-
+            SubMenumaster sm = new SubMenumaster();
             List<ModulePermission> _pm = new List<ModulePermission>();
             Permissionviewmodel vm = new Permissionviewmodel();
             Permissionviewmodel vmlst = new Permissionviewmodel();
             InventoryManagement.Models.Permissionviewmodel _PermissionMaster = new InventoryManagement.Models.Permissionviewmodel();
-
+            List<MenuGroup> lst = new List<MenuGroup>();
         
             using (var db = new ApplicationDbContext())
             {
                 _Permission = db.PermissionMaster.Where(x => x.UserId == currentuser.Id).Include(x => x._ModulePermission).FirstOrDefault();
             }
-      
-               Menumaster _Menumaster = new Menumaster();
-               // _Menumaster.DisplayName=GetmenuById(itemmenu)
-                if (_Permission._ModulePermission.Count() > 0)
+            foreach (var _m in _Permission._ModulePermission.ToList())
+            {
+                MenuGroup mg = new MenuGroup();
+                mg.Id = _m.MenuId;
+                lst.Add(mg);
+            }
+           var resultlambaorderbyelement = lst.GroupBy(stu => stu.Id).Select(g => new { Key = g.Key});
+
+            foreach (var _menu in resultlambaorderbyelement)
+            {
+                Menumaster _Menumaster = new Menumaster();
+                _Menumaster = GetmenuById(_menu.Key);
+                foreach(var item in _Permission._ModulePermission.Where(x=>x.MenuId==_menu.Key).ToList())
                 {
-                    foreach (var item in _Permission._ModulePermission.ToList())
-                    {
-
-
-                        _Menumaster = GetmenuById(item.MenuId);
-                        _PermissionMaster.Menumaster.Add(_Menumaster);
-                    }
-                    //foreach (var item in _Permission._ModulePermission.ToList())
-                    //{
-
-
-                    //    _SubMenumasterlist = GetSubmenuById(item.SubMenuId);
-                    //    _Menumaster._SubMenumaster = _SubMenumasterlist;
-
-
-                    //}
+                    sm= GetSubmenuById(item.SubMenuId);
+                    _Menumaster._SubMenumaster.Add(sm);
                 }
+                
+                _PermissionMaster.Menumaster.Add(_Menumaster);
+            }
+               // _Menumaster.DisplayName=GetmenuById(itemmenu)
+                //if (_Permission._ModulePermission.Count() > 0)
+                //{
+                //    foreach (var item in _Permission._ModulePermission.ToList())
+                //    {
+
+
+                //        _Menumaster = GetmenuById(item.MenuId);
+                //        _PermissionMaster.Menumaster.Add(_Menumaster);
+                //    }
+                  
+                //}
             
             
            
             return _PermissionMaster;
+        }
+        public static List<OptionalFields> GetOptionalFieldsList()
+        {
+            List<OptionalFields> lst = new List<OptionalFields>();
+            using (var db = new ApplicationDbContext())
+            {
+                lst = db.OptionalFields.Where(x => x.Status == true).ToList();
+                
+            }
+
+            return lst;
+        }
+        public static void SaveItem(ItemMaster master)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                    db.ItemMaster.Add(master);
+                    db.SaveChanges();
+                }
+                catch(Exception ex)
+                {
+
+                }
+
+            }
+
+            
         }
     }
 }

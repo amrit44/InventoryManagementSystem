@@ -147,25 +147,7 @@ namespace InventoryManagement.Models
         public List<ModulePermission> _ModulePermission { get; set; }
    
     }
-    //[Table("Permission")]
-    //public class Permission
-    //{
-       
-    //    [Key]
-    //    public Guid Id { get; set; }
-
-    //    public Guid MenuId { get; set; }
-    //    [ForeignKey("MenuId")]
-    //    public virtual Menumaster _Menumaster { get; set; }
-    //    public Guid PermissionMasterId { get; set; }
-    //    [ForeignKey("PermissionMasterId")]
-    //    public virtual PermissionMaster PermissionMaster { get; set; }
-       
-    //    public bool Isactive { get; set; }
-    //    public int DisplayOrder { get; set; }
-    //    public string DisplayName { get; set; }
-    //    public string Displayclass { get; set; }
-    //}
+ 
     [Table("ModulePermission")]
     public class ModulePermission
     {
@@ -206,21 +188,119 @@ namespace InventoryManagement.Models
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
     }
-    public class Permissionviewmodel
+    [Table("ItemMaster")]
+    public class ItemMaster
     {
-        public Permissionviewmodel()
+        public ItemMaster()
         {
-            PermissionMaster = new PermissionMaster();
-            Menumaster = new List<Menumaster>();
-            _pm = new List<ModulePermission>();
+            OptionalFields = new List<OptionalFields>();
+            ItemOptionalDetails = new List<ItemOptionalDetails>();
+            Id = Guid.NewGuid().ToString();
         }
-        public Guid Id { get; set; }
-        public string UserId { get; set; }
-        public PermissionMaster PermissionMaster { get; set; }
-        public List<Menumaster> Menumaster { get; set; }
-        public List<ModulePermission> _pm { get; set; }
+
+        [Key]
+        public string Id { get; set; }
+        public string StoreId { get; set; }
+        public string CompanyId { get; set; }
+        [Required(ErrorMessage = "Product Code Required")]
+        public string ProductCode { get; set; }
+        public string Description { get; set; }
+
+        [Required(ErrorMessage = "Bar Code Required")]
+
+        public string BarCode { get; set; }
+        [Required(ErrorMessage = "Sku Code Required")]
+
+        public string SkuCode { get; set; }
+        [Required(ErrorMessage = "Sap Code Required")]
+
+        public string SapCode { get; set; }
+        [Required(ErrorMessage = "Category Required")]
+
+        public string Category { get; set; }
+        [Required(ErrorMessage = "Sub Category Required")]
+
+        public string SubCategory { get; set; }
+        [Required(ErrorMessage = "Product Name Required")]
+
+        public string ProductName { get; set; }
+        [Required(ErrorMessage = "Product  Brand Required")]
+
+        public string Brand { get; set; }
+        [Required(ErrorMessage = "Product  Size Required")]
+        public string Size { get; set; }
+        [Required(ErrorMessage = "Quality  Size Required")]
+        public string Quality { get; set; }
+        [Required(ErrorMessage = "Gst Required")]
+        public decimal Gst { get; set; }
+
+        public string Reorderlevel { get; set; }
+        [Required(ErrorMessage = "Max-Retail price Required")]
+        public decimal Mrp { get; set; }
+        [Required(ErrorMessage = "Cost price Required")]
+        public decimal Costprice { get; set; }
+        [Required(ErrorMessage = "Sell price Required")]
+        public decimal Sellprice { get; set; }
+        public decimal offer { get; set; }
+        public int FinancialYear { get; set; }
+        public string workstation { get; set; }
+        [Required(ErrorMessage = "Hsn Code Required")]
+        public string HsnCode { get; set; }
+        [Required(ErrorMessage = "Maximum Quantity Required")]
+        public int MaximumQuantity { get; set; }
+        [Required(ErrorMessage = "Minimum Quantity Required")]
+        public int MinimumQuantity { get; set; }
+        [Required(ErrorMessage = "Box Quantity Required")]
+        public int BoxQuantity { get; set; }
+        [Required(ErrorMessage = "Transaction Type Required")]
+
+        public bool IsUnique { get; set; }
+        [Required(ErrorMessage = "Measurement Unit Required")]
+        public string Mou { get; set; }
+        public string SubMou { get; set; }
+        [Required(ErrorMessage = "Order Required")]
+        public int ItemOrder { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public Guid CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+        public List<ItemOptionalDetails> ItemOptionalDetails { get; set; }
+
+        [NotMapped]
+        public  List<OptionalFields> OptionalFields { get; set; }
     }
-  
+    [Table("OptionalFields")]
+    public class OptionalFields
+    {
+        public OptionalFields()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+        [Key]
+        public string Id { get; set; }
+        public string option1 { get; set; }
+      
+        public string Description { get; set; }
+     
+        public bool Status { get; set; }
+    }
+    [Table("ItemOptionalDetails")]
+    public class ItemOptionalDetails
+    {
+        public ItemOptionalDetails()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+        [Key]
+        public string Id { get; set; }
+        public string ItemId { get; set; }
+
+        //public string OptionalFieldsId { get; set; }
+        //public  OptionalFields _OptionalFields { get; set; }
+        //public string OptionalValue { get; set; }
+
+
+    }
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
@@ -236,6 +316,9 @@ namespace InventoryManagement.Models
         public DbSet<PermissionMaster> PermissionMaster { get; set; }
       
         public DbSet<ModulePermission> ModulePermission { get; set; }
+        public DbSet<ItemMaster> ItemMaster { get; set; }
+        public DbSet<OptionalFields> OptionalFields { get; set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

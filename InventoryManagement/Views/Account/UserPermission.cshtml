@@ -303,6 +303,7 @@
 
         $("#IsAddall").click(function () {
             $('.addfocus').not(this).prop('checked', this.checked);
+            $('.parent').attr('checked', this.checked);
 
         });
     </script>
@@ -310,18 +311,21 @@
 
         $("#IsEditall").click(function () {
             $('.editfocus').not(this).prop('checked', this.checked);
+            $('.parent').attr('checked', this.checked);
         });
     </script>
     <script>
 
         $("#IsViewall").click(function () {
             $('.viewfocus').not(this).prop('checked', this.checked);
+            $('.parent').attr('checked', this.checked);
         });
     </script>
     <script>
 
         $("#IsDeleteall").click(function () {
             $('.deletefocus').not(this).prop('checked', this.checked);
+            $('.parent').attr('checked', this.checked);
         });
 
 
