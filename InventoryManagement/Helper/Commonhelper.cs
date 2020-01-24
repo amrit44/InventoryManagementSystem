@@ -485,16 +485,27 @@ namespace InventoryManagement.Helper
            
             return _PermissionMaster;
         }
-        public static List<OptionalFields> GetOptionalFieldsList()
+        public static List<ItemOptionalDetails> GetOptionalFieldsList()
         {
             List<OptionalFields> lst = new List<OptionalFields>();
+            List<ItemOptionalDetails> _lst = new List<ItemOptionalDetails>();
+
             using (var db = new ApplicationDbContext())
             {
                 lst = db.OptionalFields.Where(x => x.Status == true).ToList();
-                
+                if(lst.Count>0)
+                {
+                    foreach(var item in lst)
+                    {
+                        ItemOptionalDetails vm = new ItemOptionalDetails();
+                        vm.OptionalId = item.Id;
+                        vm.Description = item.option1;
+                        _lst.Add(vm);
+                    }
+                }
             }
 
-            return lst;
+            return _lst;
         }
         public static void SaveItem(ItemMaster master)
         {
@@ -513,6 +524,68 @@ namespace InventoryManagement.Helper
             }
 
             
+        }
+
+        public static void UpdateItem(ItemMaster master)
+        {
+            ItemMaster _master = new ItemMaster();
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                    _master = db.ItemMaster.Include(x=>x.ItemOptionalDetails).Where(x => x.Id == master.Id).FirstOrDefault();
+                    if(_master!=null)
+                    {
+                        _master.Id = master.Id;
+                        _master.StoreId = master.StoreId;
+                        _master.CompanyId = master.CompanyId;
+                        _master.ProductCode = master.ProductCode;
+                        _master.BarCode = master.BarCode;
+                        _master.SkuCode = master.SkuCode;
+                        _master.SapCode = master.SapCode;
+                        _master.Category = master.Category;
+                        _master.SubCategory = master.SubCategory;
+                        _master.ProductName = master.ProductName;
+                        _master.Brand = master.Brand;
+                        _master.Size = master.Size;
+                        _master.Quality = master.Quality;
+                        _master.Gst = master.Gst;
+                        _master.Reorderlevel = master.Reorderlevel;
+                        _master.Mrp = master.Mrp;
+                        _master.Costprice = master.Costprice;
+                        _master.Sellprice = master.Sellprice;
+                        _master.offer = master.offer;
+                        _master.FinancialYear = master.FinancialYear;
+                        _master.workstation = GetStation();
+                        _master.HsnCode = master.HsnCode;
+                        _master.MaximumQuantity = master.MaximumQuantity;
+                        _master.MinimumQuantity = master.MinimumQuantity;
+                        _master.BoxQuantity = master.BoxQuantity;
+                        _master.IsUnique = master.IsUnique;
+                        _master.Mou = master.Mou;
+                        _master.SubMou = master.SubMou;
+                        _master.ItemOrder = master.ItemOrder;
+                        _master.ModifiedDate = DateTime.Now;
+                        _master.ModifiedBy = master.ModifiedBy;
+                        if(master.ItemOptionalDetails.Count>0)
+                        {
+                            db.Entry(_master).State = EntityState.Modified;
+                           
+                            db.ItemOptionalDetails.RemoveRange(_master.ItemOptionalDetails);
+                            _master.ItemOptionalDetails.AddRange(master.ItemOptionalDetails);
+                        }
+                    }
+                    db.Entry(_master).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+            }
+
+
         }
 
         public static bool GetBarcode(string barcode)
@@ -616,6 +689,89 @@ namespace InventoryManagement.Helper
             }
 
             return _master;
+        }
+
+
+        public static List<ItemMaster> GetItemMaster()
+        {
+
+            List<ItemMaster> _master = new List<ItemMaster>();
+            using (var db = new ApplicationDbContext())
+            {
+                _master = db.ItemMaster.Include(x => x._CategoryMaster).Include(x => x._SubCategoryMaster).Include(x => x._BrandMaster).Include(x => x._StoreMaster).ToList();
+
+            }
+
+            return _master;
+        }
+        public static ItemMaster GetItemById(string Id)
+        {
+            List<ItemOptionalDetails> lst = new List<ItemOptionalDetails>();
+            ItemMaster _master = new ItemMaster();
+            using (var db = new ApplicationDbContext())
+            {
+                _master = db.ItemMaster.Include(x=>x.ItemOptionalDetails).Where(x => x.Id == Id).FirstOrDefault();
+                if(_master.ItemOptionalDetails.Count>0)
+                {
+                    foreach(var item in _master.ItemOptionalDetails.ToList())
+                    {
+                        ItemOptionalDetails vm = new ItemOptionalDetails();
+                        vm.Id = item.Id;
+                        vm.ItemId = item.ItemId;
+                        vm.OptionalValue = item.OptionalValue;
+                        vm.OptionalId = item.OptionalId;
+                        vm.Description = GetOptionname(item.OptionalId);
+                        lst.Add(vm);
+                    }
+                    _master.ItemOptionalDetails.Clear();
+                    _master.ItemOptionalDetails = lst;
+                }
+            }
+
+            return _master;
+        }
+
+        public static void DeleteItemById(string Id)
+        {
+            ItemMaster _master = new ItemMaster();
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                    _master = db.ItemMaster.Where(x => x.Id == Id).FirstOrDefault();
+                    if (_master != null)
+                    {
+                        try
+                        {
+                            _master.Isactive = false;
+                            db.Entry(_master).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
+
+
+                    }
+                }
+                catch(Exception ex)
+                {
+                    throw ex;
+                }
+                
+            }
+
+          
+        }
+        public static string GetOptionname(string Id)
+        {
+            string description = string.Empty;
+            using (var db = new ApplicationDbContext())
+            {
+                description = db.OptionalFields.Where(x => x.Id == Id).Select(x => x.option1).FirstOrDefault();
+            }
+           return description;
         }
     }
 }

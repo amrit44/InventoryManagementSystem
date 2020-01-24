@@ -201,7 +201,9 @@ namespace InventoryManagement.Models
         public string CompanyId { get; set; }
         [ForeignKey("CompanyId")]
         public CompanyMaster _CompanyMaster { get; set; }
+        [Remote("Checkcategoryname", "Master", ErrorMessage = "Name in use.", AdditionalFields = "Previousname")]
         public string Name { get; set; }
+        public string Description { get; set; }
         public int FinancialYear { get; set; }
         public string workstation { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -244,7 +246,10 @@ namespace InventoryManagement.Models
         public string CompanyId { get; set; }
         [ForeignKey("CompanyId")]
         public CompanyMaster _CompanyMaster { get; set; }
+        [Required(ErrorMessage = "Name is Required")]
+        [Remote("CheckProductname", "Master", ErrorMessage = "Name in use.", AdditionalFields = "Previousname")]
         public string Name { get; set; }
+    
         public int FinancialYear { get; set; }
         public string workstation { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -257,7 +262,6 @@ namespace InventoryManagement.Models
     {
         public ItemMaster()
         {
-            OptionalFields = new List<OptionalFields>();
             ItemOptionalDetails = new List<ItemOptionalDetails>();
             Id = Guid.NewGuid().ToString();
         }
@@ -265,34 +269,44 @@ namespace InventoryManagement.Models
         [Key]
         public string Id { get; set; }
         public string StoreId { get; set; }
+        [ForeignKey("StoreId")]
+        public virtual StoreMaster _StoreMaster { get; set; }
         public string CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
+        public virtual CompanyMaster _CompanyMaster { get; set; }
         [Required(ErrorMessage = "Product Code Required")]
-        [Remote("CheckProductcode", "Master", ErrorMessage = "Product Code in use.")]
+        [Remote("CheckProductcode", "Master", ErrorMessage = "Product Code in use.", AdditionalFields = "Previousproductcode")]
         public string ProductCode { get; set; }
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Bar Code Required")]
-        [Remote("CheckBarcode", "Master", ErrorMessage = "Bar Code in use.")]
+        [Remote("CheckBarcode", "Master", ErrorMessage = "Bar Code in use.", AdditionalFields = "Previousbarcode")]
         public string BarCode { get; set; }
         [Required(ErrorMessage = "Sku Code Required")]
-        [Remote("CheckSkucode", "Master", ErrorMessage = "Sku Code in use.")]
+        [Remote("CheckSkucode", "Master", ErrorMessage = "Sku Code in use.", AdditionalFields = "Previousskucode")]
         public string SkuCode { get; set; }
         [Required(ErrorMessage = "Sap Code Required")]
-        [Remote("Checksapcode", "Master", ErrorMessage = "Sap Code in use.")]
+        [Remote("Checksapcode", "Master", ErrorMessage = "Sap Code in use.", AdditionalFields = "Previoussapcode")]
 
         public string SapCode { get; set; }
         [Required(ErrorMessage = "Category Required")]
 
         public string Category { get; set; }
+        [ForeignKey("Category")]
+        public virtual CategoryMaster _CategoryMaster { get; set; }
         [Required(ErrorMessage = "Sub Category Required")]
 
         public string SubCategory { get; set; }
+        [ForeignKey("SubCategory")]
+        public virtual SubCategoryMaster _SubCategoryMaster { get; set; }
         [Required(ErrorMessage = "Product Name Required")]
 
         public string ProductName { get; set; }
         [Required(ErrorMessage = "Product  Brand Required")]
 
         public string Brand { get; set; }
+        [ForeignKey("Brand")]
+        public virtual BrandMaster _BrandMaster { get; set; }
         [Required(ErrorMessage = "Product  Size Required")]
         public string Size { get; set; }
         [Required(ErrorMessage = "Quality  Size Required")]
@@ -311,6 +325,7 @@ namespace InventoryManagement.Models
         public int FinancialYear { get; set; }
         public string workstation { get; set; }
         [Required(ErrorMessage = "Hsn Code Required")]
+        [Remote("CheckHsncode", "Master", ErrorMessage = "Hsn Code in use.", AdditionalFields = "Previoushsncode")]
         public string HsnCode { get; set; }
         [Required(ErrorMessage = "Maximum Quantity Required")]
         public int MaximumQuantity { get; set; }
@@ -326,14 +341,13 @@ namespace InventoryManagement.Models
         public string SubMou { get; set; }
         [Required(ErrorMessage = "Order Required")]
         public int ItemOrder { get; set; }
+        public bool Isactive { get; set; }
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
         public List<ItemOptionalDetails> ItemOptionalDetails { get; set; }
 
-        [NotMapped]
-        public  List<OptionalFields> OptionalFields { get; set; }
     }
     [Table("OptionalFields")]
     public class OptionalFields
@@ -350,7 +364,7 @@ namespace InventoryManagement.Models
      
         public bool Status { get; set; }
     }
-    [Table("ItemOptionalDetails")]
+    [Table("InvItemOptionalDetails")]
     public class ItemOptionalDetails
     {
         public ItemOptionalDetails()
@@ -360,12 +374,14 @@ namespace InventoryManagement.Models
         [Key]
         public string Id { get; set; }
         public string ItemId { get; set; }
-
-        //public string OptionalFieldsId { get; set; }
-        //public  OptionalFields _OptionalFields { get; set; }
+        [ForeignKey("ItemId")]
+        public virtual ItemMaster _ItemMaster { get; set; }
+        public string OptionalId { get; set; }
+        [ForeignKey("OptionalId")]
+        public virtual OptionalFields _OptionalFields { get; set; }
         public string OptionalValue { get; set; }
-
-
+        [NotMapped]
+        public string Description { get; set; }
     }
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -374,6 +390,7 @@ namespace InventoryManagement.Models
         {
             this.Configuration.LazyLoadingEnabled = false;
             this.Configuration.ProxyCreationEnabled = false;
+            this.Configuration.ValidateOnSaveEnabled = false;
         }
         public DbSet<CompanyMaster> CompanyMaster { get; set; }
         public DbSet<Menumaster> Menumaster { get; set; }
@@ -387,7 +404,7 @@ namespace InventoryManagement.Models
         public DbSet<CategoryMaster> CategoryMaster { get; set; }
         public DbSet<SubCategoryMaster> SubCategoryMaster { get; set; }
         public DbSet<BrandMaster> BrandMaster { get; set; }
-
+        public DbSet<ItemOptionalDetails> ItemOptionalDetails { get; set; }
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

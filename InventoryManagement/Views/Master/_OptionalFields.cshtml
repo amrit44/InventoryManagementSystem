@@ -9,20 +9,20 @@
             <th>Property</th>
             <th>Value</th>
         </tr>
-        @foreach (var item in Model.OptionalFields.ToList())
+        @foreach (var item in Model.ItemOptionalDetails.ToList())
         {
-            var index = Model.OptionalFields.IndexOf(item);
+            var index = Model.ItemOptionalDetails.IndexOf(item);
         <tr>
             <td>@(index + 1)</td>
             <td>
-                @Html.HiddenFor(x=>x.OptionalFields[index].Id)
-                @Html.TextBoxFor(x => x.OptionalFields[index].option1, new { @class = "form-control",@readonly=true })
+                @Html.HiddenFor(x=>x.ItemOptionalDetails[index].OptionalId)
+                @Html.TextBoxFor(x => x.ItemOptionalDetails[index].Description, new { @class = "form-control",@readonly=true })
 
 
 
             </td>
             <td>
-                @Html.TextBoxFor(x => x.OptionalFields[index].Description, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.ItemOptionalDetails[index].OptionalValue, new { @class = "form-control" })
 
             </td>
 

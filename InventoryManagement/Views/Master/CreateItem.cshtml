@@ -8,7 +8,7 @@
         color: red;
     }
 </style>
-@using (Ajax.BeginForm("CreateItem", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "",OnSuccess= "Response" ,LoadingElementId= "progress"}))
+@using (Ajax.BeginForm("CreateItem", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
 {
     <div class="fa-heading" style="font-family:fantasy;">Create Item </div>
     <div class="row">
@@ -31,28 +31,7 @@
     </div>
     <hr />
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Product code</label>
-                @Html.TextBoxFor(x => x.ProductCode, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.ProductCode)
 
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Product Name</label>
-                @Html.TextBoxFor(x => x.ProductName, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.ProductName)
-
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Hsn-Code</label>
-                @Html.TextBoxFor(x => x.HsnCode, new { @class = "form-control" })
-
-            </div>
-        </div>
-
-    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-4" style="padding:1rem;">
@@ -78,7 +57,7 @@
         <div class="col-md-12">
             <div class="col-md-4" style="padding:1rem;">
                 <label>Category</label>
-                @Html.DropDownListFor(m => m.Category, new SelectList(Commonhelper.GetCategory(),"Id", "Name", Model.Category),"Select", new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.Category, new SelectList(Commonhelper.GetCategory(), "Id", "Name", Model.Category), "Select", new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.Category)
             </div>
             <div class="col-md-4" style="padding:1rem;">
@@ -88,7 +67,7 @@
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Brand</label>
-                @Html.DropDownListFor(m => m.Brand, new SelectList(Commonhelper.GetBrandMaster(),"Id","Name",Model.Brand), "Select", new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.Brand, new SelectList(Commonhelper.GetBrandMaster(), "Id", "Name", Model.Brand), "Select", new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.Brand)
             </div>
         </div>
@@ -204,7 +183,7 @@
     </div>
 
     <br />
-    if (Model.OptionalFields.Count > 0)
+    if (Model.ItemOptionalDetails.Count > 0)
     {
         <div class="fa-heading" style="font-family:fantasy;">Optional Details</div>
         <hr />
@@ -216,7 +195,24 @@
 
     }
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4">
 
+            </div>
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+                <label>
+
+                </label>
+
+                <input type="submit" value="Create" class="btn btn-primary" style="float:right;" />
+
+            </div>
+        </div>
+    </div>
 }
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -246,10 +242,10 @@
                 data: { category: Category},
                 success: function (response) {
                     $("#SubCategory").empty();
-                    $("#SubCategory").append($("<option></option>").val('').html('Select'));  
+                    $("#SubCategory").append($("<option></option>").val('').html('Select'));
 
                     $.each(response, function (i,value) {
-                        $("#SubCategory").append($("<option></option>").val(value.Id).html(value.Name));  
+                        $("#SubCategory").append($("<option></option>").val(value.Id).html(value.Name));
                     })
                 },
                 failure: function (fail) {
@@ -259,7 +255,7 @@
         })
     </script>
 
-       <script>
+    <script>
         function Response(res) {
             window.location.href = "./Item";
         }

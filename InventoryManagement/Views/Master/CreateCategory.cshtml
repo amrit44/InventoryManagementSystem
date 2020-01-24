@@ -1,0 +1,61 @@
+﻿@model InventoryManagement.Models.CategoryMaster
+@{
+    ViewBag.Title = "Category";
+}
+
+<style>
+    .field-validation-error {
+        color: red;
+    }
+</style>
+@using (Ajax.BeginForm("CreateItem", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
+{
+
+    <div class="fa-heading" style="font-family:fantasy;">Create Category </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+                <label>
+
+                </label>
+
+                <input type="submit" value="Create" class="btn btn-primary" style="float:right;" />
+
+            </div>
+        </div>
+    </div>
+    <hr />
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Name </label>
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Name)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Description </label>
+                @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
+
+
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label></label>
+                <input type="submit" value="Create" />
+            </div>
+
+        </div>
+    </div>
+
+}
+

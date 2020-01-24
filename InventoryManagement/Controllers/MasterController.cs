@@ -20,8 +20,9 @@ namespace InventoryManagement.Controllers
 
         public ActionResult Item()
         {
-
-            return View();
+            List<ItemMaster> itemlst = new List<ItemMaster>();
+            itemlst = Commonhelper.GetItemMaster();
+            return View(itemlst);
         }
         [HttpGet]
         [PermissionsAttribute(Action = "Item", Permission = "IsAdd")]
@@ -29,7 +30,7 @@ namespace InventoryManagement.Controllers
         public ActionResult CreateItem()
         {
             ItemMaster _ItemMaster = new ItemMaster();
-            _ItemMaster.OptionalFields = Commonhelper.GetOptionalFieldsList();
+            _ItemMaster.ItemOptionalDetails = Commonhelper.GetOptionalFieldsList();
             return View(_ItemMaster);
         }
         [HttpPost]
@@ -43,7 +44,7 @@ namespace InventoryManagement.Controllers
                 {
                     var currentuser = Commonhelper.GetCurrentUserDetails();
                     _ItemMaster.StoreId = currentuser.StoreId;
-                    _ItemMaster.CompanyId = item.BarCode;
+                    _ItemMaster.CompanyId = currentuser.CompanyId;
                     _ItemMaster.Description = item.Description;
                     _ItemMaster.ProductCode = item.ProductCode;
                     _ItemMaster.BarCode = item.BarCode;
@@ -65,7 +66,7 @@ namespace InventoryManagement.Controllers
                     _ItemMaster.Sellprice = item.Sellprice;
                     _ItemMaster.offer = item.offer;
                     _ItemMaster.FinancialYear = item.FinancialYear;
-                    _ItemMaster.workstation = item.workstation;
+                    _ItemMaster.workstation = Commonhelper.GetStation();
                     _ItemMaster.HsnCode = item.HsnCode;
                     _ItemMaster.MaximumQuantity = item.MaximumQuantity;
 
@@ -78,14 +79,16 @@ namespace InventoryManagement.Controllers
                     _ItemMaster.ItemOrder = item.ItemOrder;
                     _ItemMaster.CreatedDate = DateTime.Now;
                     _ItemMaster.CreatedBy = currentuser.Id;
-                    if(_ItemMaster.OptionalFields.Count()>0)
+                    _ItemMaster.Isactive = true;
+                    if(item.ItemOptionalDetails.Count()>0)
                     {
-                        foreach(var _item in _ItemMaster.OptionalFields)
+                        foreach(var _item in item.ItemOptionalDetails)
                         {
                             ItemOptionalDetails option = new ItemOptionalDetails();
                             option.Id = Guid.NewGuid().ToString();
                             option.ItemId = _ItemMaster.Id;
-                            option.OptionalValue = _ItemMaster.Description;
+                            option.OptionalId = _item.OptionalId;
+                            option.OptionalValue = _item.OptionalValue;
                             _ItemMaster.ItemOptionalDetails.Add(option);
                         }
                     }
@@ -109,6 +112,132 @@ namespace InventoryManagement.Controllers
             return View();
         }
 
+        public async System.Threading.Tasks.Task<ActionResult> EditItem(string Id)
+        {
+            ItemMaster itemMaster = Commonhelper.GetItemById(Id);
+            return View(itemMaster);
+        }
+        [HttpPost]
+        public async System.Threading.Tasks.Task<ActionResult> UpdateItem(ItemMaster item)
+        {
+            ItemMaster _ItemMaster = new ItemMaster();
+            bool status = false;
+            string msg = string.Empty;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var currentuser = Commonhelper.GetCurrentUserDetails();
+                    _ItemMaster.Id = item.Id;
+                    _ItemMaster.StoreId = currentuser.StoreId;
+                    _ItemMaster.CompanyId = currentuser.CompanyId;
+                    _ItemMaster.Description = item.Description;
+                    _ItemMaster.ProductCode = item.ProductCode;
+                    _ItemMaster.BarCode = item.BarCode;
+                    _ItemMaster.SkuCode = item.SkuCode;
+                    _ItemMaster.SapCode = item.SapCode;
+                    _ItemMaster.Category = item.Category;
+
+                    _ItemMaster.SubCategory = item.SubCategory;
+
+                    _ItemMaster.ProductName = item.ProductName;
+                    _ItemMaster.Brand = item.Brand;
+                    _ItemMaster.Size = item.Size;
+                    _ItemMaster.Quality = item.Quality;
+                    _ItemMaster.Gst = item.Gst;
+                    _ItemMaster.Reorderlevel = item.Reorderlevel;
+                    _ItemMaster.Mrp = item.Mrp;
+
+                    _ItemMaster.Costprice = item.Costprice;
+                    _ItemMaster.Sellprice = item.Sellprice;
+                    _ItemMaster.offer = item.offer;
+                    _ItemMaster.FinancialYear = item.FinancialYear;
+                    _ItemMaster.workstation = Commonhelper.GetStation();
+                    _ItemMaster.HsnCode = item.HsnCode;
+                    _ItemMaster.MaximumQuantity = item.MaximumQuantity;
+
+
+                    _ItemMaster.MinimumQuantity = item.MinimumQuantity;
+                    _ItemMaster.BoxQuantity = item.BoxQuantity;
+                    _ItemMaster.IsUnique = item.IsUnique;
+                    _ItemMaster.Mou = item.Mou;
+                    _ItemMaster.SubMou = item.SubMou;
+                    _ItemMaster.ItemOrder = item.ItemOrder;
+                    _ItemMaster.ModifiedDate = DateTime.Now;
+                    _ItemMaster.ModifiedBy = currentuser.Id;
+                    if (item.ItemOptionalDetails.Count() > 0)
+                    {
+                        foreach (var _item in item.ItemOptionalDetails)
+                        {
+                            ItemOptionalDetails option = new ItemOptionalDetails();
+                            option.Id = Guid.NewGuid().ToString();
+                            option.ItemId = _ItemMaster.Id;
+                            option.OptionalId = _item.OptionalId;
+                            option.OptionalValue = _item.OptionalValue;
+                            _ItemMaster.ItemOptionalDetails.Add(option);
+                        }
+                    }
+                    try
+                    {
+                        Commonhelper.UpdateItem(_ItemMaster);
+                        status = true;
+                        msg = "Item Updated successfully!";
+                        return Json(new{ status,msg},JsonRequestBehavior.AllowGet);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        msg = "Error in processing";
+                        status = false;
+                        return Json(new { status, msg }, JsonRequestBehavior.AllowGet);
+
+
+                    }
+
+                }
+                else
+                {
+
+                    return View();
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View();
+        }
+
+
+        public async System.Threading.Tasks.Task<ActionResult> DeleteItem(string Id)
+        {
+            bool status = false;
+            string msg = string.Empty;
+            try
+            {
+                try
+                {
+                    Commonhelper.DeleteItemById(Id);
+                    msg = "Item delete successfully!";
+                    status = true;
+                }
+                catch(Exception ex)
+                {
+                    msg = "Error in processing";
+                    status = false;
+                }
+              
+            }
+            catch(Exception ex)
+            {
+                msg = "Error in processing";
+                status = false;
+            }
+            return Json(new { status, msg }, JsonRequestBehavior.AllowGet);
+        }
 
         public async System.Threading.Tasks.Task<ActionResult> GetSubcategory(string category)
         {
@@ -116,9 +245,26 @@ namespace InventoryManagement.Controllers
             dopdownlst = Commonhelper.GetSubCategoryByCategory(category);
             return Json(dopdownlst,JsonRequestBehavior.AllowGet);
         }
-
-        public async System.Threading.Tasks.Task<ActionResult>CheckBarcode(string Barcode)
+        [PermissionsAttribute(Action = "CategoryMaster", Permission = "Isview")]
+        public ActionResult Category()
         {
+
+            return View();
+        }
+        [PermissionsAttribute(Action = "CategoryMaster", Permission = "IsAdd")]
+
+        public ActionResult CreateCategory()
+        {
+
+            return View();
+
+        }
+        public async System.Threading.Tasks.Task<ActionResult>CheckBarcode(string Barcode,string Previousbarcode)
+        {
+            if(Barcode==Previousbarcode)
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
             bool check = Commonhelper.GetBarcode(Barcode);
             if(check)
             {
@@ -129,8 +275,12 @@ namespace InventoryManagement.Controllers
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
         }
-        public async System.Threading.Tasks.Task<ActionResult> CheckProductcode(string productcode)
+        public async System.Threading.Tasks.Task<ActionResult> CheckProductcode(string productcode,string Previousproductcode)
         {
+            if(productcode== Previousproductcode)
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
             bool check = Commonhelper.CheckProductcode(productcode);
             if (check)
             {
@@ -141,8 +291,12 @@ namespace InventoryManagement.Controllers
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
         }
-        public async System.Threading.Tasks.Task<ActionResult> CheckHsncode(string Hsncode)
+        public async System.Threading.Tasks.Task<ActionResult> CheckHsncode(string Hsncode, string Previoushsncode)
         {
+            if (Hsncode == Previoushsncode)
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
             bool check = Commonhelper.CheckHsncode(Hsncode);
             if (check)
             {
@@ -153,8 +307,12 @@ namespace InventoryManagement.Controllers
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
         }
-        public async System.Threading.Tasks.Task<ActionResult> CheckSkucode(string skucode)
+        public async System.Threading.Tasks.Task<ActionResult> CheckSkucode(string skucode, string Previousskucode)
         {
+            if (skucode == Previousskucode)
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
             bool check = Commonhelper.Checkskucode(skucode);
             if (check)
             {
@@ -165,8 +323,12 @@ namespace InventoryManagement.Controllers
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
         }
-        public async System.Threading.Tasks.Task<ActionResult> Checksapcode(string sapcode)
+        public async System.Threading.Tasks.Task<ActionResult> Checksapcode(string sapcode, string Previoussapcode)
         {
+            if (sapcode == Previoussapcode)
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
             bool check = Commonhelper.Checksapcode(sapcode);
             if (check)
             {

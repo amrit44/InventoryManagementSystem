@@ -274,6 +274,7 @@
 
     <br />
     <div id="permission">
+
         @Html.Partial("_Userpermissionrights")
 
     </div>
@@ -285,13 +286,32 @@
     <script>
         function Response(response) {
 
-            window.location.href ="../UserLevelPermission";
+            window.location.href = "../UserLevelPermission";
         }
     </script>
     <script>
 
         $("#IsAddall").click(function () {
             $('.addfocus').not(this).prop('checked', this.checked);
+            ////$('.parent').attr('checked', this.checked);
+            var isChecked = $(this).prop('checked');
+            if (isChecked) {
+                $('.parent').each(function () {
+                    debugger;
+                    var isCheck = $(this).prop('checked');
+                    $(this).prop('checked', true);
+
+                });
+            }
+            else {
+                $('.parent').each(function () {
+
+                    $(this).prop('checked', false);
+                    debugger;
+
+                });
+            }
+           
 
         });
     </script>
@@ -299,78 +319,234 @@
 
         $("#IsEditall").click(function () {
             $('.editfocus').not(this).prop('checked', this.checked);
+            var isChecked = $(this).prop('checked');
+            if (isChecked) {
+                $('.parent').each(function () {
+                    debugger;
+                    var isCheck = $(this).prop('checked');
+                    $(this).prop('checked', true);
+
+                });
+            }
+            else {
+                $('.parent').each(function () {
+
+                    $(this).prop('checked', false);
+                    debugger;
+
+                });
+            }
         });
     </script>
     <script>
 
         $("#IsViewall").click(function () {
             $('.viewfocus').not(this).prop('checked', this.checked);
+            var isChecked = $(this).prop('checked');
+            if (isChecked) {
+                $('.parent').each(function () {
+                    debugger;
+                    var isCheck = $(this).prop('checked');
+                    $(this).prop('checked', true);
+
+                });
+            }
+            else {
+                $('.parent').each(function () {
+
+                    $(this).prop('checked', false);
+                    debugger;
+
+                });
+            }
         });
     </script>
     <script>
 
         $("#IsDeleteall").click(function () {
             $('.deletefocus').not(this).prop('checked', this.checked);
+            var isChecked = $(this).prop('checked');
+            if (isChecked) {
+                $('.parent').each(function () {
+                    debugger;
+                    var isCheck = $(this).prop('checked');
+                    $(this).prop('checked', true);
+
+                });
+            }
+            else {
+                $('.parent').each(function () {
+
+                    $(this).prop('checked', false);
+                    debugger;
+
+                });
+            }
         });
 
 
     </script>
 
     <script>
+
         $(function () {
 
             // add multiple select / deselect functionality
             $(".parent").click(function () {
-                debugger;
+              
                 var _class = this.className;
                 var fields = _class.split('_');
                 var menu = "." + fields[1];
-                $(menu).attr('checked', this.checked);
+                var parent = "._" + fields[1]
+                debugger;
+                var isChecked = $(parent).prop('checked');
+
+                if ($(parent).is(":checked")) {
+                    $(menu).prop('checked',true);
+
+                }
+                else {
+
+                    $(menu).prop('checked', false);
+                }
+              
             });
 
             // if all checkbox are selected, check the selectall checkbox
             // and viceversa
             $(".addfocus").click(function () {
-                debugger;
+
+                var total = [];
                 var _class = this.className;
                 var fields = _class.split(" ");
                 var menu = "parent " + '_' + fields[1];
-                var ctrl = document.getElementsByClassName(menu);
+                var checkctrl = '.' + fields[1] + ':checked';
 
-                $(ctrl).prop('checked', this.checked);
+                $(checkctrl).each(function () {
+                    var status = $(this).val();
+                    debugger;
+                    if (status == "true") {
+
+
+                        total.push($(this).val())
+                    }
+
+
+                });
+                var ctrl = document.getElementsByClassName(menu);
+                debugger;
+                if (total.length > 0) {
+                    $(ctrl).prop('checked', true);
+                }
+                else if (total.length == 0) {
+                    $(ctrl).prop('checked', false);
+                }
 
 
             });
             $(".editfocus").click(function () {
                 debugger;
+                var total = [];
                 var _class = this.className;
                 var fields = _class.split(" ");
                 var menu = "parent " + '_' + fields[1];
+                var checkctrl = '.' + fields[1] + ':checked';
+                var isChecked = $(this).prop('checked');
                 var ctrl = document.getElementsByClassName(menu);
+                if (isChecked) {
+                    $(ctrl).prop('checked', true);
+                }
+                else {
 
-                $(ctrl).prop('checked', this.checked);
+                    $('.editfocus').each(function () {
+                        debugger;
+                        var status = $(this).prop('checked');
+                        if (status == true) {
+                            
+                            total.push($(this).val())
+                        }
+
+                    });
+                    if (total.length == 0) {
+                        $(ctrl).prop('checked', false);
+                    }
+                }
+               
+               
+
 
 
             });
             $(".viewfocus").click(function () {
-                debugger;
+          
+                var total = [];
                 var _class = this.className;
                 var fields = _class.split(" ");
                 var menu = "parent " + '_' + fields[1];
+                var checkctrl = '.' + fields[1] + ':checked';
+                var isChecked = $(this).prop('checked');
                 var ctrl = document.getElementsByClassName(menu);
+             
+                if (isChecked) {
+                    $(ctrl).prop('checked', true);
+                }
+                else {
 
-                $(ctrl).prop('checked', this.checked);
+                    $('.viewfocus').each(function () {
+                    
+                        var status = $(this).prop('checked');
+                        if (status == true) {
+
+                            total.push($(this).val())
+                        }
+
+                    });
+                    if (total.length == 0) {
+                        var isCheck = $(ctrl).prop('checked');
+                        debugger;
+                        $(ctrl).prop('checked', false)
+
+                    }
+                }
+               
+                
+              
+                 
 
 
             });
             $(".deletefocus").click(function () {
-                debugger;
+             
+                var total = [];
                 var _class = this.className;
                 var fields = _class.split(" ");
                 var menu = "parent " + '_' + fields[1];
                 var ctrl = document.getElementsByClassName(menu);
+                var checkctrl = '.' + fields[1] + ':checked';
+                var isChecked = $(this).prop('checked');
+                if (isChecked) {
+                    $(ctrl).prop('checked', true);
+                }
+                else {
+                    $('.deletefocus').each(function () {
+                        
+                        var status = $(this).prop('checked');
+                        if (status == true) {
 
-                $(ctrl).prop('checked', this.checked);
+                            total.push($(this).val())
+                        }
+                       
+                    });
+                    debugger;
+                    if (total.length == 0) {
+                        var isCheck = $(ctrl).prop('checked');
+                        debugger;
+                        $(ctrl).prop('checked',false);
+                    }
+                }
+               
+
+              
 
 
             });

@@ -2647,6 +2647,9 @@
     <Content Include="Views\Master\CreateItem.cshtml" />
     <Content Include="Views\Master\Item.cshtml" />
     <Content Include="Views\Master\_OptionalFields.cshtml" />
+    <Content Include="Views\Master\EditItem.cshtml" />
+    <Content Include="Views\Master\Category.cshtml" />
+    <Content Include="Views\Master\CreateCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

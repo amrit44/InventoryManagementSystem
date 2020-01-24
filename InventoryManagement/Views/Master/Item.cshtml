@@ -3,26 +3,89 @@
     ViewBag.Title = "Item";
 }
 
-<div class="col-md-12">
+<div class="col-xs-12">
     <a href="/Master/CreateItem" class="btn btn-primary">
         <div class="d-flex w-100 justify-content-start align-items-center">
             <span>Add New</span>
         </div>
     </a>
+
 </div>
 <br />
-<table class="table nowrap">
-    <thead>
-        <tr>
-            <th>Sno</th>
-            <th>Product Name</th>
-            <th>Product Code</th>
-            <th>Bar Code</th>
-            <th>Mrp</th>
-            <th>Cost Price</th>
-            <th>Selling Price</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-</table>
+<br />
+<div class="col-xs-12">
 
+    <div class="box table-responsive no-padding">
+
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>Sno</th>
+                    <th>Product Code</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Sub Category</th>
+                    <th>Mrp</th>
+                    <th>Cost Price</th>
+                    <th>Selling Price</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    var index = Model.IndexOf(item);
+                    <tr>
+                        <td>@(index + 1)</td>
+                        <td>@item.ProductCode</td>
+                        <td>@item.ProductName</td>
+                        <td>@item._CategoryMaster.Name</td>
+                        <td>@item._SubCategoryMaster.Name</td>
+                        <td>@item.Mrp</td>
+                        <td>@item.Costprice</td>
+                        <td>@item.Sellprice</td>
+                        <td>
+                            <a href="/Master/EditItem/@item.Id" class="btn btn-default">
+                                <div class="d-flex w-100 justify-content-start align-items-center">
+                                    <span>Edit</span>
+                                </div>
+                            </a>
+                            <a href="#" class="btn btn-danger del" itemid="@item.Id">
+                                <div class="d-flex w-100 justify-content-start align-items-center">
+                                    <span>Delete</span>
+                                </div>
+                            </a>
+
+
+                        </td>
+                    </tr>
+
+                }
+            </thead>
+        </table>
+
+    </div>
+</div>
+@section Scripts {
+    
+<script>
+    $(document).on('click','.del', function () {
+
+        var Id = $(this).attr('itemid');
+        var url = '@Url.Action("DeleteItem", "Master")';
+        debugger;
+
+            $.ajax({
+                url: url,
+                method:'POST',
+                data: { Id: Id},
+                success: function (response) {
+                    alert(response.msg)
+
+                },
+                failure: function (fail) {
+
+                }
+            })
+        })
+</script>
+    
+    }
