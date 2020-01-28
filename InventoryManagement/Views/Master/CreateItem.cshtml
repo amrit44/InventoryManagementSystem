@@ -11,7 +11,7 @@
 @using (Ajax.BeginForm("CreateItem", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
 {
     <div class="fa-heading" style="font-family:fantasy;">Create Item </div>
-    <div class="row">
+    @*<div class="row">
         <div class="col-md-12">
             <div class="col-md-4">
 
@@ -28,7 +28,7 @@
 
             </div>
         </div>
-    </div>
+    </div>*@
     <hr />
 
 
@@ -40,15 +40,16 @@
                 @Html.ValidationMessageFor(x => x.BarCode)
 
             </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Sku code</label>
-                @Html.TextBoxFor(x => x.SkuCode, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.SkuCode)
-            </div>
+
             <div class="col-md-4" style="padding:1rem;">
                 <label>Sap Code</label>
                 @Html.TextBoxFor(x => x.SapCode, new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.SapCode)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Description</label>
+                @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Description)
             </div>
         </div>
 
@@ -121,7 +122,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-4" style="padding:1rem;">
-                <label>Gst</label>
+                <label>Gst(%)</label>
                 @Html.TextBoxFor(x => x.Gst, new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.Gst)
 
@@ -181,7 +182,15 @@
 
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Sku code</label>
+                @Html.TextBoxFor(x => x.SkuCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.SkuCode)
+            </div>
+        </div>
+    </div>
     <br />
     if (Model.ItemOptionalDetails.Count > 0)
     {

@@ -31,7 +31,19 @@ namespace InventoryManagement.Models
         public string Password { get; set; }
         [Required]
         public string MobileNo { get; set; }
-
+       
+        public string Code { get; set; }
+  
+        public string Url { get; set; }
+        public string PanNumber { get; set; }
+        public string TinNumber { get; set; }
+        public string GstinNumber { get; set; }
+        public string ServiceTax { get; set; }
+        public bool ? RegisteredDeailer { get; set; }
+        public bool? TaxExempted { get; set; }
+        public bool? IsVendor { get; set; }
+        public bool? IsRetailCustomer { get; set; }
+        public bool? IsWholeCustomer { get; set; }
         public bool Status { get; set; }
         public DateTime? UserExpiry { get; set; }
         public DateTime Datecreated { get; set; }
