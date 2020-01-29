@@ -339,5 +339,6 @@ namespace InventoryManagement.Controllers
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
         }
+       
     }
 }

@@ -1,7 +1,783 @@
-﻿@model InventoryManagement.Models.ApplicationUser
+﻿@model InventoryManagement.Models.Vendor
+@using InventoryManagement.Helper;
 @{
     ViewBag.Title = "CreateVendor";
 }
 
+<style>
+    .field-validation-error {
+        color: red;
+    }
+</style>
+<style>
+    .checkbox {
+        padding-left: 20px;
+    }
 
+        .checkbox label {
+            display: inline-block;
+            position: relative;
+            padding-left: 5px;
+        }
+
+            .checkbox label::before {
+                content: "";
+                display: inline-block;
+                position: absolute;
+                width: 17px;
+                height: 17px;
+                left: 0;
+                margin-left: -20px;
+                border: 1px solid #cccccc;
+                border-radius: 3px;
+                background-color: #fff;
+                -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+                -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+                transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+            }
+
+            .checkbox label::after {
+                display: inline-block;
+                position: absolute;
+                width: 16px;
+                height: 16px;
+                left: 0;
+                top: 0;
+                margin-left: -20px;
+                padding-left: 3px;
+                padding-top: 1px;
+                font-size: 11px;
+                color: #555555;
+            }
+
+        .checkbox input[type="checkbox"] {
+            opacity: 0;
+        }
+
+            .checkbox input[type="checkbox"]:focus + label::before {
+                outline: thin dotted;
+                outline: 5px auto -webkit-focus-ring-color;
+                outline-offset: -2px;
+            }
+
+            .checkbox input[type="checkbox"]:checked + label::after {
+                font-family: 'FontAwesome';
+                content: "\f00c";
+            }
+
+            .checkbox input[type="checkbox"]:disabled + label {
+                opacity: 0.65;
+            }
+
+                .checkbox input[type="checkbox"]:disabled + label::before {
+                    background-color: #eeeeee;
+                    cursor: not-allowed;
+                }
+
+        .checkbox.checkbox-circle label::before {
+            border-radius: 50%;
+        }
+
+        .checkbox.checkbox-inline {
+            margin-top: 0;
+        }
+
+    .checkbox-primary input[type="checkbox"]:checked + label::before {
+        background-color: #428bca;
+        border-color: #428bca;
+    }
+
+    .checkbox-primary input[type="checkbox"]:checked + label::after {
+        color: #fff;
+    }
+
+    .checkbox-danger input[type="checkbox"]:checked + label::before {
+        background-color: #d9534f;
+        border-color: #d9534f;
+    }
+
+    .checkbox-danger input[type="checkbox"]:checked + label::after {
+        color: #fff;
+    }
+
+    .checkbox-info input[type="checkbox"]:checked + label::before {
+        background-color: #5bc0de;
+        border-color: #5bc0de;
+    }
+
+    .checkbox-info input[type="checkbox"]:checked + label::after {
+        color: #fff;
+    }
+
+    .checkbox-warning input[type="checkbox"]:checked + label::before {
+        background-color: #f0ad4e;
+        border-color: #f0ad4e;
+    }
+
+    .checkbox-warning input[type="checkbox"]:checked + label::after {
+        color: #fff;
+    }
+
+    .checkbox-success input[type="checkbox"]:checked + label::before {
+        background-color: #5cb85c;
+        border-color: #5cb85c;
+    }
+
+    .checkbox-success input[type="checkbox"]:checked + label::after {
+        color: #fff;
+    }
+
+    .radio {
+        padding-left: 20px;
+    }
+
+        .radio label {
+            display: inline-block;
+            position: relative;
+            padding-left: 5px;
+        }
+
+            .radio label::before {
+                content: "";
+                display: inline-block;
+                position: absolute;
+                width: 17px;
+                height: 17px;
+                left: 0;
+                margin-left: -20px;
+                border: 1px solid #cccccc;
+                border-radius: 50%;
+                background-color: #fff;
+                -webkit-transition: border 0.15s ease-in-out;
+                -o-transition: border 0.15s ease-in-out;
+                transition: border 0.15s ease-in-out;
+            }
+
+            .radio label::after {
+                display: inline-block;
+                position: absolute;
+                content: " ";
+                width: 11px;
+                height: 11px;
+                left: 3px;
+                top: 3px;
+                margin-left: -20px;
+                border-radius: 50%;
+                background-color: #555555;
+                -webkit-transform: scale(0, 0);
+                -ms-transform: scale(0, 0);
+                -o-transform: scale(0, 0);
+                transform: scale(0, 0);
+                -webkit-transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+                -moz-transition: -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+                -o-transition: -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+                transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            }
+
+        .radio input[type="radio"] {
+            opacity: 0;
+        }
+
+            .radio input[type="radio"]:focus + label::before {
+                outline: thin dotted;
+                outline: 5px auto -webkit-focus-ring-color;
+                outline-offset: -2px;
+            }
+
+            .radio input[type="radio"]:checked + label::after {
+                -webkit-transform: scale(1, 1);
+                -ms-transform: scale(1, 1);
+                -o-transform: scale(1, 1);
+                transform: scale(1, 1);
+            }
+
+            .radio input[type="radio"]:disabled + label {
+                opacity: 0.65;
+            }
+
+                .radio input[type="radio"]:disabled + label::before {
+                    cursor: not-allowed;
+                }
+
+        .radio.radio-inline {
+            margin-top: 0;
+        }
+
+    .radio-primary input[type="radio"] + label::after {
+        background-color: #428bca;
+    }
+
+    .radio-primary input[type="radio"]:checked + label::before {
+        border-color: #428bca;
+    }
+
+    .radio-primary input[type="radio"]:checked + label::after {
+        background-color: #428bca;
+    }
+
+    .radio-danger input[type="radio"] + label::after {
+        background-color: #d9534f;
+    }
+
+    .radio-danger input[type="radio"]:checked + label::before {
+        border-color: #d9534f;
+    }
+
+    .radio-danger input[type="radio"]:checked + label::after {
+        background-color: #d9534f;
+    }
+
+    .radio-info input[type="radio"] + label::after {
+        background-color: #5bc0de;
+    }
+
+    .radio-info input[type="radio"]:checked + label::before {
+        border-color: #5bc0de;
+    }
+
+    .radio-info input[type="radio"]:checked + label::after {
+        background-color: #5bc0de;
+    }
+
+    .radio-warning input[type="radio"] + label::after {
+        background-color: #f0ad4e;
+    }
+
+    .radio-warning input[type="radio"]:checked + label::before {
+        border-color: #f0ad4e;
+    }
+
+    .radio-warning input[type="radio"]:checked + label::after {
+        background-color: #f0ad4e;
+    }
+
+    .radio-success input[type="radio"] + label::after {
+        background-color: #5cb85c;
+    }
+
+    .radio-success input[type="radio"]:checked + label::before {
+        border-color: #5cb85c;
+    }
+
+    .radio-success input[type="radio"]:checked + label::after {
+        background-color: #5cb85c;
+    }
+</style>
+@using (Ajax.BeginForm("CreateVendor", "Account", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
+{
+    <div class="fa-heading" style="font-family:fantasy;">Create Customer/Supplier </div>
+    <hr />
+
+    <div class="fa-heading" style="font-family:fantasy;">General Information</div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>AccountType</label>
+
+                @Html.DropDownListFor(x => x.AccountType, new SelectList(new List<SelectListItem>{ new SelectListItem { Text="Select",Value="" },new SelectListItem { Text="Customer",Value="1" },new SelectListItem { Text="Vendor", Value = "2" } },"Value","Text",Model.AccountType)
+                    , new { @class = "form-control" })
+
+
+                @Html.ValidationMessageFor(x => x.AccountType)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Account Code</label>
+                @Html.TextBoxFor(x => x.AccountCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.AccountCode)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Account Name</label>
+                @Html.TextBoxFor(x => x.AccountName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.AccountName)
+            </div>
+        </div>
+    </div>
+    <div class="row" id="customer">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;" id="retailcustomer">
+                <label>Retail Customer</label>
+                <div class="checkbox checkbox-success">
+                    @Html.CheckBoxFor(x => x.IsRetailcustomer, new { groupname = "customer" })
+                    <label for="IsRetailcustomer" name="customer">
+
+                    </label>
+                </div>
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;" id="wholesalecustomer">
+                <label>Wholesale Customer</label>
+                <div class="checkbox checkbox-success">
+                    @Html.CheckBoxFor(x => x.IsWholesalecustomer, new { groupname = "customer" })
+                    @*<input type="checkbox" value="true" id="Iswholesale" name="Iswholesale" />*@
+                    <label for="IsWholesalecustomer" name="customer">
+
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-4" style="padding:1rem;" id="retailsupplier">
+                <label>Retail Supplier</label>
+                <div class="checkbox checkbox-success">
+                    @Html.CheckBoxFor(x => x.IsRetailvendor, new { groupname = "supplier" })
+                    <label for="IsRetailvendor">
+
+                    </label>
+                </div>
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;" id="wholesupplier">
+                <label>Whole Supplier</label>
+                <div class="checkbox checkbox-success">
+                    @Html.CheckBoxFor(x => x.IsWholesalevendor, new { groupname = "supplier" })
+                    @*<input type="checkbox" value="true" id="Iswholesale" name="Iswholesale" />*@
+                    <label for="IsWholesalevendor">
+
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Account Alias</label>
+                @Html.TextBoxFor(x => x.AccountName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.AccountName)
+            </div>
+        </div>
+    </div>
+    <div class="row" id="supplier">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Email</label>
+                @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Email)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Contact</label>
+                @Html.TextBoxFor(x => x.Contact, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Contact)
+            </div>
+
+        </div>
+    </div>
+    <hr />
+    <div class="fa-heading" style="font-family:fantasy;">Account Information</div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>GSTIN</label>
+
+                @Html.TextBoxFor(x => x.Gstin, new { @class = "form-control" })
+
+
+                @Html.ValidationMessageFor(x => x.Gstin)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Pan Number</label>
+                @Html.TextBoxFor(x => x.Pan, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Pan)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>TIN Number</label>
+                @Html.TextBoxFor(x => x.TinNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.TinNumber)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Central sale Tax</label>
+
+                @Html.TextBoxFor(x => x.CentralsaleTax, new { @class = "form-control" })
+
+
+                @Html.ValidationMessageFor(x => x.CentralsaleTax)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Service Tax</label>
+                @Html.TextBoxFor(x => x.ServiceSalestax, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.ServiceSalestax)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>GST Type</label>
+                @Html.TextBoxFor(x => x.GstType, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.GstType)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Tax Exampted</label>
+                <div class="checkbox checkbox-success">
+                    @Html.CheckBoxFor(x => x.IsTaxExempted, new { groupname = "tax" })
+                    <label for="IsTaxExempted">
+
+                    </label>
+                </div>
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Accepts CForm</label>
+                <div class="checkbox checkbox-success">
+                    @Html.CheckBoxFor(x => x.IsAcceptcform, new { groupname = "IsAcceptcform" })
+                    <label for="IsAcceptcform">
+
+                    </label>
+                </div>
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Budget</label>
+                @Html.TextBoxFor(x => x.Budget, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Budget)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Group</label>
+                @Html.TextBoxFor(x => x.Group, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Group)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Sub Group</label>
+                @Html.TextBoxFor(x => x.SubGroup, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.SubGroup)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Credit Limit Amount</label>
+                @Html.TextBoxFor(x => x.CreditLimitAmount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.CreditLimitAmount)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Schedule</label>
+                @Html.TextBoxFor(x => x.Schedule, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Schedule)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Sub Schedule</label>
+                @Html.TextBoxFor(x => x.SubSchedule, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.SubSchedule)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>State Code</label>
+                @Html.TextBoxFor(x => x.StateCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.StateCode)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Agent Name</label>
+                @Html.TextBoxFor(x => x.AgentName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.AgentName)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Sales Man</label>
+                @Html.TextBoxFor(x => x.SalesMan, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.SalesMan)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Location</label>
+                @Html.TextBoxFor(x => x.Location, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Location)
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="fa-heading" style="font-family:fantasy;">Billing Address</div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Address Line 1</label>
+
+                @Html.TextBoxFor(x => x.BillingAddress1, new { @class = "form-control" })
+
+
+                @Html.ValidationMessageFor(x => x.BillingAddress1)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Address Line 2</label>
+                @Html.TextBoxFor(x => x.BillingAddress2, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.BillingAddress2)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Phone</label>
+                @Html.TextBoxFor(x => x.BillingCellPhone, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.BillingCellPhone)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Country</label>
+                @Html.DropDownListFor(x => x.BillingCountry, new SelectList(Commonhelper.getCounrty(), "Value", "Text", Model.CompanyId), "Select", new { @class = "form-control" })
+
+
+                @Html.ValidationMessageFor(x => x.BillingCountry)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>State</label>
+                @Html.DropDownListFor(x => x.BillingState, new SelectList(new List<SelectListItem> { }, "Value", "Text", Model.BillingState), "Select", new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(x => x.BillingState)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>City</label>
+                @Html.DropDownListFor(x => x.BillingCity, new SelectList(new List<SelectListItem> { }, "Value", "Text", Model.BillingState), "Select", new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.BillingCity)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Pin Code</label>
+
+                @Html.TextBoxFor(x => x.BillingPincode, new { @class = "form-control" })
+
+
+                @Html.ValidationMessageFor(x => x.BillingPincode)
+
+            </div>
+
+        </div>
+    </div>
+    <hr />
+    <div class="fa-heading" style="font-family:fantasy;">Shipping Address</div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Address Line 1</label>
+
+                @Html.TextBoxFor(x => x.ShippingAddress1, new { @class = "form-control" })
+
+
+                @Html.ValidationMessageFor(x => x.ShippingAddress1)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Address Line 2</label>
+                @Html.TextBoxFor(x => x.ShippingAddress2, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.ShippingAddress2)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Phone</label>
+                @Html.TextBoxFor(x => x.ShippingCellPhone, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.ShippingCellPhone)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Country</label>
+                @Html.DropDownListFor(x => x.ShippingCountry, new SelectList(Commonhelper.getCounrty(), "Value", "Text", Model.CompanyId), "Select", new { @class = "form-control" })
+
+
+                @Html.ValidationMessageFor(x => x.ShippingCountry)
+
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>State</label>
+                @Html.DropDownListFor(x => x.ShippingState, new SelectList(new List<SelectListItem> { }, "Value", "Text", Model.BillingState), "Select", new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(x => x.ShippingState)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>City</label>
+                @Html.DropDownListFor(x => x.ShippingCity, new SelectList(new List<SelectListItem> { }, "Value", "Text", Model.BillingState), "Select", new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.ShippingCity)
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Pin Code</label>
+
+                @Html.TextBoxFor(x => x.ShippingPincode, new { @class = "form-control" })
+
+
+                @Html.ValidationMessageFor(x => x.ShippingPincode)
+
+            </div>
+            <div class="col-md-4" style="padding:2.7rem;">
+                <label></label><br />
+
+                <input type="submit" class="btn btn-primary" value="Create"/>
+            </div>
+
+        </div>
+    </div>
+}
+@section Scripts
+{
+    <script>
+        $("input[type='hidden']").remove();
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#wholesupplier").css('display', 'none');
+            $("#retailsupplier").css('display', 'none');
+
+
+        })
+    </script>
+    <script>
+        $(document).on('change', '#AccountType', function () {
+            var currentvalue = $(this).val();
+            if (currentvalue == 1) {
+
+                $("#wholesupplier").css('display', 'none');
+                $("#retailsupplier").css('display', 'none');
+
+                $("#retailcustomer").show();
+                $("#wholesalecustomer").show();
+            }
+            else if (currentvalue == 2) {
+                $("#wholesupplier").show();
+                $("#retailsupplier").show();
+
+                $("#retailcustomer").css('display', 'none');
+                $("#wholesalecustomer").css('display', 'none');
+            }
+        })
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type=checkbox]').click(function () {
+                var groupName = $(this).attr('groupname');
+
+                if (!groupName)
+                    return;
+
+                var checked = $(this).is(':checked');
+
+                $("input[groupname='" + groupName + "']:checked").each(function () {
+                    $(this).prop('checked', '');
+                });
+
+                if (checked)
+                    $(this).prop('checked', 'checked');
+            });
+        });
+    </script>
+
+    <script>
+        $("#BillingCountry").on('change', function () {
+            var country = $(this).val();
+            var url = '@Url.Action("getStatebyCountry", "Account")';
+            $("#BillingState").empty();
+            $("#BillingState").append($("<option></option>").val('').html('Select'));
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: { countryId: country },
+                success: function (data) {
+                    if (data.length > 0) {
+
+                        $.each(data, function (idx, data) {
+                            $("#BillingState").append($("<option></option>").val(data.Value).html(data.Text));
+                        })
+                    }
+                }
+
+            });
+        })
+    </script>
+    <script>
+        $("#BillingState").on('change', function () {
+            var stateId = $(this).val();
+            var url = '@Url.Action("getCitybyState", "Account")';
+            $("#BillingCity").empty();
+            $("#BillingCity").append($("<option></option>").val('').html('Select'));
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: { stateId: stateId },
+                success: function (data) {
+                    if (data.length > 0) {
+
+                        $.each(data, function (idx, data) {
+                            $("#BillingCity").append($("<option></option>").val(data.Value).html(data.Text));
+                        })
+                    }
+                }
+
+            });
+        })
+    </script>
+
+
+    <script>
+        $("#ShippingCountry").on('change', function () {
+            var country = $(this).val();
+            var url = '@Url.Action("getStatebyCountry", "Account")';
+            $("#ShippingState").empty();
+            $("#ShippingState").append($("<option></option>").val('').html('Select'));
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: { countryId: country },
+                success: function (data) {
+                    if (data.length > 0) {
+
+                        $.each(data, function (idx, data) {
+                            $("#ShippingState").append($("<option></option>").val(data.Value).html(data.Text));
+                        })
+                    }
+                }
+
+            });
+        })
+    </script>
+    <script>
+        $("#ShippingState").on('change', function () {
+            var stateId = $(this).val();
+            var url = '@Url.Action("getCitybyState", "Account")';
+            $("#ShippingCity").empty();
+            $("#ShippingCity").append($("<option></option>").val('').html('Select'));
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: { stateId: stateId },
+                success: function (data) {
+                    if (data.length > 0) {
+
+                        $.each(data, function (idx, data) {
+                            $("#ShippingCity").append($("<option></option>").val(data.Value).html(data.Text));
+                        })
+                    }
+                }
+
+            });
+        })
+    </script>
+}
 

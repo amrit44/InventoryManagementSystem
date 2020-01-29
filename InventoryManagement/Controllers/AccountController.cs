@@ -687,7 +687,7 @@ namespace InventoryManagement.Controllers
                         //para.Alignment = Element.ALIGN_CENTER;
                         //pdfDoc.Add(para);
                         PdfPTable table = new PdfPTable(4);
-                        table.DefaultCell.BackgroundColor = BaseColor.BLACK;
+                        table.DefaultCell.BackgroundColor = BaseColor.BLACK;          
                         table.PaddingTop = 0;
                         table.TotalWidth = 510;
                         table.SpacingBefore = 0;
@@ -922,10 +922,29 @@ namespace InventoryManagement.Controllers
         [HttpGet]
         public ActionResult CreateVendor()
         {
-            return View();
+            Vendor v = new Vendor();
+            return View(v);
         }
-        
+        [HttpPost]
+        public ActionResult CreateVendor(Vendor v)
+        {
+           
+            return View(v);
+        }
+        public async System.Threading.Tasks.Task<ActionResult> getStatebyCountry(string countryId)
+        {
+            List<SelectListItem> _lst = new List<SelectListItem>();
+            _lst = Commonhelper.getState(countryId);
+            return Json(_lst, JsonRequestBehavior.AllowGet);
 
+        }
+        public async System.Threading.Tasks.Task<ActionResult> getCitybyState(string stateId)
+        {
+            List<SelectListItem> _lst = new List<SelectListItem>();
+            _lst = Commonhelper.getCity(stateId);
+            return Json(_lst, JsonRequestBehavior.AllowGet);
+
+        }
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);

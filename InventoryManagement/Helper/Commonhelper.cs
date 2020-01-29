@@ -773,5 +773,51 @@ namespace InventoryManagement.Helper
             }
            return description;
         }
+
+
+        public static List<SelectListItem> getCounrty()
+        {
+            List<SelectListItem> lst = new List<SelectListItem>();
+            lst.Add(new SelectListItem { Text = "India", Value = "1" });
+            lst.Add(new SelectListItem { Text = "Australia", Value = "2" });
+            lst.Add(new SelectListItem { Text = "London", Value = "3" });
+            return lst;
+        }
+        public static List<SelectListItem> getState(string countryId)
+        {
+            List<Dropdownviewmodel> lst = new List<Dropdownviewmodel>();
+            List<SelectListItem> _lst = new List<SelectListItem>();
+            lst.Add(new Dropdownviewmodel { Id="1",Name="Uttar Pradesh",CountryId="1" });
+            lst.Add(new Dropdownviewmodel { Id = "2", Name = "Delhi", CountryId = "1" });
+            lst.Add(new Dropdownviewmodel { Id = "3", Name = "Mumbai", CountryId = "1" });
+            lst = lst.Where(x => x.CountryId == countryId).ToList();
+            if(lst.Count>0)
+            {
+                foreach(var item in lst)
+                {
+                    _lst.Add(new SelectListItem { Text =item.Name, Value = item.Id.ToString() });
+                }
+            }
+            return _lst;
+        
+        }
+        public static List<SelectListItem> getCity(string stateId)
+        {
+            List<Dropdownviewmodel> lst = new List<Dropdownviewmodel>();
+            List<SelectListItem> _lst = new List<SelectListItem>();
+            lst.Add(new Dropdownviewmodel { Id = "1", Name = "Lucknow", StateId = "1" });
+            lst.Add(new Dropdownviewmodel { Id = "2", Name = "Noida", StateId = "1" });
+            lst.Add(new Dropdownviewmodel { Id = "3", Name = "Kanpur", StateId = "1" });
+            lst = lst.Where(x => x.StateId == stateId).ToList();
+            if (lst.Count > 0)
+            {
+                foreach (var item in lst)
+                {
+                    _lst.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+                }
+            }
+            return _lst;
+
+        }
     }
 }

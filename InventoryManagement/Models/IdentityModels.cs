@@ -395,6 +395,67 @@ namespace InventoryManagement.Models
         [NotMapped]
         public string Description { get; set; }
     }
+    [Table("Vendor")]
+    public class Vendor
+    {
+        [Key]
+        public string Id { get; set; }
+        public string AccountType { get; set; }
+        public string AccountCode { get; set; }
+
+        public string AccountName { get; set; }
+        public string AccountAlias{ get; set; }
+        public bool IsRetailcustomer { get; set; }
+        public bool IsWholesalecustomer { get; set; }
+        public bool IsRetailvendor { get; set; }
+        public bool IsWholesalevendor { get; set; }
+
+        public int Contact { get; set; }
+        public string Email { get; set; }
+        public string AccountGstNo { get; set; }
+        public string Gstin { get; set; }
+        public string TinNumber { get; set; }
+        public string Pan { get; set; }
+        public string CentralsaleTax { get; set; }
+        public string ServiceSalestax { get; set; }
+        public string GstType { get; set; }
+        public bool IsTaxExempted { get; set; }
+        public bool IsAccountExempted { get; set; }
+        public bool IsAcceptcform { get; set; }
+        public string Group { get; set; }
+        public string SubGroup { get; set; }
+        public string Schedule { get; set; }
+        public string SubSchedule { get; set; }
+        public decimal CreditLimitAmount { get; set; }
+        public decimal Budget { get; set; }
+        public string StateCode { get; set; }
+        public string AgentName { get; set; }
+        public string SalesMan { get; set; }
+        public string Location { get; set; }
+        public string PurchaseExpiryDate { get; set; }
+        public string BillingAddress1 { get; set; }
+        public string BillingAddress2 { get; set; }
+        public string BillingCity { get; set; }
+        public string BillingPincode { get; set; }
+        public string BillingCountry { get; set; }
+        public string BillingState { get; set; }
+        public string BillingCellPhone { get; set; }
+        public string ShippingAddress1 { get; set; }
+        public string ShippingAddress2 { get; set; }
+        public string ShippingCity { get; set; }
+        public string ShippingPincode { get; set; }
+        public string ShippingCountry { get; set; }
+        public string ShippingState { get; set; }
+        public string ShippingCellPhone { get; set; }
+        public string StroreId { get; set; }
+        public string CompanyId { get; set; }
+        public string Workstation { get; set; }
+        public DateTime Createddate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime ? Modifieddate { get; set; }
+        public DateTime ? ModifiedBy { get; set; }
+
+    }
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
@@ -417,6 +478,7 @@ namespace InventoryManagement.Models
         public DbSet<SubCategoryMaster> SubCategoryMaster { get; set; }
         public DbSet<BrandMaster> BrandMaster { get; set; }
         public DbSet<ItemOptionalDetails> ItemOptionalDetails { get; set; }
+        public DbSet<Vendor> Vendor { get; set; }
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
