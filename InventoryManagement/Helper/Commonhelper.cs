@@ -407,7 +407,7 @@ namespace InventoryManagement.Helper
 
         public static bool checkpermission(string userid,string action,string permission)
         {
-            bool check = true;
+            bool check = false;
             using (var ctx = new ApplicationDbContext())
             {
                 SubMenumaster m = ctx.SubMenumaster.Where(x => x.Action == action).FirstOrDefault();
@@ -564,9 +564,11 @@ namespace InventoryManagement.Helper
                         _master.IsUnique = master.IsUnique;
                         _master.Mou = master.Mou;
                         _master.SubMou = master.SubMou;
+                        _master.Color = master.Color;
                         _master.ItemOrder = master.ItemOrder;
                         _master.ModifiedDate = DateTime.Now;
                         _master.ModifiedBy = master.ModifiedBy;
+
                         if(master.ItemOptionalDetails.Count>0)
                         {
                             db.Entry(_master).State = EntityState.Modified;
@@ -588,6 +590,320 @@ namespace InventoryManagement.Helper
 
         }
 
+
+        public static void SaveCategory(CategoryMaster master)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                   
+                    db.CategoryMaster.Add(master);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+
+        }
+        public static CategoryMaster GetCategoryById(string Id)
+        {
+            CategoryMaster master = new CategoryMaster();
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+
+                    master = db.CategoryMaster.Where(x => x.Id == Id).FirstOrDefault();
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+            return master;
+        }
+        public static void UpdateCategory(CategoryMaster master)
+        {
+            CategoryMaster _master = new CategoryMaster();
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                    _master = db.CategoryMaster.Where(x => x.Id == master.Id).FirstOrDefault();
+                    if(_master!=null)
+                    {
+                        _master.Name = master.Name;
+                        _master.workstation = GetStation();
+                        _master.ModifiedBy = master.ModifiedBy;
+                        _master.ModifiedDate = DateTime.Now;
+                        _master.Description = master.Description;
+                        _master.FinancialYear = master.FinancialYear;
+
+                        db.Entry(_master).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                   
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+
+        }
+        public static void UpdateSubCategory(SubCategoryMaster master)
+        {
+            SubCategoryMaster _master = new SubCategoryMaster();
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                    _master = db.SubCategoryMaster.Where(x => x.Id == master.Id).FirstOrDefault();
+                    if (_master != null)
+                    {
+                        _master.Name = master.Name;
+                        _master.CategoryId = master.CategoryId;
+                        _master.workstation = GetStation();
+                        _master.ModifiedBy = master.ModifiedBy;
+                        _master.ModifiedDate = DateTime.Now;
+                        _master.Description = master.Description;
+                        _master.FinancialYear = master.FinancialYear;
+
+                        db.Entry(_master).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+
+        }
+        public static List<SubCategoryMaster> GetSubCategory()
+        {
+
+            List<SubCategoryMaster> _master = new List<SubCategoryMaster>();
+            using (var db = new ApplicationDbContext())
+            {
+                _master = db.SubCategoryMaster.Include(x=>x._CategoryMaster).ToList();
+
+            }
+
+            return _master;
+        }
+        public static void SaveSubCategory(SubCategoryMaster master)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+
+                    db.SubCategoryMaster.Add(master);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+
+        }
+
+        public static List<BrandMaster> GetBrand()
+        {
+
+            List<BrandMaster> _master = new List<BrandMaster>();
+            using (var db = new ApplicationDbContext())
+            {
+                _master = db.BrandMaster.ToList();
+
+            }
+
+            return _master;
+        }
+        public static void SaveBrand(BrandMaster master)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+
+                    db.BrandMaster.Add(master);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+
+        }
+        public static BrandMaster GetBrandById(string Id)
+        {
+            BrandMaster _BrandMaster = new BrandMaster();
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+
+                    _BrandMaster = db.BrandMaster.Where(x => x.Id == Id).FirstOrDefault();
+                    
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+            return _BrandMaster;
+
+
+        }
+        public static void UpdateBrand(BrandMaster master)
+        {
+            BrandMaster _master = new BrandMaster();
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                    _master = db.BrandMaster.Where(x => x.Id == master.Id).FirstOrDefault();
+                    if(_master!=null)
+                    {
+                        _master.Name = master.Name;
+                        _master.Description = master.Description;
+                        _master.ModifiedBy = master.ModifiedBy;
+                        _master.ModifiedDate = master.ModifiedDate;
+                        _master.workstation = master.workstation;
+                        _master.StoreId = master.StoreId;
+                        _master.FinancialYear = master.FinancialYear;
+                        db.Entry(_master).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                   
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+
+        }
+
+        public static List<ColorMaster> GetColor()
+        {
+
+            List<ColorMaster> _master = new List<ColorMaster>();
+            using (var db = new ApplicationDbContext())
+            {
+                _master = db.ColorMaster.ToList();
+
+            }
+
+            return _master;
+        }
+        public static void SaveColor(ColorMaster master)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+
+                    db.ColorMaster.Add(master);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+
+        }
+        public static ColorMaster GetColorById(string Id)
+        {
+            ColorMaster _BrandMaster = new ColorMaster();
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+
+                    _BrandMaster = db.ColorMaster.Where(x => x.Id == Id).FirstOrDefault();
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+            return _BrandMaster;
+
+
+        }
+        public static void Updatecolor(ColorMaster master)
+        {
+            ColorMaster _master = new ColorMaster();
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                    _master = db.ColorMaster.Where(x => x.Id == master.Id).FirstOrDefault();
+                    if (_master != null)
+                    {
+                        _master.Name = master.Name;
+                        _master.Description = master.Description;
+                        _master.ModifiedBy = master.ModifiedBy;
+                        _master.ModifiedDate = master.ModifiedDate;
+                        _master.workstation = master.workstation;
+                        _master.StoreId = master.StoreId;
+                        _master.FinancialYear = master.FinancialYear;
+                        db.Entry(_master).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+
+        }
+        public static SubCategoryMaster GetSubCategoryById(string Id)
+        {
+
+           SubCategoryMaster _master = new SubCategoryMaster();
+            using (var db = new ApplicationDbContext())
+            {
+                _master = db.SubCategoryMaster.Where(x => x.Id == Id).FirstOrDefault();
+
+            }
+
+            return _master;
+        }
         public static bool GetBarcode(string barcode)
         {
             bool check = false;
@@ -595,6 +911,17 @@ namespace InventoryManagement.Helper
             using (var db = new ApplicationDbContext())
             {
                 check = db.ItemMaster.Any(x => x.BarCode == barcode);
+            }
+            return check;
+        }
+
+        public static bool Checkproductname(string productname)
+        {
+            bool check = false;
+
+            using (var db = new ApplicationDbContext())
+            {
+                check = db.ItemMaster.Any(x => x.ProductName == productname);
             }
             return check;
         }
@@ -635,6 +962,48 @@ namespace InventoryManagement.Helper
             using (var db = new ApplicationDbContext())
             {
                 check = db.ItemMaster.Any(x => x.SapCode == sapcode);
+            }
+            return check;
+        }
+
+        public static bool Checkcategoryname(string Name)
+        {
+            bool check = false;
+
+            using (var db = new ApplicationDbContext())
+            {
+                check = db.CategoryMaster.Any(x => x.Name == Name);
+            }
+            return check;
+        }
+        public static bool CheckSubcategoryname(string categoryId,string Name)
+        {
+            bool check = false;
+
+            using (var db = new ApplicationDbContext())
+            {
+                check = db.SubCategoryMaster.Any(x => x.Name == Name && x.CategoryId==categoryId);
+            }
+            return check;
+        }
+
+        public static bool CheckBrandname(string brandname)
+        {
+            bool check = false;
+
+            using (var db = new ApplicationDbContext())
+            {
+                check = db.BrandMaster.Any(x => x.Name == brandname);
+            }
+            return check;
+        }
+        public static bool CheckColorname(string Colorname)
+        {
+            bool check = false;
+
+            using (var db = new ApplicationDbContext())
+            {
+                check = db.ColorMaster.Any(x => x.Name == Colorname);
             }
             return check;
         }

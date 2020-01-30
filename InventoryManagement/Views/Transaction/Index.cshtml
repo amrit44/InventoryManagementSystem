@@ -1,0 +1,358 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<style type="text/css" media="screen">
+    body {
+        background-color: #ccc;
+        font-family: Verdana;
+    }
+
+    header {
+        margin-top: 40px;
+    }
+
+    footer {
+        background-color: #ffffff;
+    }
+
+    div.invoice {
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        height: 802pt;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 10px;
+        width: 595pt;
+    }
+
+    div.company-address {
+        border: 1px solid #ccc;
+        float: left;
+        width: 200pt;
+    }
+
+    div.invoice-details {
+        border: 1px solid #ccc;
+        float: right;
+        width: 200pt;
+    }
+
+    div.customer-address {
+        border: 1px solid #ccc;
+        float: right;
+        margin-bottom: 50px;
+        margin-top: 100px;
+        width: 200pt;
+    }
+
+    div.item-table-panel {
+        height: 460pt;
+    }
+
+    div.clear-fix {
+        clear: both;
+        float: none;
+    }
+
+    table.item-table {
+        border: 1px solid #ccc;
+        width: 100%;
+    }
+
+    table.footer-table {
+        border: 1px solid #ccc;
+        margin-top: 20pt;
+        bottom: 0;
+        width: 100%;
+    }
+
+    th {
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+
+        th.description {
+            width: 380px;
+        }
+
+        th.amount {
+            text-align: center;
+            width: 80px;
+        }
+
+        th.unit-price {
+            text-align: right;
+            width: 100px;
+        }
+
+        th.total-price {
+            text-align: right;
+            width: 100px;
+        }
+
+    tr {
+    }
+
+    td {
+        border-bottom: 1px solid #ccc;
+    }
+
+        td.totals {
+            background-color: #ffffff;
+            text-align: right;
+            width: 110px;
+        }
+
+    .text-left {
+        text-align: left;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+</style>
+<style type="text/css" media="print">
+    body {
+        background-color: #ffffff;
+        font-family: Verdana;
+    }
+
+    header {
+        margin-top: 40px;
+    }
+
+    footer {
+        background-color: #ffffff;
+    }
+
+    div.invoice {
+        background-color: #ffffff;
+        border: none;
+        height: 802pt;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 10px;
+        width: 595pt;
+    }
+
+    div.company-address {
+        border: 1px solid #ccc;
+        float: left;
+        width: 200pt;
+    }
+
+    div.invoice-details {
+        border: 1px solid #ccc;
+        float: right;
+        width: 200pt;
+    }
+
+    div.customer-address {
+        border: 1px solid #ccc;
+        float: right;
+        margin-bottom: 50px;
+        margin-top: 100px;
+        width: 200pt;
+    }
+
+    div.item-table-panel {
+        height: 460pt;
+    }
+
+    div.clear-fix {
+        clear: both;
+        float: none;
+    }
+
+    table.item-table {
+        border: 1px solid #ccc;
+        width: 100%;
+    }
+
+    table.footer-table {
+        border: 1px solid #ccc;
+        margin-top: 20pt;
+        bottom: 0;
+        width: 100%;
+    }
+
+    th {
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+
+        th.description {
+            width: 380px;
+        }
+
+        th.amount {
+            text-align: center;
+            width: 80px;
+        }
+
+        th.unit-price {
+            text-align: right;
+            width: 100px;
+        }
+
+        th.total-price {
+            text-align: right;
+            width: 100px;
+        }
+
+    tr {
+    }
+
+    td {
+        border-bottom: 1px solid #ccc;
+    }
+
+        td.totals {
+            background-color: #ffffff;
+            text-align: right;
+            width: 110px;
+        }
+
+    .text-left {
+        text-align: left;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+</style>
+<div class="invoice">
+    <header>
+        <div class="company-address">
+            Company ltd
+            <br />
+            123 Road Street
+            <br />
+            New York, NY 987
+            <br />
+            USA
+            <br />
+        </div>
+        <div class="invoice-details">
+            Invoice N°: 6541
+            <br />
+            Date: 19/06/2015
+        </div>
+    </header>
+    <section>
+        <div class="customer-address">
+            To:
+            <br />
+            Mr. Surname Name
+            <br />
+            777 Street Avenue
+            <br />
+            New York, NY 654
+            <br />
+        </div>
+    </section>
+    <div class="clear-fix"></div>
+    <section>
+        <div class="item-table-panel">
+            <table border='0' cellspacing='0' class="item-table">
+                <tr>
+                    <th class="description">Description</th>
+                    <th class="amount">Amount</th>
+                    <th class="unit-price">Unit price</th>
+                    <th class="total-price">Total price</th>
+                </tr>
+                @{
+
+                    String[,] articles = new String[,]{ {"Case", "1", "65"},
+                        {"Motherboard", "1", "80"},
+                        {"CPU", "1", "180"},
+                        {"RAM", "2", "60"},
+                        {"Hard Disk", "1", "50"},
+                        {"Hard Disk", "1", "80"},
+                        {"Monitor", "1", "120"},
+                        {"Installation", "3", "30"},
+                        {"Motherboard", "1", "80"},
+                        {"CPU", "1", "180"},
+                        {"RAM", "2", "60"},
+                        {"Hard Disk", "1", "50"},
+                        {"Hard Disk", "1", "80"},
+                        {"Monitor", "1", "120"},
+                        {"Installation", "3", "30"},
+                           {"Motherboard", "1", "80"},
+                        {"CPU", "1", "180"},
+                        {"RAM", "2", "60"},
+                        {"Hard Disk", "1", "50"},
+                        {"Hard Disk", "1", "80"},
+                        {"Monitor", "1", "120"},
+                        {"Installation", "3", "30"},
+                           {"Motherboard", "1", "80"},
+                        {"CPU", "1", "180"},
+                        {"RAM", "2", "60"},
+                        {"Hard Disk", "1", "50"},
+                        {"Hard Disk", "1", "80"},
+                        {"Monitor", "1", "120"},
+                        {"Installation", "3", "30"}
+                         
+                        };
+                    double total = 0.0;
+                    double unitPrice = 0.0;
+                    double totalPrice = 0.0;
+                    int amount = 0;
+                    int vat = 10;
+                    String description = String.Empty;
+
+                    for (int a = 0; a < articles.Length / 3; a++)
+                    {
+                        description = articles[a, 0];
+                        amount = Int32.Parse(articles[a, 1]);
+                        unitPrice = Double.Parse(articles[a, 2]);
+                        totalPrice = (double)(amount * unitPrice);
+                        total += totalPrice;
+                <tr>
+                    <td>@description</td>
+                    <td>@String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C2}", @unitPrice)</td>
+                    <td>@String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C2}", @totalPrice)</td>
+                    <td>@String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C2}", @totalPrice)</td>
+                </tr>
+                    }
+
+                }
+
+               
+            </table>
+        </div>
+    </section>
+    <footer>
+        <table border='0' cellspacing='0' class="footer-table">
+            @{
+                <tr>
+                    <td class='text-right'>Sub total</td>
+                    <td class='totals'>@String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C2}", total)</td>
+                </tr>
+                <tr>
+                    <td class='text-right'>VAT</td>
+                    <td class='totals'>@String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C2}", ((total * vat) / 100))</td>
+                </tr>
+
+                <tr>
+                    <td class='text-right'><b>TOTAL</b></td>
+                    <td class='totals'>@String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C2}", (((total * vat) / 100) + total))</td>
+                </tr>
+
+            }
+
+
+        </table>
+    </footer>
+</div>
+ 

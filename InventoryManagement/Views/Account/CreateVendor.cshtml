@@ -339,8 +339,8 @@
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Account Alias</label>
-                @Html.TextBoxFor(x => x.AccountName, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.AccountName)
+                @Html.TextBoxFor(x => x.AccountAlias, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.AccountAlias)
             </div>
         </div>
     </div>
@@ -629,7 +629,7 @@
             <div class="col-md-4" style="padding:2.7rem;">
                 <label></label><br />
 
-                <input type="submit" class="btn btn-primary" value="Create"/>
+                <input type="submit" class="btn btn-primary" value="Create" />
             </div>
 
         </div>
@@ -637,6 +637,7 @@
 }
 @section Scripts
 {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
         $("input[type='hidden']").remove();
     </script>
@@ -645,8 +646,12 @@
         $(document).ready(function () {
             $("#wholesupplier").css('display', 'none');
             $("#retailsupplier").css('display', 'none');
-
-
+            $("#Contact").val('');
+            $("#CreditLimitAmount").val('');
+            $("#Budget").val('');
+            
+            
+         
         })
     </script>
     <script>
@@ -778,6 +783,10 @@
 
             });
         })
+
+        function Response() {
+
+        }
     </script>
 }
 

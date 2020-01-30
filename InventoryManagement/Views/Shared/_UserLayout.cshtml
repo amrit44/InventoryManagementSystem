@@ -362,7 +362,7 @@
 
                                 @if (item._SubMenumaster.Count() > 0)
                                 {
-                                    foreach (var ac in item._SubMenumaster)
+                                    foreach (var ac in item._SubMenumaster.OrderBy(x=>x.order))
                                     {
                                         <li><a href="@ac.DisplayLink"><i class="@ac.Displayclass"></i>@ac.DisplayName</a></li>
                                         @*<li><a href="/Account/UserLevelPermission"><i class="fa fa-lock"></i> Permission</a></li>*@

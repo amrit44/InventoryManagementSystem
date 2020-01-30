@@ -40,6 +40,7 @@
                     @Html.TextBoxFor(x => x.ProductCode, new { @class = "form-control", @readonly = true })
                     @Html.HiddenFor(x => x.Id)
                     @Html.Hidden("Previousproductcode", Model.ProductCode)
+                    @Html.Hidden("Previousproductname", Model.ProductName)
                     @Html.Hidden("Previousbarcode", Model.BarCode)
                     @Html.Hidden("Previousskucode", Model.SkuCode)
                     @Html.Hidden("Previoussapcode", Model.SapCode)
@@ -52,8 +53,8 @@
 
                 </div>
                 <div class="col-md-4" style="padding:1rem;">
-                    <label>Hsn-Code</label>
-                    @Html.TextBoxFor(x => x.HsnCode, new { @class = "form-control", @readonly = true })
+                    <label>Description</label>
+                    @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
 
                 </div>
             </div>
@@ -115,13 +116,25 @@
                     @Html.ValidationMessageFor(x => x.Quality)
                 </div>
                 <div class="col-md-4" style="padding:1rem;">
-                    <label>Item-Order</label>
-                    @Html.TextBoxFor(x => x.ItemOrder, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(x => x.ItemOrder)
+                    <label>Color</label>
+                    @Html.DropDownListFor(x => x.Color, new SelectList(Commonhelper.GetColor(), "Id", "Name",Model.Color), "Select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.Color)
+
 
                 </div>
             </div>
 
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Item-Order</label>
+                    @Html.TextBoxFor(x => x.ItemOrder, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ItemOrder)
+                  
+
+                </div>
+            </div>
         </div>
         <br />
         <div class="fa-heading" style="font-family:fantasy;">Price Details</div>
@@ -209,7 +222,15 @@
 
             </div>
         </div>
-
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Hsn-Code</label>
+                    @Html.TextBoxFor(x => x.HsnCode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.SkuCode)
+                </div>
+            </div>
+        </div>
         <br />
         @if (Model.ItemOptionalDetails.Count > 0)
         {

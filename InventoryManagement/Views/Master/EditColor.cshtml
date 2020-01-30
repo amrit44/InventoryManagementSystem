@@ -1,6 +1,6 @@
-﻿@model InventoryManagement.Models.CategoryMaster
+﻿@model InventoryManagement.Models.ColorMaster
 @{
-    ViewBag.Title = "Category";
+    ViewBag.Title = "CreateBrandMaster";
 }
 
 <style>
@@ -8,10 +8,10 @@
         color: red;
     }
 </style>
-@using (Ajax.BeginForm("CreateCategory", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
+@using (Ajax.BeginForm("UpdateColorMaster", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
 {
 
-    <div class="fa-heading" style="font-family:fantasy;">Create Category </div>
+    <div class="fa-heading" style="font-family:fantasy;">Create Color </div>
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-4">
@@ -38,7 +38,8 @@
                 <label>Name </label>
                 @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.Name)
-
+                @Html.HiddenFor(x => x.Id)
+                @Html.Hidden("Previouscolorname", Model.Name)
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Description </label>
@@ -61,7 +62,9 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         function Response(res) {
-            window.location.href = "./category";
+            window.location.href = "../ColorMaster";
         }
     </script>
 }
+
+

@@ -1,14 +1,16 @@
-﻿@model InventoryManagement.Models.CategoryMaster
+﻿@model InventoryManagement.Models.SubCategoryMaster
+@using InventoryManagement.Helper;
 @{
-    ViewBag.Title = "Category";
+    ViewBag.Title = "CreateSubcategory";
 }
+
 
 <style>
     .field-validation-error {
         color: red;
     }
 </style>
-@using (Ajax.BeginForm("CreateCategory", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
+@using (Ajax.BeginForm("CreateSubcategory", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
 {
 
     <div class="fa-heading" style="font-family:fantasy;">Create Category </div>
@@ -35,33 +37,52 @@
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-4" style="padding:1rem;">
+                <label>Category </label>
+                @Html.DropDownListFor(x => x.CategoryId, new SelectList(Commonhelper.GetCategory(), "Id", "Name"), "Select", new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.CategoryId)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
                 <label>Name </label>
                 @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.Name)
 
             </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Description </label>
-                @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
-
-
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="col-md-4" style="padding:1rem;">
-                <label></label>
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
 
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Description </label>
+                @Html.TextAreaFor(x => x.Description, new { @class = "form-control" })
+
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="col-md-4" style="padding:1rem;">
+                <label></label>
+                <input type="submit" value="Create" class="btn btn-primary" />
+
+
+            </div>
+        </div>
+    </div>
+  
+
 
 }
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         function Response(res) {
-            window.location.href = "./category";
+            window.location.href = "./Subcategory";
         }
     </script>
 }
+

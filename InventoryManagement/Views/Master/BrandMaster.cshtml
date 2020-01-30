@@ -1,10 +1,11 @@
-﻿@model List<InventoryManagement.Models.CategoryMaster>
+﻿@model List<InventoryManagement.Models.BrandMaster>
 @{
-    ViewBag.Title = "Category";
+    ViewBag.Title = "BrandMaster";
 }
 
+
 <div class="col-xs-12">
-    <a href="/Master/CreateCategory" class="btn btn-primary">
+    <a href="/Master/CreateBrandMaster" class="btn btn-primary">
         <div class="d-flex w-100 justify-content-start align-items-center">
             <span>Add New</span>
         </div>
@@ -12,8 +13,6 @@
 
 </div>
 <hr />
-
-
 <div class="col-xs-12">
     <!-- Responsive table starts here -->
     <!-- For correct display on small screens you must add 'data-title' to each 'td' in your table -->
@@ -36,7 +35,7 @@
                         <td data-title="ID">@(index + 1)</td>
                         <td data-title="Name">@item.Name</td>
                         <td data-title="Link">
-                            <a href="/Master/EditCategory/@item.Id" class="btn btn-default">
+                            <a href="/Master/EditBrand/@item.Id" class="btn btn-default">
                                 <div class="d-flex w-100 justify-content-start align-items-center">
                                     <span>Edit</span>
                                 </div>

@@ -1,6 +1,6 @@
-﻿@model InventoryManagement.Models.CategoryMaster
+﻿@model InventoryManagement.Models.BrandMaster
 @{
-    ViewBag.Title = "Category";
+    ViewBag.Title = "CreateBrandMaster";
 }
 
 <style>
@@ -8,10 +8,10 @@
         color: red;
     }
 </style>
-@using (Ajax.BeginForm("CreateCategory", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
+@using (Ajax.BeginForm("CreateBrandMaster", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
 {
 
-    <div class="fa-heading" style="font-family:fantasy;">Create Category </div>
+    <div class="fa-heading" style="font-family:fantasy;">Create Brand </div>
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-4">
@@ -61,7 +61,9 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         function Response(res) {
-            window.location.href = "./category";
+            window.location.href = "./BrandMaster";
         }
     </script>
 }
+
+

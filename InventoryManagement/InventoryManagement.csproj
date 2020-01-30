@@ -188,6 +188,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
+    <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Filter\PermissionsAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2658,6 +2659,17 @@
     <Content Include="Views\Master\CreateCategory.cshtml" />
     <Content Include="Views\Account\CreateVendor.cshtml" />
     <Content Include="Views\Account\Vendor.cshtml" />
+    <Content Include="Views\Master\EditCategory.cshtml" />
+    <Content Include="Views\Master\Subcategory.cshtml" />
+    <Content Include="Views\Master\CreateSubcategory.cshtml" />
+    <Content Include="Views\Master\EditSubcategory.cshtml" />
+    <Content Include="Views\Master\BrandMaster.cshtml" />
+    <Content Include="Views\Master\ColorMaster.cshtml" />
+    <Content Include="Views\Master\CreateBrandMaster.cshtml" />
+    <Content Include="Views\Master\EditBrand.cshtml" />
+    <Content Include="Views\Master\CreateColorMaster.cshtml" />
+    <Content Include="Views\Master\EditColor.cshtml" />
+    <Content Include="Views\Transaction\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

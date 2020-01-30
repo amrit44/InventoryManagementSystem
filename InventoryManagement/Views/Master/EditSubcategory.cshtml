@@ -1,0 +1,89 @@
+﻿@model InventoryManagement.Models.SubCategoryMaster
+@using InventoryManagement.Helper;
+@{
+    ViewBag.Title = "CreateSubcategory";
+}
+
+
+<style>
+    .field-validation-error {
+        color: red;
+    }
+</style>
+@using (Ajax.BeginForm("UpdateSubcategory", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
+{
+
+    <div class="fa-heading" style="font-family:fantasy;">Update SubCategory </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+                <label>
+
+                </label>
+
+
+            </div>
+        </div>
+    </div>
+    <hr />
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Category </label>
+                @Html.DropDownListFor(x => x.CategoryId, new SelectList(Commonhelper.GetCategory(), "Id", "Name", Model.CategoryId), "Select", new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.CategoryId)
+                @Html.HiddenFor(x => x.Id)
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Name </label>
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Name)
+                @Html.Hidden("Previousname", Model.Name)
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Description </label>
+                @Html.TextAreaFor(x => x.Description, new { @class = "form-control" })
+
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="col-md-4" style="padding:1rem;">
+                <label></label>
+                <input type="submit" value="Update" class="btn btn-primary" />
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function Response(res) {
+            window.location.href = "../Subcategory";
+        }
+    </script>
+}
+

@@ -1,0 +1,63 @@
+﻿@model List<InventoryManagement.Models.SubCategoryMaster>
+@{
+    ViewBag.Title = "Subcategory";
+}
+
+<div class="col-xs-12">
+    <a href="/Master/CreateSubcategory" class="btn btn-primary">
+        <div class="d-flex w-100 justify-content-start align-items-center">
+            <span>Add New</span>
+        </div>
+    </a>
+
+</div>
+<hr />
+<div class="col-xs-12">
+    <!-- Responsive table starts here -->
+    <!-- For correct display on small screens you must add 'data-title' to each 'td' in your table -->
+    <div class="table-responsive-vertical shadow-z-1">
+        <!-- Table starts here -->
+        <table id="table" class="table table-hover table-mc-light-blue">
+            <thead>
+                <tr>
+                    <th>Sno</th>
+                    <th>Category</th>
+                    <th>Name</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var index = Model.IndexOf(item);
+                <tr>
+                    <td data-title="ID">@(index + 1)</td>
+                    <td data-title="Name">@item._CategoryMaster.Name</td>
+                    <td data-title="Name">@item.Name</td>
+                    <td data-title="Link">
+                        <a href="/Master/EditSubcategory/@item.Id" class="btn btn-default">
+                            <div class="d-flex w-100 justify-content-start align-items-center">
+                                <span>Edit</span>
+                            </div>
+                        </a>
+                        <a href="#" class="btn btn-danger del">
+                            <div class="d-flex w-100 justify-content-start align-items-center">
+                                <span>Delete</span>
+                            </div>
+                        </a>
+
+
+                    </td>
+
+
+                </tr>
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+

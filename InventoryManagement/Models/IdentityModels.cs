@@ -200,6 +200,7 @@ namespace InventoryManagement.Models
         public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
+        public bool Isactive { get; set; }
     }
     [Table("CategoryMaster")]
     public class CategoryMaster
@@ -213,7 +214,9 @@ namespace InventoryManagement.Models
         public string CompanyId { get; set; }
         [ForeignKey("CompanyId")]
         public CompanyMaster _CompanyMaster { get; set; }
+        [Required(ErrorMessage ="Name Required.")]
         [Remote("Checkcategoryname", "Master", ErrorMessage = "Name in use.", AdditionalFields = "Previousname")]
+
         public string Name { get; set; }
         public string Description { get; set; }
         public int FinancialYear { get; set; }
@@ -222,29 +225,36 @@ namespace InventoryManagement.Models
         public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
+        public bool Isactive { get; set; }
     }
     [Table("SubCategoryMaster")]
     public class SubCategoryMaster
     {
         [Key]
         public string Id { get; set; }
+        [Required(ErrorMessage = "Name Required.")]
         public string CategoryId { get; set; }
         [ForeignKey("CategoryId")]
-        public CompanyMaster _CompanyMaster { get; set; }
+        public virtual CategoryMaster _CategoryMaster { get; set; }
+     
 
         public string CompanyId { get; set; }
         [ForeignKey("CompanyId")]
-        public CategoryMaster _CategoryMaster { get; set; }
+        public virtual CompanyMaster _CompanyMaster { get; set; }
         public string StoreId { get; set; }
         [ForeignKey("StoreId")]
         public StoreMaster _StoreMaster { get; set; }
+        [Required(ErrorMessage = "Name Required.")]
+        [Remote("Checksubcategoryname", "Master", ErrorMessage = "Name in use.", AdditionalFields = "CategoryId,Previousname")]
         public string Name { get; set; }
         public int FinancialYear { get; set; }
         public string workstation { get; set; }
+        public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
+        public bool Isactive { get; set; }
     }
     [Table("BrandMaster")]
     public class BrandMaster
@@ -259,15 +269,43 @@ namespace InventoryManagement.Models
         [ForeignKey("CompanyId")]
         public CompanyMaster _CompanyMaster { get; set; }
         [Required(ErrorMessage = "Name is Required")]
-        [Remote("CheckProductname", "Master", ErrorMessage = "Name in use.", AdditionalFields = "Previousname")]
+        [Remote("CheckBrandname", "Master", ErrorMessage = "Name in use.", AdditionalFields = "PreviousBrandname")]
         public string Name { get; set; }
     
         public int FinancialYear { get; set; }
         public string workstation { get; set; }
+        public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
+        public bool Isactive { get; set; }
+    }
+
+    [Table("ColorMaster")]
+    public class ColorMaster
+    {
+        [Key]
+        public string Id { get; set; }
+
+        public string StoreId { get; set; }
+        [ForeignKey("StoreId")]
+        public StoreMaster _StoreMaster { get; set; }
+        public string CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
+        public CompanyMaster _CompanyMaster { get; set; }
+        [Required(ErrorMessage = "Name is Required")]
+        [Remote("CheckColorname", "Master", ErrorMessage = "Name in use.", AdditionalFields = "Previouscolorname")]
+        public string Name { get; set; }
+
+        public int FinancialYear { get; set; }
+        public string workstation { get; set; }
+        public string Description { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        public bool Isactive { get; set; }
     }
     [Table("ItemMaster")]
     public class ItemMaster
@@ -312,6 +350,7 @@ namespace InventoryManagement.Models
         [ForeignKey("SubCategory")]
         public virtual SubCategoryMaster _SubCategoryMaster { get; set; }
         [Required(ErrorMessage = "Product Name Required")]
+        [Remote("Checkproductname", "Master", ErrorMessage = "Name in use.", AdditionalFields = "Previousproductname")]
 
         public string ProductName { get; set; }
         [Required(ErrorMessage = "Product  Brand Required")]
@@ -319,6 +358,10 @@ namespace InventoryManagement.Models
         public string Brand { get; set; }
         [ForeignKey("Brand")]
         public virtual BrandMaster _BrandMaster { get; set; }
+        [Required(ErrorMessage = "Product Color Required")]
+        public string Color { get; set; }
+        [ForeignKey("Color")]
+        public virtual ColorMaster _ColorMaster { get; set; }
         [Required(ErrorMessage = "Product  Size Required")]
         public string Size { get; set; }
         [Required(ErrorMessage = "Quality  Size Required")]
@@ -400,21 +443,29 @@ namespace InventoryManagement.Models
     {
         [Key]
         public string Id { get; set; }
+        [Required(ErrorMessage = "Account Type is Required")]
         public string AccountType { get; set; }
+        [Required(ErrorMessage = "Account Code is Required")]
+        [Remote("CheckColorname", "Account", ErrorMessage = "Name in use.", AdditionalFields = "Previouscode")]
         public string AccountCode { get; set; }
-
+        [Required(ErrorMessage = "Account Name is Required")]
+        [Remote("CheckColorname", "Account", ErrorMessage = "Name in use.", AdditionalFields = "Previousname")]
         public string AccountName { get; set; }
         public string AccountAlias{ get; set; }
         public bool IsRetailcustomer { get; set; }
         public bool IsWholesalecustomer { get; set; }
         public bool IsRetailvendor { get; set; }
         public bool IsWholesalevendor { get; set; }
-
+        [Required(ErrorMessage = "Contact is Required")]
         public int Contact { get; set; }
+        [Required(ErrorMessage = "Email is Required")]
         public string Email { get; set; }
+        [Required(ErrorMessage = "Acccount GstNO is Required")]
         public string AccountGstNo { get; set; }
+        [Required(ErrorMessage = "Acccount Gstin is Required")]
         public string Gstin { get; set; }
         public string TinNumber { get; set; }
+        [Required(ErrorMessage = "Pan is Required")]
         public string Pan { get; set; }
         public string CentralsaleTax { get; set; }
         public string ServiceSalestax { get; set; }
@@ -422,15 +473,24 @@ namespace InventoryManagement.Models
         public bool IsTaxExempted { get; set; }
         public bool IsAccountExempted { get; set; }
         public bool IsAcceptcform { get; set; }
+        [Required(ErrorMessage = "Group is Required")]
         public string Group { get; set; }
+        [Required(ErrorMessage = "Sub Group is Required")]
         public string SubGroup { get; set; }
+        [Required(ErrorMessage = "Schedule is Required")]
         public string Schedule { get; set; }
         public string SubSchedule { get; set; }
+        [Required(ErrorMessage = "Credit LimitAmount is Required")]
         public decimal CreditLimitAmount { get; set; }
+        [Required(ErrorMessage = "Budget is Required")]
         public decimal Budget { get; set; }
+        [Required(ErrorMessage = "State Code is Required")]
         public string StateCode { get; set; }
+        [Required(ErrorMessage = "Agent Name is Required")]
         public string AgentName { get; set; }
+        [Required(ErrorMessage = "Sales Man is Required")]
         public string SalesMan { get; set; }
+        [Required(ErrorMessage = "Location is Required")]
         public string Location { get; set; }
         public string PurchaseExpiryDate { get; set; }
         public string BillingAddress1 { get; set; }
@@ -478,6 +538,7 @@ namespace InventoryManagement.Models
         public DbSet<SubCategoryMaster> SubCategoryMaster { get; set; }
         public DbSet<BrandMaster> BrandMaster { get; set; }
         public DbSet<ItemOptionalDetails> ItemOptionalDetails { get; set; }
+        public DbSet<ColorMaster> ColorMaster { get; set; }
         public DbSet<Vendor> Vendor { get; set; }
         public static ApplicationDbContext Create()
         {
