@@ -1,0 +1,52 @@
+﻿@model List<InventoryManagement.Models.OptionalFields>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="fa-heading" style="font-family:fantasy;">Field</div>
+
+
+@using (Ajax.BeginForm("Index", "Setting", new AjaxOptions { }))
+{
+    <div class="col-xs-12">
+        <div class="table-responsive-vertical shadow-z-1">
+            <table id="table" class="table table-hover table-mc-light-blue">
+                <thead>
+                    <tr>
+                        <th>Sno</th>
+                        <th>Field Name</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var index = Model.IndexOf(item);
+                        <tr>
+                            <td>@(index + 1)</td>
+                            <td>@item.option1</td>
+                            <td>@item.Status</td>
+                            <td data-title="Link">
+                                <a href="/Setting/EditField/@item.Id" class="btn btn-default">
+                                    <div class="d-flex w-100 justify-content-start align-items-center">
+                                        <span>Edit</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="btn btn-danger del">
+                                    <div class="d-flex w-100 justify-content-start align-items-center">
+                                        <span>Delete</span>
+                                    </div>
+                                </a>
+
+
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+}

@@ -173,4 +173,18 @@ namespace InventoryManagement.Models
         public string CountryId { get; set; }
         public string StateId { get; set; }
     }
+    public enum FlashMessageType
+    {
+        Success,
+        Warning,
+        Error
+    }
+    public class HomeIndexVM
+    {
+        [Display(Name = "Type a message: ")]
+        public string Message { get; set; }
+
+        [Display(Name = "Type: ")]
+        public FlashMessageType Type { get; set; }
+    }
 }

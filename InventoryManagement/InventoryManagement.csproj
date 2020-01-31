@@ -188,6 +188,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
+    <Compile Include="Controllers\SettingController.cs" />
     <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Filter\PermissionsAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -514,6 +515,7 @@
     <Content Include="Content\DataTables\media\images\sort_desc.png" />
     <Content Include="Content\DataTables\media\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\flashy.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\icon-font.min.css" />
     <Content Include="Content\ionicons.min.css" />
@@ -2591,6 +2593,8 @@
     <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
     <Content Include="Scripts\demo.js" />
     <Content Include="Scripts\fastclick.js" />
+    <Content Include="Scripts\flashy.js" />
+    <Content Include="Scripts\flashy.min.js" />
     <Content Include="Scripts\html5shiv.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -2670,10 +2674,14 @@
     <Content Include="Views\Master\CreateColorMaster.cshtml" />
     <Content Include="Views\Master\EditColor.cshtml" />
     <Content Include="Views\Transaction\Index.cshtml" />
+    <Content Include="Views\Setting\DynamicControl.cshtml" />
+    <Content Include="Views\Setting\Index.cshtml" />
+    <Content Include="Views\Setting\EditField.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="PDFs\" />
+    <Folder Include="Views\ControllerBase\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

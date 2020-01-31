@@ -413,11 +413,15 @@ namespace InventoryManagement.Models
         }
         [Key]
         public string Id { get; set; }
+        [Required(ErrorMessage = "Field Required")]
         public string option1 { get; set; }
       
         public string Description { get; set; }
-     
+        [Required(ErrorMessage = "Status Required")]
+
         public bool Status { get; set; }
+       
+     
     }
     [Table("InvItemOptionalDetails")]
     public class ItemOptionalDetails

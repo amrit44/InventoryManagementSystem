@@ -1188,5 +1188,57 @@ namespace InventoryManagement.Helper
             return _lst;
 
         }
+
+        public static void SaveOptionalFields(List<OptionalFields>lst)
+        {
+
+            using (var db = new ApplicationDbContext())
+            {
+                db.OptionalFields.AddRange(lst);
+                db.SaveChanges();
+            }
+        }
+        public static List<OptionalFields> GetOptionalList()
+        {
+            List<OptionalFields> lst = new List<OptionalFields>();
+            using (var db = new ApplicationDbContext())
+            {
+                lst = db.OptionalFields.ToList();
+                return lst;
+            }
+        }
+        public static OptionalFields GetOptionalFieldbyId(string Id)
+        {
+         OptionalFields field = new OptionalFields();
+            using (var db = new ApplicationDbContext())
+            {
+                field = db.OptionalFields.Where(x => x.Id == Id).FirstOrDefault();
+                return field;
+            }
+        }
+        public static OptionalFields UpdateFieldbyId(OptionalFields _OptionalFields)
+        {
+            OptionalFields field = new OptionalFields();
+            using (var db = new ApplicationDbContext())
+            {
+                field = db.OptionalFields.Where(x => x.Id == _OptionalFields.Id).FirstOrDefault();
+                if(field!=null)
+                {
+                    field.option1 = _OptionalFields.option1;
+                    field.Status = _OptionalFields.Status;
+                    db.Entry(field).State = EntityState.Modified;
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
+                    
+                }
+                return field;
+            }
+        }
     }
 }
