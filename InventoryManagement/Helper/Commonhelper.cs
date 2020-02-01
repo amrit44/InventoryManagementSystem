@@ -1240,5 +1240,22 @@ namespace InventoryManagement.Helper
                 return field;
             }
         }
+        public static List<SelectListItem> GetHierarchy()
+        {
+            List<SelectListItem> field = new List<SelectListItem>();
+            List<Hierarchy> _field = new List<Hierarchy>();
+            using (var db = new ApplicationDbContext())
+            {
+                _field = db.Hierarchy.ToList();
+               if(_field.Count>0)
+                {
+                    foreach(var item in _field)
+                    {
+                        field.Add(new SelectListItem { Text=item.Name,Value=item.Id.ToString() });
+                    }
+                }
+                return field;
+            }
+        }
     }
 }

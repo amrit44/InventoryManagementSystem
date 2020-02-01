@@ -15,7 +15,22 @@ namespace InventoryManagement.Models
     {
         public string ReturnUrl { get; set; }
     }
+    public class Hierarchyviewmodel
+    {
+        public int id { get; set; }
 
+        public string text { get; set; }
+
+        public long? population { get; set; }
+
+        public string flagUrl { get; set; }
+
+        public bool @checked { get; set; }
+
+        public bool hasChildren { get; set; }
+
+        public virtual List<Hierarchyviewmodel> children { get; set; }
+    }
     public class SendCodeViewModel
     {
         public string SelectedProvider { get; set; }

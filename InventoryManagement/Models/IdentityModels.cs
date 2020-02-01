@@ -520,6 +520,20 @@ namespace InventoryManagement.Models
         public DateTime ? ModifiedBy { get; set; }
 
     }
+    [Table("Hierarchy")]
+    public class Hierarchy
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int ? ParentId { get; set; }
+        [ForeignKey("ParentId")]
+
+        public virtual Hierarchy Parent { get; set; }
+        public virtual ICollection<Hierarchy> Childs { get; set; }
+
+    }
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
@@ -544,6 +558,7 @@ namespace InventoryManagement.Models
         public DbSet<ItemOptionalDetails> ItemOptionalDetails { get; set; }
         public DbSet<ColorMaster> ColorMaster { get; set; }
         public DbSet<Vendor> Vendor { get; set; }
+        public DbSet<Hierarchy> Hierarchy { get; set; }
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

@@ -70,5 +70,90 @@ namespace InventoryManagement.Controllers
             }
             return Json(new { res,status },JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Hierarchy()
+        {
+            //var db = new ApplicationDbContext();
+            //IEnumerable<Hierarchy> h = db.Hierarchy.ToList();
+
+            return View();
+
+            
+        }
+        [HttpPost]
+        public ActionResult Hierarchy(Hierarchy hierarchy)
+        {
+            //var db = new ApplicationDbContext();
+            //IEnumerable<Hierarchy> h = db.Hierarchy.ToList();
+
+            return View();
+
+
+        }
+        public JsonResult Get(string query)
+        {
+            List<Hierarchy> locations;
+            List<Hierarchyviewmodel> records;
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                locations = context.Hierarchy.ToList();
+
+                if (!string.IsNullOrWhiteSpace(query))
+                {
+                    locations = locations.Where(q => q.Name.Contains(query)).ToList();
+                }
+
+                records = locations.Where(l => l.ParentId == null)
+                    .Select(l => new Models.Hierarchyviewmodel
+                    {
+                        id = l.Id,
+                        text = l.Name,
+                      
+                        children = GetChildren(locations, l.Id)
+                    }).ToList();
+            }
+
+            return this.Json(records, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LazyGet(int? parentId)
+        {
+            List<Hierarchy> locations;
+            List<Hierarchyviewmodel> records;
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                locations = context.Hierarchy.ToList();
+
+                records = locations.Where(l => l.ParentId == parentId)
+                    .Select(l => new Models.Hierarchyviewmodel
+                    {
+                        id = l.Id,
+                        text = l.Name,
+                      
+                        hasChildren = locations.Any(l2 => l2.ParentId == l.Id)
+                    }).ToList();
+            }
+
+            return this.Json(records, JsonRequestBehavior.AllowGet);
+        }
+
+        private List<Hierarchyviewmodel> GetChildren(List<Hierarchy> locations, int parentId)
+        {
+            return locations.Where(l => l.ParentId == parentId)
+               .Select(l => new Models.Hierarchyviewmodel
+               {
+                   id = l.Id,
+                   text = l.Name,
+                 
+                   children = GetChildren(locations, l.Id)
+               }).ToList();
+           
+        }
+        public ActionResult CreateHierarchy()
+        {
+
+
+            return View();
+        }
     }
 }
