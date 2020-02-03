@@ -534,6 +534,20 @@ namespace InventoryManagement.Models
         public virtual ICollection<Hierarchy> Childs { get; set; }
 
     }
+    [Table("Treelevel")]
+    public class Treelevel
+    {
+        [Key]
+        public int Id { get; set; }
+        public int? ParentId { get; set; }
+        [ForeignKey("ParentId")]
+
+        public virtual Hierarchy Parent { get; set; }
+        public int? SubParentId { get; set; }
+        [ForeignKey("SubParentId")]
+
+        public virtual Hierarchy _subParent { get; set; }
+    }
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
@@ -559,6 +573,7 @@ namespace InventoryManagement.Models
         public DbSet<ColorMaster> ColorMaster { get; set; }
         public DbSet<Vendor> Vendor { get; set; }
         public DbSet<Hierarchy> Hierarchy { get; set; }
+        public DbSet<Treelevel> Treelevel { get; set; }
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
