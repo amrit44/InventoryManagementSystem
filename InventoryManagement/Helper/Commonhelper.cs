@@ -1257,5 +1257,26 @@ namespace InventoryManagement.Helper
                 return field;
             }
         }
+        public static List<ItemMaster> GetItems()
+        {
+            List<SelectListItem> field = new List<SelectListItem>();
+            List<ItemMaster> _items = new List<ItemMaster>();
+            using (var db = new ApplicationDbContext())
+            {
+                _items = db.ItemMaster.ToList();
+               
+                return _items;
+            }
+        }
+        public static ItemMaster GetItemDetailbyId(string Id)
+        {
+            ItemMaster _items = new ItemMaster();
+            using (var db = new ApplicationDbContext())
+            {
+                _items = db.ItemMaster.Where(x => x.Id == Id).FirstOrDefault();
+
+                return _items;
+            }
+        }
     }
 }

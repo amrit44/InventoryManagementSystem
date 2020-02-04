@@ -461,8 +461,10 @@ namespace InventoryManagement.Models
         public bool IsRetailvendor { get; set; }
         public bool IsWholesalevendor { get; set; }
         [Required(ErrorMessage = "Contact is Required")]
+        
         public int Contact { get; set; }
         [Required(ErrorMessage = "Email is Required")]
+        [EmailAddress]
         public string Email { get; set; }
         [Required(ErrorMessage = "Acccount GstNO is Required")]
         public string AccountGstNo { get; set; }
@@ -547,6 +549,48 @@ namespace InventoryManagement.Models
         [ForeignKey("SubParentId")]
 
         public virtual Hierarchy _subParent { get; set; }
+    }
+    [Table("InvTransaction")]
+    public class InvTransaction
+    {
+        public InvTransaction()
+        {
+            Id = Guid.NewGuid().ToString();
+            InvTransactionItem = new List<InvTransactionItem>();
+        }
+        [Key]
+        public string Id { get; set; }
+        public string VendorId { get; set; }
+        public string TransactionCode { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public DateTime OrderDate { get; set; }
+        public DateTime DelieveryDate { get; set; }
+        public string Workstation { get; set; }
+        public string StoreId { get; set; }
+        public string CompanyId { get; set; }
+        public string Status { get; set; }
+        public string Shippingmethod { get; set; }
+        public string ShippingTerms{ get; set; }
+        public decimal Totalamount { get; set; }
+        public decimal Vatamount { get; set; }
+        public decimal Gstamount { get; set; }
+        public bool IsActive { get; set; }
+      
+        public string Document { get; set; }
+        public string CreatedbyId { get; set; }
+        public string ModifiedbyId { get; set; }
+        public List<InvTransactionItem> InvTransactionItem { get; set; }
+    }
+    public class InvTransactionItem
+    {
+
+        [Key]
+        public string Id { get; set; }
+        public string ItemId { get; set; }
+        public int Unit { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal Discount { get; set; }
+        public decimal Total { get; set; }
     }
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

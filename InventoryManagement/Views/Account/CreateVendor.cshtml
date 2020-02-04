@@ -284,12 +284,12 @@
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Account Code</label>
-                @Html.TextBoxFor(x => x.AccountCode, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.AccountCode, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.AccountCode)
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Account Name</label>
-                @Html.TextBoxFor(x => x.AccountName, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.AccountName, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.AccountName)
             </div>
         </div>
@@ -353,7 +353,7 @@
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Contact</label>
-                @Html.TextBoxFor(x => x.Contact, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.Contact, new { @class = "form-control", @maxlength = "10" })
                 @Html.ValidationMessageFor(x => x.Contact)
             </div>
 
@@ -367,7 +367,7 @@
             <div class="col-md-4" style="padding:1rem;">
                 <label>GSTIN</label>
 
-                @Html.TextBoxFor(x => x.Gstin, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.Gstin, new { @class = "form-control", @maxlength = "25" })
 
 
                 @Html.ValidationMessageFor(x => x.Gstin)
@@ -375,12 +375,12 @@
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Pan Number</label>
-                @Html.TextBoxFor(x => x.Pan, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.Pan, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.Pan)
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>TIN Number</label>
-                @Html.TextBoxFor(x => x.TinNumber, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.TinNumber, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.TinNumber)
             </div>
         </div>
@@ -390,7 +390,7 @@
             <div class="col-md-4" style="padding:1rem;">
                 <label>Central sale Tax</label>
 
-                @Html.TextBoxFor(x => x.CentralsaleTax, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.CentralsaleTax, new { @class = "form-control", @maxlength = "25" })
 
 
                 @Html.ValidationMessageFor(x => x.CentralsaleTax)
@@ -398,12 +398,12 @@
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Service Tax</label>
-                @Html.TextBoxFor(x => x.ServiceSalestax, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.ServiceSalestax, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.ServiceSalestax)
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>GST Type</label>
-                @Html.TextBoxFor(x => x.GstType, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.GstType, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.GstType)
             </div>
         </div>
@@ -483,19 +483,19 @@
         <div class="col-md-12">
             <div class="col-md-4" style="padding:1rem;">
                 <label>Agent Name</label>
-                @Html.TextBoxFor(x => x.AgentName, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.AgentName, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.AgentName)
 
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Sales Man</label>
-                @Html.TextBoxFor(x => x.SalesMan, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.SalesMan, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.SalesMan)
 
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Location</label>
-                @Html.TextBoxFor(x => x.Location, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.Location, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.Location)
             </div>
         </div>
