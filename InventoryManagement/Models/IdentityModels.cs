@@ -571,8 +571,13 @@ namespace InventoryManagement.Models
         public string Status { get; set; }
         public string Shippingmethod { get; set; }
         public string ShippingTerms{ get; set; }
+        public decimal Freight { get; set; }
+        public decimal Shipping { get; set; }
+        public decimal TotalDiscount { get; set; }
+
         public decimal Totalamount { get; set; }
         public decimal Vatamount { get; set; }
+      
         public decimal Gstamount { get; set; }
         public bool IsActive { get; set; }
       
@@ -590,6 +595,7 @@ namespace InventoryManagement.Models
         public int Unit { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Discount { get; set; }
+        public decimal Taxamount { get; set; }
         public decimal Total { get; set; }
     }
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

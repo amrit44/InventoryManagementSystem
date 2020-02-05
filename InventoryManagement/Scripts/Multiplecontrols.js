@@ -31,17 +31,22 @@ function InitCloning() {
 
                         $(this).attr('name', $(this).attr('name').replace(/\d+/g, $len));
                         if ($(this).hasClass("unitprice")) {
-                            debugger;
+                          
                             $(this).val('')
                         }
                         if ($(this).hasClass("qty")) {
-                            debugger;
+                           
                             $(this).val('')
                         }
                         if ($(this).hasClass("total")) {
-                            debugger;
+                          
                             $(this).val('')
                         }
+                        if ($(this).hasClass("discount")) {
+                           
+                            $(this).val('')
+                        }
+                        
                     }
                     else {
 
@@ -53,15 +58,19 @@ function InitCloning() {
                         $(this).attr('name', $(this).attr('name').replace(/\d+/g, $len));
 
                         if ($(this).hasClass("unitprice")) {
-                            debugger;
+                            
                             $(this).val('')
                         }
                         if ($(this).hasClass("qty")) {
-                            debugger;
+                         
                             $(this).val('')
                         }
                         if ($(this).hasClass("total")) {
-                            debugger;
+                          
+                            $(this).val('')
+                        }
+                        if ($(this).hasClass("discount")) {
+                          
                             $(this).val('')
                         }
                     }

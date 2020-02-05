@@ -40,7 +40,7 @@
                         <td width="10%">
 
                             @Html.TextBoxFor(x => x.Gstamount)
-
+                            @Html.HiddenFor(x => Model.InvTransactionItem[0].Taxamount,new { @class="Taxamount"})
                         </td>
                     </tr>
                 }
@@ -55,23 +55,23 @@
                         </td>
                         <td>
 
-                            <input type="text" placeholder="" class="form-control qty clr Qnumonly" name="InvTransactionItem[0].Unit" required="required" id="InvTransactionItem[0].Unit" aria-required="true">
+                            <input type="number" placeholder="" class="form-control qty clr Qnumonly" name="InvTransactionItem[0].Unit" required="required" id="InvTransactionItem[0].Unit" aria-required="true">
 
                         </td>
                         <td>
-                            <input type="text" placeholder="" class="form-control unitprice clr Qnumonly" name="InvTransactionItem[0].UnitPrice" required="required" id="InvTransactionItem[0].Unit" aria-required="true">
+                            <input type="text" placeholder="" class="form-control unitprice clr Qnumonly" name="InvTransactionItem[0].UnitPrice" required="required" id="InvTransactionItem[0].UnitPrice" aria-required="true">
 
 
                         </td>
                         <td width="10%">
-                            <input type="text" placeholder="" class="form-control discount clr Qnumonly" name="InvTransactionItem[0].Discount" required="required" id="InvTransactionItem[0].Unit" aria-required="true">
+                            <input type="text" placeholder="" class="form-control discount clr Qnumonly" name="InvTransactionItem[0].Discount" required="required" id="InvTransactionItem[0].Discount" aria-required="true">
 
 
 
                         </td>
                         <td>
-                            <input type="text" placeholder="" class="form-control total clr Qnumonly" name="InvTransactionItem[0].Total" required="required" id="InvTransactionItem[0].Unit" aria-required="true">
-
+                            <input type="text" placeholder="" class="form-control total clr Qnumonly" name="InvTransactionItem[0].Total" required="required" id="InvTransactionItem[0].Total" aria-required="true">
+                            <input type="hidden"  name="InvTransactionItem[0].Taxamount" id="InvTransactionItem[0].Taxamount" class="Taxamount"/>
 
 
                         </td>
@@ -85,14 +85,14 @@
             <tbody>
                 <tr>
                     <th>Total</th>
-                    <th colspan="2"></th>
                     <th></th>
                     <th><span class="totqty">0</span></th>
-                    <th><span class="totamt">0.00</span></th>
+                    <th></th>
+                    <th></th>
 
                    
                    
-                    <th colspan="2"></th>
+                    <th><span class="totamt">0.00</span></th>
                 </tr>
                 <tr>
                     <th colspan="14"><button type="button" class="add-field btn btn-xs btn-primary"><i class="fa fa-plus"></i>&nbsp;Add Row</button> </th>
