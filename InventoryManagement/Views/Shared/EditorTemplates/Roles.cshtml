@@ -1,0 +1,5 @@
+@using InventoryManagement.Helper;
+@using Kendo.Mvc.UI
+
+
+@(Html.Kendo().DropDownList().BindTo(Commonhelper.GetRoles()).OptionLabel("- Select Role - ").DataValueField("Value").DataTextField("Text").Name("UserRoleName"))

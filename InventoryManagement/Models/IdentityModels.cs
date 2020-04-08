@@ -52,6 +52,17 @@ namespace InventoryManagement.Models
         public string modifiedby { get; set; }
         [NotMapped]
         public string UserRole { get; set; }
+        [NotMapped]
+        public string CompanyName { get; set; }
+
+        [NotMapped]
+        public string StoreName { get; set; }
+
+        [NotMapped]
+        public string StatusName { get; set; }
+
+        [NotMapped]
+        public string UserRoleName { get; set; }
 
         //public virtual IdentityUserRole IdentityUserRole { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -255,6 +266,9 @@ namespace InventoryManagement.Models
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
         public bool Isactive { get; set; }
+        [NotMapped]
+        public string CategoryName { get; set; }
+
     }
     [Table("BrandMaster")]
     public class BrandMaster
@@ -534,6 +548,7 @@ namespace InventoryManagement.Models
         public virtual ICollection<Hierarchy> Childs { get; set; }
 
     }
+   
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
@@ -559,6 +574,7 @@ namespace InventoryManagement.Models
         public DbSet<ColorMaster> ColorMaster { get; set; }
         public DbSet<Vendor> Vendor { get; set; }
         public DbSet<Hierarchy> Hierarchy { get; set; }
+  
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

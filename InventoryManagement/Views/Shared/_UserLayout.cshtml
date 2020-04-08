@@ -16,7 +16,10 @@
     <link href="~/Content/AdminLTE.min.css" rel="stylesheet" />
     <link href="~/Content/_all-skins.min.css" rel="stylesheet" />
     <link href="~/Content/css.css" rel="stylesheet" />
-
+    <link href="https://kendo.cdn.telerik.com/2020.1.219/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://kendo.cdn.telerik.com/2020.1.219/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.common-bootstrap.min.css" />
+    @*<link rel="stylesheet" href="http://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.bootstrap.min.css" />*@
     <link href="~/Content/flashy.css" rel="stylesheet" />
     @*<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">*@
     <style type="text/css">
@@ -45,6 +48,26 @@
             text-align: left;
         }
     </style>
+
+    <script src="~/Scripts/kendo/2014.1.318/jquery.min.js"></script>
+    <script src="~/Scripts/js/jszip.min.js"></script>
+    <script src="~/Scripts/js/kendo.all.min.js"></script>
+    <script src="~/Scripts/js/kendo.aspnetmvc.min.js"></script>
+    <script src="~/Scripts/kendo/2014.1.318/kendo.web.min.js"></script>
+    <script src="~/Scripts/flashy.js"></script>
+
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/fastclick.js"></script>
+
+
+    <script src="~/Scripts/adminlte.min.js"></script>
+    <script src="~/Scripts/jquery.sparkline.min.js"></script>
+    <script src="~/Scripts/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="~/Scripts/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.min.js"></script>
+
+
+    <script src="https://adminlte.io/themes/AdminLTE/dist/js/demo.js"></script>
 </head>
 <body class="skin-blue sidebar-mini" style="height: auto; min-height: 100%;">
     <div class="wrapper" style="height: auto; min-height: 100%;">
@@ -1317,22 +1340,8 @@
 
     </div>
 
-    <script src="~/Scripts/jquery-3.3.1.js"></script>
-    <script src="~/Scripts/flashy.js"></script>
-
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/fastclick.js"></script>
-
-
-    <script src="~/Scripts/adminlte.min.js"></script>
-    <script src="~/Scripts/jquery.sparkline.min.js"></script>
-    <script src="~/Scripts/jquery-jvectormap-1.2.2.min.js"></script>
-    <script src="~/Scripts/jquery-jvectormap-world-mill-en.js"></script>
-    <script src="~/Scripts/jquery.slimscroll.min.js"></script>
-
-
-    <script src="https://adminlte.io/themes/AdminLTE/dist/js/demo.js"></script>
-    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+  
+    @*<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>*@
 
     <div class="jvectormap-label"></div>
     @RenderSection("scripts", required: false)
@@ -1360,7 +1369,7 @@
 
         });
     </script>
-    
+
 </body>
 </html>
 

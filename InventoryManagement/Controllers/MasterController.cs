@@ -1,6 +1,8 @@
 ﻿using InventoryManagement.Filter;
 using InventoryManagement.Helper;
 using InventoryManagement.Models;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -252,6 +254,22 @@ namespace InventoryManagement.Controllers
             lst = Commonhelper.GetCategory();
             return View(lst);
         }
+        public ActionResult Category_Read([DataSourceRequest]DataSourceRequest request)
+        {
+            return Json(GetCategory().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
+        }
+        private static IEnumerable<CategoryMaster> GetCategory()
+        {
+            List<CategoryMaster> lst = new List<CategoryMaster>();
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                lst = Commonhelper.GetCategory();
+            }
+            
+            return lst;
+        }
         [PermissionsAttribute(Action = "CategoryMaster", Permission = "IsAdd")]
 
         public ActionResult CreateCategory()
@@ -283,18 +301,18 @@ namespace InventoryManagement.Controllers
                     try
                     {
                         Commonhelper.SaveCategory(master);
-                        return Content("<script language='javascript' type='text/javascript'>alert('Category Created successfully!');</script>");
+                        return RedirectToAction("Category");
 
                     }
                     catch (Exception ex)
                     {
-                        return Content("<script language='javascript' type='text/javascript'>alert('Error in category creation!');</script>");
+                        return RedirectToAction("Category");
 
                     }
                 }
                 catch(Exception ex)
                 {
-                    return Content("<script language='javascript' type='text/javascript'>alert('Error in category creation!');</script>");
+                    return RedirectToAction("Category");
 
                 }
 
@@ -306,7 +324,7 @@ namespace InventoryManagement.Controllers
               
             }
 
-            return Json(res);
+            return RedirectToAction("Category");
         }
         [PermissionsAttribute(Action = "CategoryMaster", Permission = "IsEdit")]
         public ActionResult EditCategory(string Id)
@@ -322,9 +340,7 @@ namespace InventoryManagement.Controllers
         {
             List<string> res = new List<string>();
             var currentuser = Commonhelper.GetCurrentUserDetails();
-            if (ModelState.IsValid)
-            {
-                try
+            try
                 {
                     CategoryMaster master = new CategoryMaster();
                     master.Id = category.Id;
@@ -355,12 +371,8 @@ namespace InventoryManagement.Controllers
                 }
 
 
-            }
-            else
-            {
-
-
-            }
+           
+            
 
             return Json(res);
         }
@@ -372,6 +384,24 @@ namespace InventoryManagement.Controllers
 
             return View(_master);
         }
+
+        public ActionResult SubCategory_Read([DataSourceRequest]DataSourceRequest request)
+        {
+            return Json(GetSubCategory().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
+        }
+        private static IEnumerable<SubCategoryMaster> GetSubCategory()
+        {
+            List<SubCategoryMaster> lst = new List<SubCategoryMaster>();
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                lst = Commonhelper.GetSubCategory();
+            }
+
+            return lst;
+        }
+
         [PermissionsAttribute(Action = "SubCategoryMaster", Permission = "IsAdd")]
         public async System.Threading.Tasks.Task<ActionResult> CreateSubcategory()
         {
@@ -405,19 +435,16 @@ namespace InventoryManagement.Controllers
                         try
                         {
                             Commonhelper.SaveSubCategory(master);
-                            return Content("<script language='javascript' type='text/javascript'>alert('Category Created successfully!');</script>");
-
+                            return RedirectToAction("Subcategory");
                         }
                         catch (Exception ex)
                         {
-                            return Content("<script language='javascript' type='text/javascript'>alert('Error in category creation!');</script>");
-
+                            return RedirectToAction("Subcategory");
                         }
                     }
                     catch (Exception ex)
                     {
-                        return Content("<script language='javascript' type='text/javascript'>alert('Error in category creation!');</script>");
-
+                        return RedirectToAction("Subcategory");
                     }
 
 
@@ -446,9 +473,7 @@ namespace InventoryManagement.Controllers
         {
             List<string> res = new List<string>();
             var currentuser = Commonhelper.GetCurrentUserDetails();
-            if (ModelState.IsValid)
-            {
-                try
+             try
                 {
                     SubCategoryMaster master = new SubCategoryMaster();
                     master.Id = subcategory.Id;
@@ -464,8 +489,8 @@ namespace InventoryManagement.Controllers
                     try
                     {
                         Commonhelper.UpdateSubCategory(master);
-                        return Content("<script language='javascript' type='text/javascript'>alert('Category Created successfully!');</script>");
 
+                       return RedirectToAction("SubCategory_Read");
                     }
                     catch (Exception ex)
                     {
@@ -480,15 +505,60 @@ namespace InventoryManagement.Controllers
                 }
 
 
+        }
+
+        public ActionResult Deletecategory(CategoryMaster cat)
+        {
+            CategoryMaster cm = new CategoryMaster();
+            try
+            {
+                using(var ctx=new ApplicationDbContext())
+                {
+                    cm = ctx.CategoryMaster.Where(x => x.Id == cat.Id).FirstOrDefault();
+                    if(cm!=null)
+                    {
+                        cm.Isactive = false;
+                        ctx.Entry(cm).State = System.Data.Entity.EntityState.Modified;
+                        ctx.SaveChanges();
+                        return RedirectToAction("Category");
+
+                    }
+
+                }
             }
-            else
+            catch(Exception ex)
             {
 
+            }
+            return RedirectToAction("Category");
+        }
+
+        public ActionResult DeleteSubcategory(CategoryMaster cat)
+        {
+            SubCategoryMaster cm = new SubCategoryMaster();
+            try
+            {
+                using (var ctx = new ApplicationDbContext())
+                {
+                    cm = ctx.SubCategoryMaster.Where(x => x.Id == cat.Id).FirstOrDefault();
+                    if (cm != null)
+                    {
+                        cm.Isactive = false;
+                        ctx.Entry(cm).State = System.Data.Entity.EntityState.Modified;
+                        ctx.SaveChanges();
+                        return RedirectToAction("SubCategory");
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
 
             }
-
-            return Json(res);
+            return RedirectToAction("SubCategory");
         }
+
 
         [PermissionsAttribute(Action = "BrandMaster", Permission = "Isview")]
         public async System.Threading.Tasks.Task<ActionResult> BrandMaster()
@@ -544,7 +614,6 @@ namespace InventoryManagement.Controllers
             }
 
             return Json(res);
-            return View();
         }
         [HttpGet]
         [PermissionsAttribute(Action = "ColorMaster", Permission = "IsAdd")]

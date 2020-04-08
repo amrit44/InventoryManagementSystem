@@ -194,6 +194,10 @@ namespace InventoryManagement.Models
         Warning,
         Error
     }
+    public class Demo
+    {
+        public string Name { get; set; }
+    }
     public class HomeIndexVM
     {
         [Display(Name = "Type a message: ")]

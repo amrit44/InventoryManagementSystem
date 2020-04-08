@@ -1,0 +1,5 @@
+@using InventoryManagement.Helper;
+@using Kendo.Mvc.UI
+
+
+@(Html.Kendo().DropDownList().BindTo(Commonhelper.GetCategory()).OptionLabel("- Select Category - ").DataValueField("Id").DataTextField("Name").Name("CategoryId"))

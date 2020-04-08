@@ -16,6 +16,9 @@ using InventoryManagement.Filter;
 using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Kendo.Mvc.UI;
+using Kendo.Mvc.Extensions;
+using System.Web.Routing;
 
 namespace InventoryManagement.Controllers
 {
@@ -142,16 +145,111 @@ namespace InventoryManagement.Controllers
                     return View(model);
             }
         }
-
-        public ActionResult RegisteredAccounts()
+        public ActionResult Customers_Read([DataSourceRequest]DataSourceRequest request)
         {
-            List<ApplicationUser> _user = null;
+            return Json(GetUsers().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
+        }
+        private static IEnumerable<ApplicationUser> GetUsers()
+        {
+            List<ApplicationUser> _user = new List<ApplicationUser>();
+            List<ApplicationUser> _userlst = new List<ApplicationUser>();
+
             using (var ctx = new ApplicationDbContext())
             {
-                _user = ctx.Users.Include(x => x._StoreMaster).Include(x => x._CompanyMaster).Include(x => x.Roles).ToList();
-            }
+                _user = ctx.Users.Include(x => x._CompanyMaster).Include(x => x._StoreMaster).Include(x => x.Roles).ToList();
 
-            return View(_user);
+            }
+            if(_user.Count>0)
+            {
+                _userlst.Clear();
+                foreach (var item in _user)
+                {
+                    ApplicationUser user = new ApplicationUser();
+                    user.Id = item.Id;
+                    user.UserName = item.UserName;
+                    user.FirstName = item.FirstName;
+                    user.LastName = item.LastName;
+                    user.CompanyName = item._CompanyMaster.CompanyName;
+                    if(item.StoreId!=null)
+                    {
+                        user.StoreId = item.StoreId;
+                        user.StoreName = item._StoreMaster.StoreName;
+
+                    }
+                    else
+                    {
+                        user.StoreId = "0";
+                        user.StoreName = "N/A";
+
+                    }
+                    if (item.Status == true)
+                    {
+                        user.Status = true;
+                        user.StatusName ="Active";
+
+                    }
+                    else
+                    {
+                        user.Status = false;
+                        user.StatusName = "In Active";
+
+                    }
+                    user.MobileNo = item.MobileNo;
+
+                    user.UserRoleName = Commonhelper.getrolenameById(item.Roles.FirstOrDefault().RoleId);
+                    user.UserRole = item.Roles.FirstOrDefault().RoleId;
+                    _userlst.Add(user);
+                }
+                
+            }
+            return _userlst;
+        }
+        public ActionResult RegisteredAccounts()
+        {
+            //List<ApplicationUser> _user = null;
+            //using (var ctx = new ApplicationDbContext())
+            //{
+            //    _user = ctx.Users.Include(x => x._StoreMaster).Include(x => x._CompanyMaster).Include(x => x.Roles).ToList();
+            //}
+
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Update(ApplicationUser _user)
+        {
+           
+                //The model is valid - update the product and redisplay the grid.
+                using (var ctx = new ApplicationDbContext())
+                {
+                    ApplicationUser user = new ApplicationUser();
+                    user = ctx.Users.Where(x => x.Id == _user.Id).FirstOrDefault();
+                    if(user!=null)
+                    {
+                        user.FirstName = _user.FirstName;
+                        user.LastName = _user.LastName;
+                        user.Status = _user.Status;
+                        user.UserRole= _user.UserRole;
+                        user.MobileNo = _user.MobileNo;
+                    }
+                    var Usermanager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                    string Existinguserrole = string.Empty;
+                    Existinguserrole = Commonhelper.Rolename(_user.UserRole);
+                    Usermanager.RemoveFromRole(user.Id, Existinguserrole);
+                    Usermanager.AddToRole(user.Id, _user.UserRoleName);
+                    ctx.Entry(user).State = EntityState.Modified;
+                    ctx.SaveChanges();
+                  }
+
+                    //GridRouteValues() is an extension method which returns the 
+                    //route values defining the grid state - current page, sort expression, filter etc.
+                    RouteValueDictionary routeValues = this.GridRouteValues();
+
+                return RedirectToAction("Customers_Read", Commonhelper.GetAll());
+           
+
+            
         }
         //
         // GET: /Account/Register
@@ -177,12 +275,12 @@ namespace InventoryManagement.Controllers
                     CompanyId =new Guid(Commonhelper.GetCookie("CompanyId"));
                 }
                 
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, Password = model.Password, FirstName = model.FirstName, LastName = model.LastName, MobileNo = model.MobileNo, createdby = User.Identity.GetUserId(), Datecreated = DateTime.Now, Status = true,StoreId=model.StoreId,CompanyId= CompanyId.ToString(), RegisteredDeailer=false, TaxExempted=false, IsVendor=false, IsRetailCustomer=false, IsWholeCustomer=false };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Password = model.Password, FirstName = model.FirstName, LastName = model.LastName, MobileNo = model.MobileNo, createdby = User.Identity.GetUserId(), Datecreated = DateTime.Now, Status = true,StoreId=model.StoreId,CompanyId= CompanyId.ToString(), RegisteredDeailer=false, TaxExempted=false, IsVendor=false, IsRetailCustomer=false, IsWholeCustomer=false };
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    /////await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     var Usermanager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                     Usermanager.AddToRole(user.Id, model.UserRole);
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -191,7 +289,7 @@ namespace InventoryManagement.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("RegisteredAccounts");
                 }
                 AddErrors(result);
             }
@@ -519,6 +617,7 @@ namespace InventoryManagement.Controllers
            PermissionMaster _Permission = new PermissionMaster();
             Permissionviewmodel vm = new Permissionviewmodel();
             vm = Commonhelper.GetpermissionById(Id);
+            vm.UserId = Id.ToString();
             return View(vm);
         }
 
@@ -528,11 +627,16 @@ namespace InventoryManagement.Controllers
             List<string> result = new List<string>();
             PermissionMaster _master = new PermissionMaster();
             List<ModulePermission> p = new List<ModulePermission>();
+            Guid CompanyId = new Guid();
+            if (Request.Cookies["CompanyId"] != null)
+            {
+                CompanyId = new Guid(Commonhelper.GetCookie("CompanyId"));
+            }
             Permissionviewmodel searchmodel = new Permissionviewmodel();
             if (vm.PermissionMaster != null)
             {
                 _master.Id = vm.Id;
-         
+                _master.CompanyId = CompanyId.ToString();
                 _master.UserId = vm.UserId;
                 _master.ModifiedBy = User.Identity.GetUserId();
                 _master.Datemodified = DateTime.Now;
@@ -572,8 +676,8 @@ namespace InventoryManagement.Controllers
                 try
                 {
                     Commonhelper.UpdatePermission(_master);
-
-                    return Content("<script language='javascript' type='text/javascript'>alert('permission update successfully!');</script>");
+                    return RedirectToAction("RegisteredAccounts");
+                    ////return Content("<script language='javascript' type='text/javascript'>alert('permission update successfully!');</script>");
 
 
                 }
@@ -966,7 +1070,7 @@ namespace InventoryManagement.Controllers
         {
             return View();
         }
-
+       
         protected override void Dispose(bool disposing)
         {
             if (disposing)

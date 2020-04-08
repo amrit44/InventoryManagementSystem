@@ -306,7 +306,7 @@ namespace InventoryManagement.Helper
             vm._pm = _pm;
             using (var db = new ApplicationDbContext())
             {
-                _Permission = db.PermissionMaster.Where(x => x.Id == Id.ToString()).Include(x=>x._ModulePermission).FirstOrDefault();
+                _Permission = db.PermissionMaster.Where(x => x.UserId == Id.ToString()).Include(x=>x._ModulePermission).FirstOrDefault();
                
             }
             if(_menulist.Count>0)
@@ -333,8 +333,10 @@ namespace InventoryManagement.Helper
                             submenumaster.Displayclass = sub.Displayclass;
                             submenumaster.DisplayLink = sub.DisplayLink;
                             submenumaster.order = sub.order;
-                            bool checkadd = _Permission._ModulePermission.Where(x=>x.MenuId==menu.MenuId && x.SubMenuId==sub.SubMenumasterId).Select(x => x.IsAdd).FirstOrDefault();
-                            if(checkadd==true)
+                        if(_Permission!=null)
+                        {
+                            bool checkadd = _Permission._ModulePermission.Where(x => x.MenuId == menu.MenuId && x.SubMenuId == sub.SubMenumasterId).Select(x => x.IsAdd).FirstOrDefault();
+                            if (checkadd == true)
                             {
                                 submenumaster.IsAdd = true;
                                 ms.IsSelect = true;
@@ -345,7 +347,7 @@ namespace InventoryManagement.Helper
                                 submenumaster.IsEdit = true;
                                 ms.IsSelect = true;
                             }
-                            bool checkview= _Permission._ModulePermission.Where(x => x.MenuId == menu.MenuId && x.SubMenuId == sub.SubMenumasterId).Select(x => x.Isview).FirstOrDefault();
+                            bool checkview = _Permission._ModulePermission.Where(x => x.MenuId == menu.MenuId && x.SubMenuId == sub.SubMenumasterId).Select(x => x.Isview).FirstOrDefault();
                             if (checkview == true)
                             {
                                 submenumaster.Isview = true;
@@ -359,14 +361,32 @@ namespace InventoryManagement.Helper
                             }
                             _SubMenumasterlist.Add(submenumaster);
                         }
+                        else
+                        {
+                            submenumaster.IsAdd = false;
+                            ms.IsSelect = false;
+                            submenumaster.IsEdit = false;
+                            ms.IsSelect = false;
+                            submenumaster.Isview = false;
+                            ms.IsSelect = false;
+                            submenumaster.Isdelete = false;
+                            ms.IsSelect = false;
+                            _SubMenumasterlist.Add(submenumaster);
+
+                        }
+                    }
                          ms._SubMenumaster = _SubMenumasterlist;
                        
                        _menulst.Add(ms);
                   
                 }
             }
-            vmlst.Id = _Permission.Id.ToString();
-            vmlst.UserId = _Permission.UserId;
+            if(_Permission!=null)
+            {
+                vmlst.Id = _Permission.Id.ToString();
+                vmlst.UserId = _Permission.UserId;
+            }
+            
             vmlst.Menumaster = _menulst.OrderBy(x => x.DisplayOrder).ToList();
             return vmlst;
         }
@@ -378,7 +398,7 @@ namespace InventoryManagement.Helper
             {
                 using (var ctx = new ApplicationDbContext())
                 {
-                    _PermissionMaster = ctx.PermissionMaster.Where(x => x.Id == pm.Id).Include(x => x._ModulePermission).FirstOrDefault();
+                    _PermissionMaster = ctx.PermissionMaster.Where(x => x.UserId == pm.UserId).Include(x => x._ModulePermission).FirstOrDefault();
                     if (_PermissionMaster != null)
                     {
                         _PermissionMaster.ModifiedBy = pm.ModifiedBy;
@@ -393,6 +413,13 @@ namespace InventoryManagement.Helper
                         ctx.Entry(_PermissionMaster).State = EntityState.Modified;
                         ctx.SaveChanges();
 
+                    }
+                    else
+                    {
+                        pm.CreatedBy = pm.ModifiedBy;
+                        pm.DateCreated = DateTime.Now;
+                        ctx.PermissionMaster.Add(pm);
+                        ctx.SaveChanges();
                     }
                 }
 
@@ -697,13 +724,28 @@ namespace InventoryManagement.Helper
         {
 
             List<SubCategoryMaster> _master = new List<SubCategoryMaster>();
+            List<SubCategoryMaster> _newmaster = new List<SubCategoryMaster>();
+
             using (var db = new ApplicationDbContext())
             {
-                _master = db.SubCategoryMaster.Include(x=>x._CategoryMaster).ToList();
-
+                _master = db.SubCategoryMaster.Include(x=>x._CategoryMaster).Where(x=>x.Isactive==true).OrderBy(x=>x.Name).ToList();
+                if(_master.Count>0)
+                {
+                    foreach(var subcat in _master)
+                    {
+                        SubCategoryMaster sbcat = new SubCategoryMaster();
+                        sbcat.Id = subcat.Id;
+                        sbcat.CategoryId = subcat.CategoryId;
+                        sbcat.Isactive = subcat.Isactive;
+                        sbcat.CategoryName = subcat._CategoryMaster.Name;
+                        sbcat.Name = subcat.Name;
+                        sbcat.Description = subcat.Description;
+                        _newmaster.Add(sbcat);
+                    }
+                }
             }
 
-            return _master;
+            return _newmaster;
         }
         public static void SaveSubCategory(SubCategoryMaster master)
         {
@@ -969,10 +1011,18 @@ namespace InventoryManagement.Helper
         public static bool Checkcategoryname(string Name)
         {
             bool check = false;
-
+            CategoryMaster cat = new CategoryMaster();
             using (var db = new ApplicationDbContext())
             {
-                check = db.CategoryMaster.Any(x => x.Name == Name);
+                cat = db.CategoryMaster.Where(x=>x.Name==Name && x.Isactive==true).FirstOrDefault();
+                if(cat!=null)
+                {
+                    check = true;
+                }
+                else
+                {
+                    check = false;
+                }
             }
             return check;
         }
@@ -982,7 +1032,7 @@ namespace InventoryManagement.Helper
 
             using (var db = new ApplicationDbContext())
             {
-                check = db.SubCategoryMaster.Any(x => x.Name == Name && x.CategoryId==categoryId);
+                check = db.SubCategoryMaster.Any(x => x.Name == Name && x.CategoryId==categoryId && x.Isactive==true);
             }
             return check;
         }
@@ -1013,7 +1063,7 @@ namespace InventoryManagement.Helper
             List<CategoryMaster> _master = new List<CategoryMaster>();
             using (var db = new ApplicationDbContext())
             {
-                _master = db.CategoryMaster.ToList(); 
+                _master = db.CategoryMaster.Where(x=>x.Isactive==true).ToList(); 
 
             }
 
@@ -1256,6 +1306,95 @@ namespace InventoryManagement.Helper
                 }
                 return field;
             }
+        }
+
+        public static string getrolenameById(string Id)
+        {
+            List<SelectListItem> field = new List<SelectListItem>();
+            List<Hierarchy> _field = new List<Hierarchy>();
+            string role = string.Empty;
+            using (var db = new ApplicationDbContext())
+            {
+                var result = db.Roles.Where(x => x.Id == Id).Select(x => new { x.Name }).FirstOrDefault();
+                role = result.Name;
+                return role;
+            }
+        }
+        public static IList<ApplicationUser> GetAll()
+        {
+            List<ApplicationUser> _user = new List<ApplicationUser>();
+            List<ApplicationUser> _userlst = new List<ApplicationUser>();
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                _user = ctx.Users.Include(x => x._CompanyMaster).Include(x => x._StoreMaster).Include(x => x.Roles).ToList();
+
+            }
+            if (_user.Count > 0)
+            {
+                _userlst.Clear();
+                foreach (var item in _user)
+                {
+                    ApplicationUser user = new ApplicationUser();
+                    user.Id = item.Id;
+                    user.UserName = item.UserName;
+                    user.FirstName = item.FirstName;
+                    user.LastName = item.LastName;
+                    user.CompanyName = item._CompanyMaster.CompanyName;
+                    if (item.StoreId != null)
+                    {
+                        user.StoreId = item.StoreId;
+                        user.StoreName = item._StoreMaster.StoreName;
+
+                    }
+                    else
+                    {
+                        user.StoreId = "0";
+                        user.StoreName = "N/A";
+
+                    }
+                    if (item.Status == true)
+                    {
+                        user.Status = true;
+                        user.StatusName = "Active";
+
+                    }
+                    else
+                    {
+                        user.Status = false;
+                        user.StatusName = "In Active";
+
+                    }
+                    user.MobileNo = item.MobileNo;
+
+                    user.UserRoleName = Commonhelper.getrolenameById(item.Roles.FirstOrDefault().RoleId);
+                    user.UserRole = item.Roles.FirstOrDefault().RoleId;
+                    _userlst.Add(user);
+                }
+
+            }
+            return _userlst;
+        }
+        public static string Rolename(string roleId)
+        {
+            string rolename = string.Empty;
+            var clientIdParameter = new SqlParameter("@RoleId", roleId);
+            using (var db = new ApplicationDbContext())
+            {
+                var result = db.Database
+             .SqlQuery<string>("GetRolename @RoleId", clientIdParameter).FirstOrDefault();
+                rolename = result;
+            }
+            
+            //using(var db=new ApplicationDbContext())
+            //{
+            //    rolename = db.AspNetRoles.Where(x => x.Id == roleId).Select(x => x.Name).FirstOrDefault();
+            //}
+            return rolename;
+        }
+        public static IEnumerable<ApplicationUser> Read()
+        {
+            return GetAll();
         }
     }
 }

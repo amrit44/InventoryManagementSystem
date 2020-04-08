@@ -7,6 +7,18 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+	<!--This bundle was moved by the Telerik VS Extensions for compatibility reasons-->
+	@Scripts.Render("~/bundles/jquery")
+	<link href="https://kendo.cdn.telerik.com/2020.1.219/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+	<link href="https://kendo.cdn.telerik.com/2020.1.219/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+	<script src="https://kendo.cdn.telerik.com/2020.1.219/js/jquery.min.js"></script>
+	<script src="https://kendo.cdn.telerik.com/2020.1.219/js/jszip.min.js"></script>
+	<script src="https://kendo.cdn.telerik.com/2020.1.219/js/kendo.all.min.js"></script>
+	<script src="https://kendo.cdn.telerik.com/2020.1.219/js/kendo.aspnetmvc.min.js"></script>
+	<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+	<script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -29,7 +41,7 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
+    
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

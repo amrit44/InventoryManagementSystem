@@ -3,8 +3,19 @@
 @{
     ViewBag.Title = "RegisteredAccounts";
 }
-<link href="~/Content/DataTables/css/jquery.dataTables.css" rel="stylesheet" />
-@*<link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet" />*@
+    <link href="~/Content/kendo/2014.1.318/kendo.common.min.css" rel="stylesheet" />
+    <link href="~/Content/kendo/2014.1.318/kendo.bootstrap.min.css" rel="stylesheet" />
+<style>
+    .k-grid-actions {
+        display: inline-block;
+        margin-left: 5px;
+    }
+    #grid{
+    font-size: medium !important;
+    font-family: Times New Roman, serif !important;
+    font-style: unset !important;
+    }
+</style>
 <div class="col-md-12">
     <a href="/Account/Register" class="btn btn-primary">
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -16,79 +27,78 @@
 <br />
 <div class="col-xs-12">
     <div class="box table-responsive no-padding">
-     
-        <table class="display nowrap" id="tblusers">
-            <thead>
-                <tr>
-                    <th>Sno</th>
-                    <th>User Name</th>
-                    <th>Company</th>
+        @(Html.Kendo().Grid<InventoryManagement.Models.ApplicationUser>()
+                                        .Name("grid")
+                                        .Columns(columns =>
+                                        {
+                                            columns.Bound(c => c.UserName).HeaderHtmlAttributes(new { @class = "hidden-xs" });
+                                            columns.Bound(c => c.CompanyName).Title("Company").HeaderHtmlAttributes(new { @class = "hidden-xs" });
+                                            columns.Bound(c => c.FirstName).HeaderHtmlAttributes(new { @class = "hidden-xs" });
+                                            columns.Bound(c => c.LastName).HeaderHtmlAttributes(new { @class = "hidden-xs" });
+                                            columns.Bound(c => c.UserRole).EditorTemplateName("Roles").Title("Role").ClientTemplate("#=UserRoleName#").HeaderHtmlAttributes(new { @class = "hidden-xs" });
+                                            columns.Bound(c => c.MobileNo).Title("Contact").HeaderHtmlAttributes(new { @class = "hidden-xs" });
 
-                    <th>Store</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Contact</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    var index = Model.IndexOf(item);
-                    <tr>
-                        <td>@(index + 1)</td>
-                        <td>@item.UserName</td>
-                        <td>@item._CompanyMaster.CompanyName</td>
 
-                        @if (item.StoreId == null)
-                        {
+                                            columns.Bound(c => c.Status).Title("Status").EditorTemplateName("Boolean").ClientTemplate("#=StatusName#").HeaderHtmlAttributes(new { @class = "hidden-xs" });
 
-                            <td></td>
-                        }
-                        else
-                        {
-                            <td>@item._StoreMaster.StoreName</td>
-                        }
+                                            columns.Command(command => { command.Edit(); command.Destroy(); }).Width(220).HeaderHtmlAttributes(new { @class = "hidden-xs" });
 
-                        <td>@item.FirstName</td>
-                        <td>@item.LastName</td>
-                        <td>@item.MobileNo</td>
-                        <td>
-                            @if (item.Status == true)
-                            {
-                                <span>Active</span>
-                            }
-                            else
-                            {
-                                <span>In Active</span>
-                            }
-                        </td>
-                        <td>
-                            <input type="button" value="Edit" class="btn btn-default" />
-                            <input type="button" value="Delete" class="btn btn-danger" />
-                        </td>
-                    </tr>
+                                            columns.Template(c => @Html.ActionLink("Permission", "EditPermission", "Account", null, new { id = c.Id }).ToHtmlString())
+                                           .ClientTemplate(@Html.ActionLink("Permission", "EditPermission", "Account", new { id = "#=Id#" }, new { @class = "k-button k-button-icontext k-grid-permission" }).ToHtmlString()).HeaderHtmlAttributes(new { @class = "hidden-xs" });
+                                        })
+.Scrollable()
+.Editable(editable => editable.Mode(GridEditMode.InLine))
+.Pageable(pageable => pageable
+ .Refresh(true)
+ .PageSizes(true)
 
-                }
+ .ButtonCount(5)
 
-            </tbody>
-        </table>
+ )
+
+.DataSource(dataSource => dataSource
+ .Ajax()
+ .Model(model =>
+ {
+     model.Id(p => p.Id);
+     model.Field(p => p.FirstName).Editable(true);
+     model.Field(p => p.LastName).Editable(true);
+     model.Field(p => p.Status).Editable(true);
+     model.Field(p => p.UserRole).Editable(true);
+     model.Field(p => p.MobileNo).Editable(true);
+     model.Field(p => p.CompanyName).Editable(false);
+     model.Field(p => p.UserName).Editable(false);
+
+ }
+
+
+ )
+
+ .Read(read => read.Action("Customers_Read", "Account"))
+ .Update(update => update.Action("Update", "Account"))
+         .Destroy(update => update.Action("EditingPopup_Destroy", "Grid"))
+
+
+ .PageSize(5)
+) )
     </div>
 </div>
 
 @section Scripts
-{
-        <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+ {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("form.k-edit-form").kendoValidator();
+           
+        });
+
+    </script>
+    <script>
+        $(function() {
+   
+});
+    </script>
 
 
-        <script>
-            $(document).ready(function () {
-                $('#tblusers').DataTable({
-                    responsive: true
-                });
-            });
-        </script>
-
-
-  }
+}
