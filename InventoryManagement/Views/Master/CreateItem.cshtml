@@ -43,7 +43,7 @@
                 @Html.TextBoxFor(x => x.ProductCode, new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.ProductCode)
                 @Html.HiddenFor(x => x.Id)
-
+               
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Product Name</label>
@@ -64,18 +64,18 @@
         <div class="col-md-12">
             <div class="col-md-4" style="padding:1rem;">
                 <label>Bar Code</label>
-                @Html.TextBoxFor(x => x.BarCode, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.BarCode, new { @class = "form-control" , @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.BarCode)
 
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Sku code</label>
-                @Html.TextBoxFor(x => x.SkuCode, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.SkuCode, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.SkuCode)
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Sap Code</label>
-                @Html.TextBoxFor(x => x.SapCode, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.SapCode, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.SapCode)
             </div>
            

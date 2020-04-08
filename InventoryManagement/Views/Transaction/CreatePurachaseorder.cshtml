@@ -1,0 +1,312 @@
+﻿@model InventoryManagement.Models.InvTransaction
+@{
+    ViewBag.Title = "CreatePurachaseorder";
+}
+
+
+<style>
+    .field-validation-error {
+        color: red;
+    }
+</style>
+@using (Ajax.BeginForm("CreatePurachaseorder", "Transaction", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
+{
+
+    <div class="fa-heading" style="font-family:fantasy;">Create Purchase Order</div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Order No</label>
+                @Html.TextBoxFor(x => x.TransactionCode, new { @class = "form-control", @maxlength = "25" })
+                @Html.ValidationMessageFor(x => x.TransactionCode)
+
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Supplier</label>
+                @Html.DropDownListFor(x => x.VendorId, new SelectList(new List<SelectListItem>{ new SelectListItem { Text="Select",Value="" },new SelectListItem { Text="Customer",Value="1" },new SelectListItem { Text="Vendor", Value = "2" } },"Value","Text",Model.VendorId)
+                       , new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.VendorId)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Order Date</label>
+                @Html.TextBoxFor(x => x.OrderDate, new { @class = "form-control", @type = "date" })
+                @Html.ValidationMessageFor(x => x.OrderDate)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Shipping Methods</label>
+                @Html.TextBoxFor(x => x.TransactionCode, new { @class = "form-control", @maxlength = "25" })
+                @Html.ValidationMessageFor(x => x.TransactionCode)
+
+
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Shipping Terms</label>
+                @Html.DropDownListFor(x => x.VendorId, new SelectList(new List<SelectListItem>{ new SelectListItem { Text="Select",Value="" },new SelectListItem { Text="Customer",Value="1" },new SelectListItem { Text="Vendor", Value = "2" } },"Value","Text",Model.VendorId)
+                       , new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.VendorId)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Delievery Date</label>
+                @Html.TextBoxFor(x => x.DelieveryDate, new { @class = "form-control", @type = "date" })
+                @Html.ValidationMessageFor(x => x.DelieveryDate)
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="fa-heading" style="font-family:fantasy;">Item Details</div>
+    <hr />
+    <div class="row">
+        @Html.Partial("_ItemDetails")
+    </div>
+    <hr />
+    <div class="fa-heading" style="font-family:fantasy;">Additional Charges</div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Freight</label>
+                @Html.TextBoxFor(x => x.Freight, new { @class = "form-control", @type = "number" })
+                @Html.ValidationMessageFor(x => x.Freight)
+            </div>
+            <div class="col-md-4" style="padding:1rem;">
+                <label>Shipping Charges</label>
+                @Html.TextBoxFor(x => x.Shipping, new { @class = "form-control", @type = "number" })
+                @Html.ValidationMessageFor(x => x.Shipping)
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        </div>
+    </div>
+
+    <hr />
+    <div class="fa-heading" style="font-family:fantasy;">Net Amount</div>
+    <hr />
+    <div class="panel panel-inverse">
+        <div class="row">
+            <div class="col-md-11">
+                <label class="bold">Net Amount:</label>
+            </div>
+            <div class="col-md-1">
+                <span class="bold invoicegrandtotal" id="GrandTotal">0</span>
+
+
+                <input class="form-control" id="FinalAmount" name="FinalAmount" type="hidden" value="0">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11">
+                <label class="bold">Discount:</label>
+
+            </div>
+            <div class="col-md-1">
+                <span class="bold invoicevat" id="vatid">0</span>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11">
+                <label class="bold">Total Before Tax:</label>
+
+            </div>
+            <div class="col-md-1">
+                <span class="bold invoicevat" id="vatid">0</span>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11">
+                <label class="bold">Tax:</label>
+
+            </div>
+            <div class="col-md-1">
+                <span class="bold invoicevat" id="vatid">0</span>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11">
+                <label class="bold">Freight:</label>
+
+            </div>
+            <div class="col-md-1">
+                <span class="bold invoicevat" id="vatid">0</span>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11">
+                <label class="bold">Total After Tax:</label>
+
+            </div>
+            <div class="col-md-1">
+                <span class="bold invoicevat" id="vatid">0</span>
+
+            </div>
+        </div>
+    </div>
+
+}
+@section Scripts {
+
+
+    <script>
+        $(document).ready(function () {
+            $('.item').select2({
+                placeholder: "Select Product",
+                allowClear: true
+            });
+
+        })
+
+    </script>
+    <script>
+        $(document).ready(function () {
+
+
+            var No = OrderNo();
+            $("#TransactionCode").val(No);
+
+        })
+    </script>
+    <script>
+        $(document).on('change', '.item', function () {
+            var currentRow = $(this).closest("tr");
+            var $unitprice = currentRow.find(".unitprice");
+            var $unit = currentRow.find(".qty");
+            var $total = currentRow.find(".total");
+            var $discount = currentRow.find(".discount");
+            var itemId = $(this).val();
+            var url = '@Url.Action("GetItemDetailById", "Transaction")';
+            $.ajax({
+                url: url,
+                data: { Id:itemId },
+                method: 'Get',
+                success: function (response) {
+                    var total = 0;
+
+
+                    $($unitprice).val(response.Sellprice)
+                    var unitvalue = $($unit).val();
+                    var amount = ((response.Sellprice) * $($unit).val()) - $($discount).val();
+                    if (parseFloat(amount).toFixed(2) < 0) {
+                        $($total).val('0')
+                    }
+                    else {
+                        $($total).val(parseFloat(amount).toFixed(2))
+                    }
+
+                    GrandTotal();
+
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(document).on('keyup', '.qty', function () {
+            var currentRow = $(this).closest("tr");
+            var $unitprice = currentRow.find(".unitprice");
+            var $unit = currentRow.find(".qty");
+            if (isNaN($($unit).val())) {
+
+                $($unit).val('');
+                return false;
+            }
+            var $total = currentRow.find(".total");
+            var $discount = currentRow.find(".discount");
+            var amount = (($($unitprice).val()) * $($unit).val()) - $($discount).val();
+            if (parseFloat(amount).toFixed(2) < 0) {
+                $($total).val('0')
+            }
+            else {
+                $($total).val(parseFloat(amount).toFixed(2))
+            }
+            GrandTotal()
+        })
+    </script>
+    <script>
+        $(document).on('keyup', '.unitprice', function () {
+            var currentRow = $(this).closest("tr");
+            var $unitprice = currentRow.find(".unitprice");
+            if (isNaN($($unitprice).val())) {
+
+                $($unitprice).val('');
+                return false;
+            }
+            var $unit = currentRow.find(".qty");
+            var $total = currentRow.find(".total");
+            var $discount = currentRow.find(".discount");
+            var amount = (($($unitprice).val()) * $($unit).val()) - $($discount).val();
+            if (parseFloat(amount).toFixed(2) < 0) {
+                $($total).val('0')
+            }
+            else {
+                $($total).val(parseFloat(amount).toFixed(2))
+            }
+            GrandTotal();
+        })
+    </script>
+    <script>
+        $(document).on('keyup', '.discount', function () {
+            var currentRow = $(this).closest("tr");
+            var $unitprice = currentRow.find(".unitprice");
+            var $unit = currentRow.find(".qty");
+            var $total = currentRow.find(".total");
+            var $discount = currentRow.find(".discount");
+            if (isNaN($($discount).val())) {
+
+                $($discount).val('');
+                return false;
+            }
+            var Totalbeforediscount = (($($unitprice).val()) * $($unit).val());
+            var discount = (($($unitprice).val()) * $($unit).val()) * $($discount).val() / 100;
+            var Totalafterdiscount = Totalbeforediscount - discount;
+            var amount = Totalafterdiscount;
+            if (parseFloat(amount).toFixed(2) < 0) {
+                $($total).val('0')
+            }
+            else {
+                $($total).val(parseFloat(amount).toFixed(2))
+            }
+            GrandTotal();
+        })
+
+        function GrandTotal() {
+
+            var total = 0;
+            var totalquantity = 0;
+            if (isNaN(total) || total == "") {
+                dis = 0;
+            }
+            $(".total").each(function (idx, ctrl) {
+
+
+                var _value = ctrl.value;
+
+                total += parseFloat(_value || 0);
+            })
+            $(".totamt").text(total.toFixed(2))
+            $(".totamt").val(total.toFixed(2))
+
+            $(".qty").each(function (idx, ctrl) {
+
+                totalquantity += parseFloat(ctrl.value || 0);
+            })
+            $(".totqty").text(totalquantity);
+        }
+        function OrderNo() {
+            let now = Date.now().toString();
+            now += now + Math.floor(Math.random() * 10);
+            return [now.slice(0, 4), now.slice(4, 10), now.slice(10, 14)].join('-')
+
+        }
+    </script>
+}

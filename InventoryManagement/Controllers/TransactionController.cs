@@ -1,4 +1,6 @@
-﻿using System;
+﻿using InventoryManagement.Helper;
+using InventoryManagement.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +14,33 @@ namespace InventoryManagement.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+        public ActionResult Purchaseorder()
+        {
+            return View();
+        }
+ 
+        public ActionResult CreatePurachaseorder()
+        {
+            InvTransaction inv = new InvTransaction();
+
+            return View(inv);
+
+          
+        }
+        [HttpPost]
+        public ActionResult CreatePurachaseorder(InvTransaction inv)
+        {
+
+
+            return View();
+        }
+        public async System.Threading.Tasks.Task<ActionResult> GetItemDetailById(string Id)
+        {
+            ItemMaster _items = new ItemMaster();
+
+            _items = Commonhelper.GetItemById(Id);
+            return Json(_items, JsonRequestBehavior.AllowGet);
         }
     }
 }

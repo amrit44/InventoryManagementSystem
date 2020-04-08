@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using System.Data.Entity;
 namespace InventoryManagement.Controllers
 {
     public class SettingController : AsyncController
@@ -75,20 +75,45 @@ namespace InventoryManagement.Controllers
         {
             //var db = new ApplicationDbContext();
             //IEnumerable<Hierarchy> h = db.Hierarchy.ToList();
-
-            return View();
+            List<Treelevel> lst = new List<Treelevel>();
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                lst = context.Treelevel.Include(x => x.Parent).Include(x => x._subParent).ToList();
+              
+            }
+            return View(lst);
 
             
         }
-        [HttpPost]
-        public ActionResult Hierarchy(Hierarchy hierarchy)
+      
+        public ActionResult CreareHierarchy()
         {
-            //var db = new ApplicationDbContext();
-            //IEnumerable<Hierarchy> h = db.Hierarchy.ToList();
 
             return View();
-
-
+        }
+        [HttpPost]
+        public ActionResult CreareHierarchy(Treelevel hierarchy)
+        {
+            Treelevel l = new Treelevel();
+            l.ParentId = hierarchy.ParentId;
+            l.SubParentId = hierarchy.SubParentId;
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                context.Treelevel.Add(l);
+                context.SaveChanges();
+            }
+            return View();
+        }
+        public ActionResult EditHierarchy(int Id)
+        {
+            Treelevel l = new Treelevel();
+          
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+              l=  context.Treelevel.Where(x => x.Id == Id).FirstOrDefault();
+                
+            }
+            return View(l);
         }
         public JsonResult Get(string query)
         {
@@ -129,7 +154,7 @@ namespace InventoryManagement.Controllers
                     {
                         id = l.Id,
                         text = l.Name,
-                      
+                        @checked = true,
                         hasChildren = locations.Any(l2 => l2.ParentId == l.Id)
                     }).ToList();
             }

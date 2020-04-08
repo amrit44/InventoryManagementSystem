@@ -1052,13 +1052,13 @@ namespace InventoryManagement.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            HttpCookie nameCookie = Request.Cookies["CompanyId"];
+            //HttpCookie nameCookie = Request.Cookies["CompanyId"];
 
-            //Set the Expiry date to past date.
-            nameCookie.Expires = DateTime.Now.AddDays(-1);
+            ////Set the Expiry date to past date.
+            //nameCookie.Expires = DateTime.Now.AddDays(-1);
 
-            //Update the Cookie in Browser.
-            Response.Cookies.Add(nameCookie);
+            ////Update the Cookie in Browser.
+            //Response.Cookies.Add(nameCookie);
             return RedirectToAction("Login", "Account");
            
         }

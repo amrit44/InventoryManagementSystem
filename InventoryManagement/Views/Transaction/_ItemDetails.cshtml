@@ -1,0 +1,105 @@
+﻿@model InventoryManagement.Models.InvTransaction
+@using InventoryManagement.Helper;
+<div class="col-xs-12">
+    <div class="table-responsive-vertical shadow-z-1">
+
+        <table class="table table-bordered table-condensed main-multi-field-wrapper">
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Item</th>
+                    <th>Unit</th>
+                    <th>Unit Price</th>
+                    <th>Discount(%)</th>
+                    <th>Total</th>
+                    <th>Tool</th>
+                </tr>
+            </thead>
+            <tbody class="sub-multi-fields">
+                @if (Model.InvTransactionItem.Count > 0)
+                {
+                    
+                    <tr class="multi-field">
+                        <td width="1%">1</td>
+                        <td>
+
+                            @Html.DropDownListFor(x =>Model.InvTransactionItem[0].ItemId, new SelectList(Commonhelper.GetItems(),"Id", "ProductName", Model.VendorId),"Select",new {@class= "form-control clritem item" })
+                            @Html.ValidationMessageFor(x => Model.InvTransactionItem[0].ItemId)
+
+
+                        </td>
+                        <td width="10%">
+
+                            @Html.TextBoxFor(x => x.Gstamount)
+
+                        </td>
+                        <td>
+
+                            @Html.TextBoxFor(x => x.Gstamount)
+                        </td>
+                        <td width="10%">
+
+                            @Html.TextBoxFor(x => x.Gstamount)
+                            @Html.HiddenFor(x => Model.InvTransactionItem[0].Taxamount,new { @class="Taxamount"})
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr class="multi-field">
+                        <td>1</td>
+                        <td width="20%">
+                            @Html.DropDownListFor(x => Model.InvTransactionItem[0].ItemId, new SelectList(Commonhelper.GetItems(), "Id", "ProductName", Model.VendorId), "Select", new { @class = "form-control Select2 clritem item" })
+
+
+                        </td>
+                        <td>
+
+                            <input type="number" placeholder="" class="form-control qty clr Qnumonly" name="InvTransactionItem[0].Unit" required="required" id="InvTransactionItem[0].Unit" aria-required="true">
+
+                        </td>
+                        <td>
+                            <input type="text" placeholder="" class="form-control unitprice clr Qnumonly" name="InvTransactionItem[0].UnitPrice" required="required" id="InvTransactionItem[0].UnitPrice" aria-required="true">
+
+
+                        </td>
+                        <td width="10%">
+                            <input type="text" placeholder="" class="form-control discount clr Qnumonly" name="InvTransactionItem[0].Discount" required="required" id="InvTransactionItem[0].Discount" aria-required="true">
+
+
+
+                        </td>
+                        <td>
+                            <input type="text" placeholder="" class="form-control total clr Qnumonly" name="InvTransactionItem[0].Total" required="required" id="InvTransactionItem[0].Total" aria-required="true">
+                            <input type="hidden"  name="InvTransactionItem[0].Taxamount" id="InvTransactionItem[0].Taxamount" class="Taxamount"/>
+
+
+                        </td>
+                        <td>
+                            <button type="button" class="remove-field btn btn-xs btn-danger"><i class="fa fa-remove"></i></button>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+            <tbody>
+                <tr>
+                    <th>Total</th>
+                    <th></th>
+                    <th><span class="totqty">0</span></th>
+                    <th></th>
+                    <th></th>
+
+                   
+                   
+                    <th><span class="totamt">0.00</span></th>
+                </tr>
+                <tr>
+                    <th colspan="14"><button type="button" class="add-field btn btn-xs btn-primary"><i class="fa fa-plus"></i>&nbsp;Add Row</button> </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+

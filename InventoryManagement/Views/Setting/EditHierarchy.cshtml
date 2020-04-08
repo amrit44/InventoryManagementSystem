@@ -1,0 +1,130 @@
+﻿@model InventoryManagement.Models.Treelevel
+@using InventoryManagement.Helper;
+@{
+    ViewBag.Title = "Hierarchy";
+    ViewBag.subcatId = Model.SubParentId;
+}
+
+<style>
+    .checkboxtree {
+    }
+</style>
+<link href="~/Content/jsTree/themes/default/style.min.css" rel="stylesheet" />
+@using (Ajax.BeginForm("Hierarchy", "Setting", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
+{
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <label>Category</label>
+                @Html.DropDownListFor(x => x.ParentId, new SelectList(Commonhelper.GetHierarchy(), "Value", "Text", Model.ParentId), "Select", new { @class = "form-control" })
+                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.SubParentId)
+
+            </div>
+            <div class="col-md-4">
+                <label></label><br />
+
+                <div id="tree" style="padding:2rem 0rem 1rem;"></div>
+            </div>
+            <div class="col-md-4">
+                <label></label><br />
+                <button id="btnSave" type="submit" class="btn btn-default" style="margin-top:2rem;">Create</button>
+
+            </div>
+        </div>
+
+
+    </div>
+
+}
+@section scripts
+{
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <script>
+        $(document).ready(function () {
+
+            var tree = $('#tree').tree({
+                primaryKey: 'id',
+                uiLibrary: 'materialdesign',
+                data: {
+                    parentId: $("#ParentId").val()
+                },
+
+                dataSource: '/Setting/LazyGet',
+                lazyLoading: true
+
+
+            });
+
+            tree.reload({ parentId: $("#ParentId").val() });
+            tree.on('nodeDataBound',function (e, node, id, record) {
+                debugger;
+                var childId = @Html.Raw(Json.Encode(ViewBag.subcatId));
+                if (record.hasChildren) {
+                    var node = tree.getNodeById(record.id);
+                    tree.reload({ parentId: record.id });
+                    tree.expand(node);
+
+                }
+                if (record.id == childId) {
+                    var node = tree.getNodeById(record.id);
+                    tree.expand(node);
+                    tree.select(node);
+                }
+
+
+            });
+
+        })
+    </script>
+
+    <script>
+        $("#ParentId").on('change', function () {
+
+            var tree = $('#tree').tree({
+                primaryKey: 'id',
+                uiLibrary: 'materialdesign',
+                data: {
+                    parentId: $("#ParentId").val()
+                },
+
+                dataSource: '/Setting/LazyGet',
+                lazyLoading: true
+
+
+            });
+            tree.reload({ parentId: $("#ParentId").val() });
+            tree.expandAll();
+            tree.on('select', function (e, node, id) {
+                $("#SubParentId").val(id)
+                //alert('select is fired for node with id=' + id);
+            });
+
+            $('#btnSave').on('click', function () {
+                //var child = [];
+                //debugger;
+                //var checkedIds = tree.getCheckedNodes();
+                //var data = tree.xhr;
+                //var json = JSON.parse(data.responseText);
+                //var yourData = json.Data;
+                //var checkedIds = tree.getCheckedNodes();
+                //for (var i = 0; i < checkedIds.length; i++) {
+                //    var Hierarchy = {
+                //        Id: checkedIds[i]
+                //    }
+                //    child.push(Hierarchy);
+                //}
+                //var Hierarchy = {
+                //    Childs: child,
+                //    ParentId: 100
+
+                //}
+            });
+        })
+        function Response(res) {
+
+        }
+    </script>
+}

@@ -1,8 +1,17 @@
 ﻿
 @model InventoryManagement.Models.ItemMaster
 
+<style>
+    .lbl {
+        color: black;
+        font-size: 1.3rem;
+        font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif !important;
+        font-weight:700;
+    }
+</style>
 
-<table class="table nowrap">
+
+@*<table class="table nowrap">
     <thead>
         <tr>
             <th>Sno</th>
@@ -12,21 +21,38 @@
         @foreach (var item in Model.ItemOptionalDetails.ToList())
         {
             var index = Model.ItemOptionalDetails.IndexOf(item);
-        <tr>
-            <td>@(index + 1)</td>
-            <td>
-                @Html.HiddenFor(x=>x.ItemOptionalDetails[index].OptionalId)
-                @Html.TextBoxFor(x => x.ItemOptionalDetails[index].Description, new { @class = "form-control",@readonly=true })
+            <tr>
+                <td>@(index + 1)</td>
+                <td>
+                    @Html.HiddenFor(x => x.ItemOptionalDetails[index].OptionalId)
+                    @Html.TextBoxFor(x => x.ItemOptionalDetails[index].Description, new { @class = "form-control", @readonly = true })
 
 
 
-            </td>
-            <td>
-                @Html.TextBoxFor(x => x.ItemOptionalDetails[index].OptionalValue, new { @class = "form-control" })
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.ItemOptionalDetails[index].OptionalValue, new { @class = "form-control" })
 
-            </td>
+                </td>
 
-        </tr>
+            </tr>
         }
     </thead>
-</table>  
+</table>*@  
+
+<div class="row">
+    @foreach (var item in Model.ItemOptionalDetails.ToList())
+    {
+        var index = Model.ItemOptionalDetails.IndexOf(item);
+    <div class="col-sm-4" style=" margin-top:2%">
+        <label>@item.Description</label>
+        @*@Html.TextBoxFor(x => x.ItemOptionalDetails[index].Description, new { @class = "form-control lbl", @readonly = true })*@
+
+        @Html.TextBoxFor(x => x.ItemOptionalDetails[index].OptionalValue, new { @class = "form-control" })
+
+
+    </div>
+       
+    }
+
+</div>

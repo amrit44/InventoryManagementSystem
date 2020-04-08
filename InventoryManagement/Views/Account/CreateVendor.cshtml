@@ -284,12 +284,12 @@
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Account Code</label>
-                @Html.TextBoxFor(x => x.AccountCode, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.AccountCode, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.AccountCode)
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Account Name</label>
-                @Html.TextBoxFor(x => x.AccountName, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.AccountName, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.AccountName)
             </div>
         </div>
@@ -344,7 +344,7 @@
             </div>
         </div>
     </div>
-    <div class="row" id="supplier">
+    <div class="row">
         <div class="col-md-12">
             <div class="col-md-4" style="padding:1rem;">
                 <label>Email</label>
@@ -353,87 +353,13 @@
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Contact</label>
-                @Html.TextBoxFor(x => x.Contact, new { @class = "form-control" })
+                @Html.TextBoxFor(x => x.Contact, new { @class = "form-control", @maxlength = "10" })
                 @Html.ValidationMessageFor(x => x.Contact)
             </div>
-
-        </div>
-    </div>
-    <hr />
-    <div class="fa-heading" style="font-family:fantasy;">Account Information</div>
-    <hr />
-    <div class="row">
-        <div class="col-md-12">
             <div class="col-md-4" style="padding:1rem;">
-                <label>GSTIN</label>
-
-                @Html.TextBoxFor(x => x.Gstin, new { @class = "form-control" })
-
-
-                @Html.ValidationMessageFor(x => x.Gstin)
-
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Pan Number</label>
-                @Html.TextBoxFor(x => x.Pan, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.Pan)
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>TIN Number</label>
-                @Html.TextBoxFor(x => x.TinNumber, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.TinNumber)
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Central sale Tax</label>
-
-                @Html.TextBoxFor(x => x.CentralsaleTax, new { @class = "form-control" })
-
-
-                @Html.ValidationMessageFor(x => x.CentralsaleTax)
-
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Service Tax</label>
-                @Html.TextBoxFor(x => x.ServiceSalestax, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.ServiceSalestax)
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>GST Type</label>
-                @Html.TextBoxFor(x => x.GstType, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.GstType)
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Tax Exampted</label>
-                <div class="checkbox checkbox-success">
-                    @Html.CheckBoxFor(x => x.IsTaxExempted, new { groupname = "tax" })
-                    <label for="IsTaxExempted">
-
-                    </label>
-                </div>
-
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Accepts CForm</label>
-                <div class="checkbox checkbox-success">
-                    @Html.CheckBoxFor(x => x.IsAcceptcform, new { groupname = "IsAcceptcform" })
-                    <label for="IsAcceptcform">
-
-                    </label>
-                </div>
-
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Budget</label>
-                @Html.TextBoxFor(x => x.Budget, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.Budget)
+                <label>Contact</label>
+                @Html.TextBoxFor(x => x.Contact, new { @class = "form-control", @maxlength = "10" })
+                @Html.ValidationMessageFor(x => x.Contact)
             </div>
         </div>
     </div>
@@ -452,249 +378,331 @@
 
             </div>
             <div class="col-md-4" style="padding:1rem;">
-                <label>Credit Limit Amount</label>
-                @Html.TextBoxFor(x => x.CreditLimitAmount, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.CreditLimitAmount)
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-4" style="padding:1rem;">
                 <label>Schedule</label>
                 @Html.TextBoxFor(x => x.Schedule, new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.Schedule)
 
             </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Sub Schedule</label>
-                @Html.TextBoxFor(x => x.SubSchedule, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.SubSchedule)
-
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>State Code</label>
-                @Html.TextBoxFor(x => x.StateCode, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.StateCode)
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Agent Name</label>
-                @Html.TextBoxFor(x => x.AgentName, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.AgentName)
-
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Sales Man</label>
-                @Html.TextBoxFor(x => x.SalesMan, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.SalesMan)
-
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Location</label>
-                @Html.TextBoxFor(x => x.Location, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.Location)
-            </div>
-        </div>
-    </div>
-    <hr />
-    <div class="fa-heading" style="font-family:fantasy;">Billing Address</div>
-    <hr />
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Address Line 1</label>
-
-                @Html.TextBoxFor(x => x.BillingAddress1, new { @class = "form-control" })
-
-
-                @Html.ValidationMessageFor(x => x.BillingAddress1)
-
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Address Line 2</label>
-                @Html.TextBoxFor(x => x.BillingAddress2, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.BillingAddress2)
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Phone</label>
-                @Html.TextBoxFor(x => x.BillingCellPhone, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.BillingCellPhone)
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Country</label>
-                @Html.DropDownListFor(x => x.BillingCountry, new SelectList(Commonhelper.getCounrty(), "Value", "Text", Model.CompanyId), "Select", new { @class = "form-control" })
-
-
-                @Html.ValidationMessageFor(x => x.BillingCountry)
-
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>State</label>
-                @Html.DropDownListFor(x => x.BillingState, new SelectList(new List<SelectListItem> { }, "Value", "Text", Model.BillingState), "Select", new { @class = "form-control" })
-
-                @Html.ValidationMessageFor(x => x.BillingState)
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>City</label>
-                @Html.DropDownListFor(x => x.BillingCity, new SelectList(new List<SelectListItem> { }, "Value", "Text", Model.BillingState), "Select", new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.BillingCity)
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Pin Code</label>
-
-                @Html.TextBoxFor(x => x.BillingPincode, new { @class = "form-control" })
-
-
-                @Html.ValidationMessageFor(x => x.BillingPincode)
-
-            </div>
 
         </div>
-    </div>
-    <hr />
-    <div class="fa-heading" style="font-family:fantasy;">Shipping Address</div>
-    <hr />
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Address Line 1</label>
+          
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Sub Schedule</label>
+                    @Html.TextBoxFor(x => x.SubSchedule, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.SubSchedule)
 
-                @Html.TextBoxFor(x => x.ShippingAddress1, new { @class = "form-control" })
-
-
-                @Html.ValidationMessageFor(x => x.ShippingAddress1)
-
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Address Line 2</label>
-                @Html.TextBoxFor(x => x.ShippingAddress2, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.ShippingAddress2)
-            </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Phone</label>
-                @Html.TextBoxFor(x => x.ShippingCellPhone, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.ShippingCellPhone)
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Country</label>
-                @Html.DropDownListFor(x => x.ShippingCountry, new SelectList(Commonhelper.getCounrty(), "Value", "Text", Model.CompanyId), "Select", new { @class = "form-control" })
+        <hr />
+        <div class="fa-heading" style="font-family:fantasy;">Account Information</div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>GSTIN</label>
+
+                    @Html.TextBoxFor(x => x.Gstin, new { @class = "form-control", @maxlength = "25" })
 
 
-                @Html.ValidationMessageFor(x => x.ShippingCountry)
+                    @Html.ValidationMessageFor(x => x.Gstin)
 
-
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Pan Number</label>
+                    @Html.TextBoxFor(x => x.Pan, new { @class = "form-control", @maxlength = "25" })
+                    @Html.ValidationMessageFor(x => x.Pan)
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>State Code</label>
+                    @Html.TextBoxFor(x => x.StateCode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.StateCode)
+                </div>
             </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>State</label>
-                @Html.DropDownListFor(x => x.ShippingState, new SelectList(new List<SelectListItem> { }, "Value", "Text", Model.BillingState), "Select", new { @class = "form-control" })
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Central sale Tax</label>
 
-                @Html.ValidationMessageFor(x => x.ShippingState)
+                    @Html.TextBoxFor(x => x.CentralsaleTax, new { @class = "form-control", @maxlength = "25" })
 
+
+                    @Html.ValidationMessageFor(x => x.CentralsaleTax)
+
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Service Tax</label>
+                    @Html.TextBoxFor(x => x.ServiceSalestax, new { @class = "form-control", @maxlength = "25" })
+                    @Html.ValidationMessageFor(x => x.ServiceSalestax)
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>GST Type</label>
+                    @Html.TextBoxFor(x => x.GstType, new { @class = "form-control", @maxlength = "25" })
+                    @Html.ValidationMessageFor(x => x.GstType)
+                </div>
             </div>
-            <div class="col-md-4" style="padding:1rem;">
-                <label>City</label>
-                @Html.DropDownListFor(x => x.ShippingCity, new SelectList(new List<SelectListItem> { }, "Value", "Text", Model.BillingState), "Select", new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.ShippingCity)
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Tax Exampted</label>
+                    <div class="checkbox checkbox-success">
+                        @Html.CheckBoxFor(x => x.IsTaxExempted, new { groupname = "tax" })
+                        <label for="IsTaxExempted">
+
+                        </label>
+                    </div>
+
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Accepts CForm</label>
+                    <div class="checkbox checkbox-success">
+                        @Html.CheckBoxFor(x => x.IsAcceptcform, new { groupname = "IsAcceptcform" })
+                        <label for="IsAcceptcform">
+
+                        </label>
+                    </div>
+
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Budget</label>
+                    @Html.TextBoxFor(x => x.Budget, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.Budget)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Credit Limit Amount</label>
+                    @Html.TextBoxFor(x => x.CreditLimitAmount, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.CreditLimitAmount)
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Agent Name</label>
+                    @Html.TextBoxFor(x => x.AgentName, new { @class = "form-control", @maxlength = "25" })
+                    @Html.ValidationMessageFor(x => x.AgentName)
+
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Sales Man</label>
+                    @Html.TextBoxFor(x => x.SalesMan, new { @class = "form-control", @maxlength = "25" })
+                    @Html.ValidationMessageFor(x => x.SalesMan)
+
+                </div>
+            </div>
+        </div>
+       
+        <div class="row">
+            <div class="col-md-12">
+                
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Location</label>
+                    @Html.TextBoxFor(x => x.Location, new { @class = "form-control", @maxlength = "25" })
+                    @Html.ValidationMessageFor(x => x.Location)
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="fa-heading" style="font-family:fantasy;">Billing Address</div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Address Line 1</label>
+
+                    @Html.TextBoxFor(x => x.BillingAddress1, new { @class = "form-control" })
+
+
+                    @Html.ValidationMessageFor(x => x.BillingAddress1)
+
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Address Line 2</label>
+                    @Html.TextBoxFor(x => x.BillingAddress2, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.BillingAddress2)
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Phone</label>
+                    @Html.TextBoxFor(x => x.BillingCellPhone, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.BillingCellPhone)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Country</label>
+                    @Html.DropDownListFor(x => x.BillingCountry, new SelectList(Commonhelper.getCounrty(), "Value", "Text", Model.CompanyId), "Select", new { @class = "form-control" })
+
+
+                    @Html.ValidationMessageFor(x => x.BillingCountry)
+
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>State</label>
+                    @Html.DropDownListFor(x => x.BillingState, new SelectList(new List<SelectListItem> { }, "Value", "Text", Model.BillingState), "Select", new { @class = "form-control" })
+
+                    @Html.ValidationMessageFor(x => x.BillingState)
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>City</label>
+                    @Html.DropDownListFor(x => x.BillingCity, new SelectList(new List<SelectListItem> { }, "Value", "Text", Model.BillingState), "Select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.BillingCity)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Pin Code</label>
+
+                    @Html.TextBoxFor(x => x.BillingPincode, new { @class = "form-control" })
+
+
+                    @Html.ValidationMessageFor(x => x.BillingPincode)
+
+                </div>
 
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-4" style="padding:1rem;">
-                <label>Pin Code</label>
+        <hr />
+        <div class="fa-heading" style="font-family:fantasy;">Shipping Address</div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Address Line 1</label>
 
-                @Html.TextBoxFor(x => x.ShippingPincode, new { @class = "form-control" })
+                    @Html.TextBoxFor(x => x.ShippingAddress1, new { @class = "form-control" })
 
 
-                @Html.ValidationMessageFor(x => x.ShippingPincode)
+                    @Html.ValidationMessageFor(x => x.ShippingAddress1)
 
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Address Line 2</label>
+                    @Html.TextBoxFor(x => x.ShippingAddress2, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ShippingAddress2)
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Phone</label>
+                    @Html.TextBoxFor(x => x.ShippingCellPhone, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ShippingCellPhone)
+                </div>
             </div>
-            <div class="col-md-4" style="padding:2.7rem;">
-                <label></label><br />
-
-                <input type="submit" class="btn btn-primary" value="Create" />
-            </div>
-
         </div>
-    </div>
-}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Country</label>
+                    @Html.DropDownListFor(x => x.ShippingCountry, new SelectList(Commonhelper.getCounrty(), "Value", "Text", Model.CompanyId), "Select", new { @class = "form-control" })
+
+
+                    @Html.ValidationMessageFor(x => x.ShippingCountry)
+
+
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>State</label>
+                    @Html.DropDownListFor(x => x.ShippingState, new SelectList(new List<SelectListItem> { }, "Value", "Text", Model.BillingState), "Select", new { @class = "form-control" })
+
+                    @Html.ValidationMessageFor(x => x.ShippingState)
+
+                </div>
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>City</label>
+                    @Html.DropDownListFor(x => x.ShippingCity, new SelectList(new List<SelectListItem> { }, "Value", "Text", Model.BillingState), "Select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ShippingCity)
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="padding:1rem;">
+                    <label>Pin Code</label>
+
+                    @Html.TextBoxFor(x => x.ShippingPincode, new { @class = "form-control" })
+
+
+                    @Html.ValidationMessageFor(x => x.ShippingPincode)
+
+                </div>
+                <div class="col-md-4" style="padding:2.7rem;">
+                    <label></label><br />
+
+                    <input type="submit" class="btn btn-primary" value="Create" />
+                </div>
+
+            </div>
+        </div>
+        }
 @section Scripts
 {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        $("input[type='hidden']").remove();
-    </script>
+            @Scripts.Render("~/bundles/jqueryval")
+            <script>
+                $("input[type='hidden']").remove();
+            </script>
 
-    <script>
-        $(document).ready(function () {
-            $("#wholesupplier").css('display', 'none');
-            $("#retailsupplier").css('display', 'none');
-            $("#Contact").val('');
-            $("#CreditLimitAmount").val('');
-            $("#Budget").val('');
-            
-            
-         
-        })
-    </script>
-    <script>
-        $(document).on('change', '#AccountType', function () {
-            var currentvalue = $(this).val();
-            if (currentvalue == 1) {
+            <script>
+                $(document).ready(function () {
+                    $("#wholesupplier").css('display', 'none');
+                    $("#retailsupplier").css('display', 'none');
+                    $("#Contact").val('');
+                    $("#CreditLimitAmount").val('');
+                    $("#Budget").val('');
 
-                $("#wholesupplier").css('display', 'none');
-                $("#retailsupplier").css('display', 'none');
 
-                $("#retailcustomer").show();
-                $("#wholesalecustomer").show();
-            }
-            else if (currentvalue == 2) {
-                $("#wholesupplier").show();
-                $("#retailsupplier").show();
 
-                $("#retailcustomer").css('display', 'none');
-                $("#wholesalecustomer").css('display', 'none');
-            }
-        })
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('input[type=checkbox]').click(function () {
-                var groupName = $(this).attr('groupname');
+                })
+            </script>
+            <script>
+                $(document).on('change', '#AccountType', function () {
+                    var currentvalue = $(this).val();
+                    if (currentvalue == 1) {
 
-                if (!groupName)
-                    return;
+                        $("#wholesupplier").css('display', 'none');
+                        $("#retailsupplier").css('display', 'none');
 
-                var checked = $(this).is(':checked');
+                        $("#retailcustomer").show();
+                        $("#wholesalecustomer").show();
+                    }
+                    else if (currentvalue == 2) {
+                        $("#wholesupplier").show();
+                        $("#retailsupplier").show();
 
-                $("input[groupname='" + groupName + "']:checked").each(function () {
-                    $(this).prop('checked', '');
+                        $("#retailcustomer").css('display', 'none');
+                        $("#wholesalecustomer").css('display', 'none');
+                    }
+                })
+            </script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('input[type=checkbox]').click(function () {
+                        var groupName = $(this).attr('groupname');
+
+                        if (!groupName)
+                            return;
+
+                        var checked = $(this).is(':checked');
+
+                        $("input[groupname='" + groupName + "']:checked").each(function () {
+                            $(this).prop('checked', '');
+                        });
+
+                        if (checked)
+                            $(this).prop('checked', 'checked');
+                    });
                 });
+            </script>
 
-                if (checked)
-                    $(this).prop('checked', 'checked');
-            });
-        });
-    </script>
-
-    <script>
+            <script>
         $("#BillingCountry").on('change', function () {
             var country = $(this).val();
             var url = '@Url.Action("getStatebyCountry", "Account")';
@@ -715,8 +723,8 @@
 
             });
         })
-    </script>
-    <script>
+            </script>
+            <script>
         $("#BillingState").on('change', function () {
             var stateId = $(this).val();
             var url = '@Url.Action("getCitybyState", "Account")';
@@ -737,10 +745,10 @@
 
             });
         })
-    </script>
+            </script>
 
 
-    <script>
+            <script>
         $("#ShippingCountry").on('change', function () {
             var country = $(this).val();
             var url = '@Url.Action("getStatebyCountry", "Account")';
@@ -761,8 +769,8 @@
 
             });
         })
-    </script>
-    <script>
+            </script>
+            <script>
         $("#ShippingState").on('change', function () {
             var stateId = $(this).val();
             var url = '@Url.Action("getCitybyState", "Account")';
@@ -787,6 +795,6 @@
         function Response() {
 
         }
-    </script>
-}
+            </script>
+        }
 

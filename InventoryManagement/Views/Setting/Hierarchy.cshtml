@@ -1,4 +1,4 @@
-﻿@model InventoryManagement.Models.Hierarchy
+﻿@model List<InventoryManagement.Models.Treelevel>
 @using InventoryManagement.Helper;
 @{
     ViewBag.Title = "Hierarchy";
@@ -9,87 +9,128 @@
     }
 </style>
 <link href="~/Content/jsTree/themes/default/style.min.css" rel="stylesheet" />
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-4">
-            <label>Category</label>
-            @Html.DropDownListFor(x => x.Id, new SelectList(Commonhelper.GetHierarchy(), "Value", "Text"), "Select", new { @class = "form-control" })
+@using (Ajax.BeginForm("Hierarchy", "Setting", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
+{
 
+    <div class="container-fluid">
+        <div class="row">
+          <div class="table">
+              <table class="table table-bordered">
+                  <tr>
+                      <th>Parent</th>
+                      <th>Child</th>
+                      <th>Action</th>
+                  </tr>
+                  @foreach(var item in Model)
+                  {
+                  <tr>
+                      <td>@item.Parent.Name</td>
+                      <td>@item._subParent.Name</td>
+                      <td>
+                          <a href="/Setting/EditHierarchy/@item.Id" class="btn btn-default">
+                              <div class="d-flex w-100 justify-content-start align-items-center">
+                                  <span>Edit</span>
+                              </div>
+                          </a>
+                      </td>
+                  </tr>
+                  }
+              </table>
+          </div>
         </div>
-        <div class="col-md-4">
-            <label></label><br />
-            <div id="tree" style="padding:2rem 0rem 1rem;"></div>
-        </div>
-        <div class="col-md-4">
-            <label></label><br />
-            <button id="btnSave" type="submit" class="btn btn-default" style="margin-top:2rem;">Create</button>
 
-        </div>
+
     </div>
-   
-    
-</div>
+}
 @section scripts
 {
-    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-    @*<script type="text/javascript">
-        $(document).ready(function () {
-            var tree = $('#tree').tree({
-                primaryKey: 'id',
-                uiLibrary: 'bootstrap4',
-                dataSource: '/Setting/LazyGet',
-                checkboxes: true,
-                backColor: 'green'
-               
-            });
+        <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+        <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+        @*<script type="text/javascript">
+                $(document).ready(function () {
+                    var tree = $('#tree').tree({
+                        primaryKey: 'id',
+                        uiLibrary: 'bootstrap4',
+                        dataSource: '/Setting/LazyGet',
+                        checkboxes: true,
+                        backColor: 'green'
 
-            //$('input.checkbox').not(this).prop('checked', false);
-            $('#btnSave').on('click', function () {
-                var child = [];
-                var checkedIds = tree.getCheckedNodes();
-                for (var i = 0; i < checkedIds.length; i++) {
-                    var Hierarchy = {
-                        Id: checkedIds[i]
-                    }
-                    child.push(Hierarchy);
-                }
-                var Hierarchy = {
-                    Childs: child,
-                    ParentId: 100
+                    });
 
-                }
-                debugger;
-                $.ajax({
-                    type: "POST",
-                    data: JSON.stringify(Hierarchy),
-                    url: '/Setting/Hierarchy',
-                    contentType: "application/json",
-                    dataType: 'json',
-                }).done(function (res) {
+                    //$('input.checkbox').not(this).prop('checked', false);
+                    $('#btnSave').on('click', function () {
+                        var child = [];
+                        var checkedIds = tree.getCheckedNodes();
+                        for (var i = 0; i < checkedIds.length; i++) {
+                            var Hierarchy = {
+                                Id: checkedIds[i]
+                            }
+                            child.push(Hierarchy);
+                        }
+                        var Hierarchy = {
+                            Childs: child,
+                            ParentId: 100
+
+                        }
+                        debugger;
+                        $.ajax({
+                            type: "POST",
+                            data: JSON.stringify(Hierarchy),
+                            url: '/Setting/Hierarchy',
+                            contentType: "application/json",
+                            dataType: 'json',
+                        }).done(function (res) {
+
+                        });
+
+                    });
+
 
                 });
+            </script>*@
 
-            });
-        });
-    </script>*@
-  
-    <script>
-        $("#Id").on('change', function () {
-        
-            var tree = $('#tree').tree({
-                primaryKey: 'id',
-                uiLibrary: 'bootstrap4',
-                data: {
-                    parentId: $("#Id").val()
-                },
-                checkboxes: true,
-                dataSource: '/Setting/LazyGet',
-                lazyLoading: true
-               
-            });
-            tree.reload({ parentId: $("#Id").val() });
-            
-        })
-    </script>
-} 
+        <script>
+            $("#ParentId").on('change', function () {
+
+                var tree = $('#tree').tree({
+                    primaryKey: 'id',
+                    uiLibrary: 'bootstrap4',
+                    data: {
+                        parentId: $("#ParentId").val()
+                    },
+
+                    dataSource: '/Setting/LazyGet',
+                    lazyLoading: true
+
+                });
+                tree.reload({ parentId: $("#ParentId").val() });
+                tree.on('select', function (e, node, id) {
+                    $("#SubParentId").val(id)
+                    //alert('select is fired for node with id=' + id);
+                });
+                $('#btnSave').on('click', function () {
+                    //var child = [];
+                    //debugger;
+                    //var checkedIds = tree.getCheckedNodes();
+                    //var data = tree.xhr;
+                    //var json = JSON.parse(data.responseText);
+                    //var yourData = json.Data;
+                    //var checkedIds = tree.getCheckedNodes();
+                    //for (var i = 0; i < checkedIds.length; i++) {
+                    //    var Hierarchy = {
+                    //        Id: checkedIds[i]
+                    //    }
+                    //    child.push(Hierarchy);
+                    //}
+                    //var Hierarchy = {
+                    //    Childs: child,
+                    //    ParentId: 100
+
+                    //}
+                });
+            })
+            function Response(res) {
+
+            }
+        </script>
+    }
