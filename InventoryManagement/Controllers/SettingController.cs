@@ -71,50 +71,13 @@ namespace InventoryManagement.Controllers
             return Json(new { res,status },JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Hierarchy()
-        {
-            //var db = new ApplicationDbContext();
-            //IEnumerable<Hierarchy> h = db.Hierarchy.ToList();
-            List<Treelevel> lst = new List<Treelevel>();
-            using (ApplicationDbContext context = new ApplicationDbContext())
-            {
-                lst = context.Treelevel.Include(x => x.Parent).Include(x => x._subParent).ToList();
-              
-            }
-            return View(lst);
-
-            
-        }
       
         public ActionResult CreareHierarchy()
         {
 
             return View();
         }
-        [HttpPost]
-        public ActionResult CreareHierarchy(Treelevel hierarchy)
-        {
-            Treelevel l = new Treelevel();
-            l.ParentId = hierarchy.ParentId;
-            l.SubParentId = hierarchy.SubParentId;
-            using (ApplicationDbContext context = new ApplicationDbContext())
-            {
-                context.Treelevel.Add(l);
-                context.SaveChanges();
-            }
-            return View();
-        }
-        public ActionResult EditHierarchy(int Id)
-        {
-            Treelevel l = new Treelevel();
-          
-            using (ApplicationDbContext context = new ApplicationDbContext())
-            {
-              l=  context.Treelevel.Where(x => x.Id == Id).FirstOrDefault();
-                
-            }
-            return View(l);
-        }
+   
         public JsonResult Get(string query)
         {
             List<Hierarchy> locations;

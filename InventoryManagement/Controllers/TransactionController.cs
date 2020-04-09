@@ -22,19 +22,12 @@ namespace InventoryManagement.Controllers
  
         public ActionResult CreatePurachaseorder()
         {
-            InvTransaction inv = new InvTransaction();
 
-            return View(inv);
+            return View();
 
           
         }
-        [HttpPost]
-        public ActionResult CreatePurachaseorder(InvTransaction inv)
-        {
-
-
-            return View();
-        }
+      
         public async System.Threading.Tasks.Task<ActionResult> GetItemDetailById(string Id)
         {
             ItemMaster _items = new ItemMaster();
