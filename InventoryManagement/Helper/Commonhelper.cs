@@ -773,7 +773,7 @@ namespace InventoryManagement.Helper
             List<BrandMaster> _master = new List<BrandMaster>();
             using (var db = new ApplicationDbContext())
             {
-                _master = db.BrandMaster.ToList();
+                _master = db.BrandMaster.Where(x=>x.Isactive==true).ToList();
 
             }
 
@@ -857,7 +857,7 @@ namespace InventoryManagement.Helper
             List<ColorMaster> _master = new List<ColorMaster>();
             using (var db = new ApplicationDbContext())
             {
-                _master = db.ColorMaster.ToList();
+                _master = db.ColorMaster.Where(x=>x.Isactive==true).ToList();
 
             }
 

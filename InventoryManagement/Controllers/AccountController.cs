@@ -760,92 +760,92 @@ namespace InventoryManagement.Controllers
         [HttpGet]
         public ActionResult Vendor()
         {
-            string fileName = string.Empty;
-            DateTime fileCreationDatetime = DateTime.Now;
-            fileName = string.Format("{0}.pdf", fileCreationDatetime.ToString(@"yyyyMMdd") + "_" + fileCreationDatetime.ToString(@"HHmmss"));
-            string pdfPath = Server.MapPath(@"~\PDFs\") + fileName;
-            using (FileStream msReport = new FileStream(pdfPath, FileMode.Create))
-            {
-                using (Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 140f, 10f))
-                {
-                    try
-                    {
-                        // step 2
-                        PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDoc, msReport);
-                        pdfWriter.PageEvent = new ITextEvents();
+            //string fileName = string.Empty;
+            //DateTime fileCreationDatetime = DateTime.Now;
+            //fileName = string.Format("{0}.pdf", fileCreationDatetime.ToString(@"yyyyMMdd") + "_" + fileCreationDatetime.ToString(@"HHmmss"));
+            //string pdfPath = Server.MapPath(@"~\PDFs\") + fileName;
+            //using (FileStream msReport = new FileStream(pdfPath, FileMode.Create))
+            //{
+            //    using (Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 140f, 10f))
+            //    {
+            //        try
+            //        {
+            //            // step 2
+            //            PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDoc, msReport);
+            //            pdfWriter.PageEvent = new ITextEvents();
 
-                        //open the stream 
-                        pdfDoc.Open();
-                        //var path = System.Web.Hosting.HostingEnvironment.MapPath("~/Images/credit/paypal.png");
-                        //Image tif = Image.GetInstance(path);
+            //            //open the stream 
+            //            pdfDoc.Open();
+            //            //var path = System.Web.Hosting.HostingEnvironment.MapPath("~/Images/credit/paypal.png");
+            //            //Image tif = Image.GetInstance(path);
 
-                        //tif.ScalePercent(24f);
+            //            //tif.ScalePercent(24f);
 
-                        //tif.SetAbsolutePosition(pdfDoc.PageSize.Width - 36f - 72f,
-                        //pdfDoc.PageSize.Height - 36f - 216.6f);
+            //            //tif.SetAbsolutePosition(pdfDoc.PageSize.Width - 36f - 72f,
+            //            //pdfDoc.PageSize.Height - 36f - 216.6f);
 
-                        //pdfDoc.Add(tif);
+            //            //pdfDoc.Add(tif);
 
 
-                        //Paragraph para = new Paragraph("Hello world. Checking Header Footer", new Font(Font.FontFamily.HELVETICA, 22));
-                        //para.Alignment = Element.ALIGN_CENTER;
-                        //pdfDoc.Add(para);
-                        PdfPTable table = new PdfPTable(4);
-                        table.DefaultCell.BackgroundColor = BaseColor.BLACK;          
-                        table.PaddingTop = 0;
-                        table.TotalWidth = 510;
-                        table.SpacingBefore = 0;
-                        table.SpacingAfter=0;
-                        table.LockedWidth = true;
+            //            //Paragraph para = new Paragraph("Hello world. Checking Header Footer", new Font(Font.FontFamily.HELVETICA, 22));
+            //            //para.Alignment = Element.ALIGN_CENTER;
+            //            //pdfDoc.Add(para);
+            //            PdfPTable table = new PdfPTable(4);
+            //            table.DefaultCell.BackgroundColor = BaseColor.BLACK;          
+            //            table.PaddingTop = 0;
+            //            table.TotalWidth = 510;
+            //            table.SpacingBefore = 0;
+            //            table.SpacingAfter=0;
+            //            table.LockedWidth = true;
 
-                        PdfPCell header = new PdfPCell(new Phrase("Header"));
+            //            PdfPCell header = new PdfPCell(new Phrase("Header"));
 
-                        header.Colspan = 4;
+            //            header.Colspan = 4;
 
-                        table.AddCell(header);
+            //            table.AddCell(header);
 
-                        table.AddCell("Cell 1");
+            //            table.AddCell("Cell 1");
 
-                        table.AddCell("Cell 2");
+            //            table.AddCell("Cell 2");
 
-                        table.AddCell("Cell 3");
+            //            table.AddCell("Cell 3");
 
-                        table.AddCell("Cell 4");
+            //            table.AddCell("Cell 4");
 
-                        PdfPTable nested = new PdfPTable(1);
+            //            PdfPTable nested = new PdfPTable(1);
 
-                        nested.AddCell("Nested Row 1");
+            //            nested.AddCell("Nested Row 1");
 
-                        nested.AddCell("Nested Row 2");
+            //            nested.AddCell("Nested Row 2");
 
-                        nested.AddCell("Nested Row 3");
+            //            nested.AddCell("Nested Row 3");
 
-                        PdfPCell nesthousing = new PdfPCell(nested);
+            //            PdfPCell nesthousing = new PdfPCell(nested);
 
-                        nesthousing.Padding = 0f;
+            //            nesthousing.Padding = 0f;
 
-                        table.AddCell(nesthousing);
+            //            table.AddCell(nesthousing);
 
-                        PdfPCell bottom = new PdfPCell(new Phrase("bottom"));
+            //            PdfPCell bottom = new PdfPCell(new Phrase("bottom"));
 
-                        bottom.Colspan = 3;
+            //            bottom.Colspan = 3;
 
-                        table.AddCell(bottom);
+            //            table.AddCell(bottom);
 
-                        pdfDoc.Add(table);
-                        pdfDoc.NewPage();
+            //            pdfDoc.Add(table);
+            //            pdfDoc.NewPage();
 
-                        pdfDoc.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        //handle exception
-                    }
-                    finally
-                    {
-                    }
-                }
-            }
+            //            pdfDoc.Close();
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            //handle exception
+            //        }
+            //        finally
+            //        {
+            //        }
+            //    }
+            //}
             return View();
         }
         public class ITextEvents : PdfPageEventHelper

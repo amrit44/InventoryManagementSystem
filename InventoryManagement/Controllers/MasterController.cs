@@ -568,14 +568,30 @@ namespace InventoryManagement.Controllers
 
             return View(_master);
         }
+
+        public ActionResult BrandMaster_Read([DataSourceRequest]DataSourceRequest request)
+        {
+            return Json(GetBrandMaster().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
+        }
+        private static IEnumerable<BrandMaster> GetBrandMaster()
+        {
+            List<BrandMaster> _master = new List<BrandMaster>();
+
+            using (var ctx = new ApplicationDbContext())
+            {
+               
+                _master = Commonhelper.GetBrand();
+            }
+
+            return _master;
+        }
         [HttpPost]
         public async System.Threading.Tasks.Task<ActionResult> UpdateBrandMaster(BrandMaster _brand)
         {
             List<string> res = new List<string>();
             var currentuser = Commonhelper.GetCurrentUserDetails();
-            if (ModelState.IsValid)
-            {
-                try
+           try
                 {
                     BrandMaster master = new BrandMaster();
                     master.Id = _brand.Id;
@@ -590,38 +606,96 @@ namespace InventoryManagement.Controllers
                     try
                     {
                         Commonhelper.UpdateBrand(master);
-                        return Content("<script language='javascript' type='text/javascript'>alert('Category Created successfully!');</script>");
-
-                    }
+                    return RedirectToAction("BrandMaster");
+                   }
                     catch (Exception ex)
                     {
-                        return Content("<script language='javascript' type='text/javascript'>alert('Error in category creation!');</script>");
-
-                    }
+                    return RedirectToAction("BrandMaster");
+                }
                 }
                 catch (Exception ex)
                 {
-                    return Content("<script language='javascript' type='text/javascript'>alert('Error in category creation!');</script>");
-
+                return RedirectToAction("BrandMaster");
                 }
 
-
-            }
-            else
-            {
-
-
-            }
-
-            return Json(res);
         }
         [HttpGet]
-        [PermissionsAttribute(Action = "ColorMaster", Permission = "IsAdd")]
+        [PermissionsAttribute(Action = "BrandMaster", Permission = "IsAdd")]
         public async System.Threading.Tasks.Task<ActionResult> CreateBrandMaster()
         {
 
             return View();
         }
+        public ActionResult Deletebrand(BrandMaster cat)
+        {
+            BrandMaster cm = new BrandMaster();
+            try
+            {
+                using (var ctx = new ApplicationDbContext())
+                {
+                    cm = ctx.BrandMaster.Where(x => x.Id == cat.Id).FirstOrDefault();
+                    if (cm != null)
+                    {
+                        cm.Isactive = false;
+                        ctx.Entry(cm).State = System.Data.Entity.EntityState.Modified;
+                        ctx.SaveChanges();
+                        return RedirectToAction("BrandMaster");
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return RedirectToAction("Category");
+        }
+
+        public ActionResult ColorMaster_Read([DataSourceRequest]DataSourceRequest request)
+        {
+            return Json(GetColorMaster().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
+        }
+        private static IEnumerable<ColorMaster> GetColorMaster()
+        {
+            List<ColorMaster> _master = new List<ColorMaster>();
+
+            using (var ctx = new ApplicationDbContext())
+            {
+
+                _master = Commonhelper.GetColor();
+            }
+
+            return _master;
+        }
+
+        public ActionResult DeleteColor(ColorMaster cat)
+        {
+            ColorMaster cm = new ColorMaster();
+            try
+            {
+                using (var ctx = new ApplicationDbContext())
+                {
+                    cm = ctx.ColorMaster.Where(x => x.Id == cat.Id).FirstOrDefault();
+                    if (cm != null)
+                    {
+                        cm.Isactive = false;
+                        ctx.Entry(cm).State = System.Data.Entity.EntityState.Modified;
+                        ctx.SaveChanges();
+                        return RedirectToAction("ColorMaster");
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return RedirectToAction("ColorMaster");
+        }
+
         [HttpPost]
         [PermissionsAttribute(Action = "ColorMaster", Permission = "IsAdd")]
         public async System.Threading.Tasks.Task<ActionResult> CreateBrandMaster(BrandMaster _brand)
@@ -646,19 +720,16 @@ namespace InventoryManagement.Controllers
                     try
                     {
                         Commonhelper.SaveBrand(master);
-                        return Content("<script language='javascript' type='text/javascript'>alert('Category Created successfully!');</script>");
-
+                        return RedirectToAction("BrandMaster");
                     }
                     catch (Exception ex)
                     {
-                        return Content("<script language='javascript' type='text/javascript'>alert('Error in category creation!');</script>");
-
+                        return RedirectToAction("BrandMaster");
                     }
                 }
                 catch (Exception ex)
                 {
-                    return Content("<script language='javascript' type='text/javascript'>alert('Error in category creation!');</script>");
-
+                    return RedirectToAction("BrandMaster");
                 }
 
 
@@ -721,19 +792,16 @@ namespace InventoryManagement.Controllers
                     try
                     {
                         Commonhelper.SaveColor(master);
-                        return Content("<script language='javascript' type='text/javascript'>alert('Category Created successfully!');</script>");
-
+                        return RedirectToAction("ColorMaster");
                     }
                     catch (Exception ex)
                     {
-                        return Content("<script language='javascript' type='text/javascript'>alert('Error in category creation!');</script>");
-
+                        return RedirectToAction("ColorMaster");
                     }
                 }
                 catch (Exception ex)
                 {
-                    return Content("<script language='javascript' type='text/javascript'>alert('Error in category creation!');</script>");
-
+                    return RedirectToAction("ColorMaster");
                 }
 
 
@@ -760,8 +828,7 @@ namespace InventoryManagement.Controllers
         {
             List<string> res = new List<string>();
             var currentuser = Commonhelper.GetCurrentUserDetails();
-            if (ModelState.IsValid)
-            {
+           
                 try
                 {
                     ColorMaster master = new ColorMaster();
@@ -777,14 +844,13 @@ namespace InventoryManagement.Controllers
                     try
                     {
                         Commonhelper.Updatecolor(master);
-                        return Content("<script language='javascript' type='text/javascript'>alert('Category Created successfully!');</script>");
+                    return RedirectToAction("ColorMaster");
 
                     }
                     catch (Exception ex)
                     {
-                        return Content("<script language='javascript' type='text/javascript'>alert('Error in category creation!');</script>");
-
-                    }
+                    return RedirectToAction("ColorMaster");
+                   }
                 }
                 catch (Exception ex)
                 {
@@ -793,15 +859,7 @@ namespace InventoryManagement.Controllers
                 }
 
 
-            }
-            else
-            {
-
-
-            }
-
-            return Json(res);
-            return View();
+           
         }
 
         #region duplicate check for all

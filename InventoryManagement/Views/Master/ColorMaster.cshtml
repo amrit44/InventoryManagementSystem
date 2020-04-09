@@ -3,7 +3,20 @@
     ViewBag.Title = "ColorMaster";
 }
 
+<link href="~/Content/kendo/2014.1.318/kendo.common.min.css" rel="stylesheet" />
+<link href="~/Content/kendo/2014.1.318/kendo.bootstrap.min.css" rel="stylesheet" />
+<style>
+    .k-grid-actions {
+        display: inline-block;
+        margin-left: 5px;
+    }
 
+    #grid {
+        font-size: medium !important;
+        font-family: Times New Roman, serif !important;
+        font-style: unset !important;
+    }
+</style>
 <div class="col-xs-12">
     <a href="/Master/CreateColorMaster" class="btn btn-primary">
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -17,45 +30,83 @@
     <!-- Responsive table starts here -->
     <!-- For correct display on small screens you must add 'data-title' to each 'td' in your table -->
     <div class="table-responsive-vertical shadow-z-1">
+        @(Html.Kendo().Grid<InventoryManagement.Models.ColorMaster>()
+                      .Name("grid")
+                      .Columns(columns =>
+                      {
+                          columns.Bound(c => c.Name).HeaderHtmlAttributes(new { @class = "hidden-xs" });
+                          columns.Bound(c => c.Description).HeaderHtmlAttributes(new { @class = "hidden-xs" });
+
+                          columns.Command(command => { command.Edit(); command.Destroy(); }).Width(220).HeaderHtmlAttributes(new { @class = "hidden-xs" });
+
+                      })
+.Scrollable()
+.Editable(editable => editable.Mode(GridEditMode.InLine))
+.Pageable(pageable => pageable
+.Refresh(true)
+.PageSizes(true)
+
+.ButtonCount(5)
+
+)
+
+.DataSource(dataSource => dataSource
+.Ajax()
+.Model(model =>
+{
+model.Id(p => p.Id);
+
+}
+
+
+)
+
+.Read(read => read.Action("ColorMaster_Read", "master"))
+.Update(update => update.Action("UpdateColorMaster", "master"))
+.Destroy(update => update.Action("DeleteColor", "master"))
+
+
+.PageSize(5)
+))
         <!-- Table starts here -->
-        <table id="table" class="table table-hover table-mc-light-blue">
-            <thead>
-                <tr>
-                    <th>Sno</th>
-                    <th>Name</th>
-                    <th>Action</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    var index = Model.IndexOf(item);
+        @*<table id="table" class="table table-hover table-mc-light-blue">
+                <thead>
                     <tr>
-                        <td data-title="ID">@(index + 1)</td>
-                        <td data-title="Name">@item.Name</td>
-                        <td data-title="Link">
-                            <a href="/Master/EditColor/@item.Id" class="btn btn-default">
-                                <div class="d-flex w-100 justify-content-start align-items-center">
-                                    <span>Edit</span>
-                                </div>
-                            </a>
-                            <a href="#" class="btn btn-danger del">
-                                <div class="d-flex w-100 justify-content-start align-items-center">
-                                    <span>Delete</span>
-                                </div>
-                            </a>
-
-
-                        </td>
-
+                        <th>Sno</th>
+                        <th>Name</th>
+                        <th>Action</th>
 
                     </tr>
-                }
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var index = Model.IndexOf(item);
+                        <tr>
+                            <td data-title="ID">@(index + 1)</td>
+                            <td data-title="Name">@item.Name</td>
+                            <td data-title="Link">
+                                <a href="/Master/EditColor/@item.Id" class="btn btn-default">
+                                    <div class="d-flex w-100 justify-content-start align-items-center">
+                                        <span>Edit</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="btn btn-danger del">
+                                    <div class="d-flex w-100 justify-content-start align-items-center">
+                                        <span>Delete</span>
+                                    </div>
+                                </a>
 
 
-            </tbody>
-        </table>
+                            </td>
+
+
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>*@
     </div>
 
 </div>

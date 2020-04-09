@@ -2,7 +2,20 @@
 @{
     ViewBag.Title = "BrandMaster";
 }
+<link href="~/Content/kendo/2014.1.318/kendo.common.min.css" rel="stylesheet" />
+<link href="~/Content/kendo/2014.1.318/kendo.bootstrap.min.css" rel="stylesheet" />
+<style>
+    .k-grid-actions {
+        display: inline-block;
+        margin-left: 5px;
+    }
 
+    #grid {
+        font-size: medium !important;
+        font-family: Times New Roman, serif !important;
+        font-style: unset !important;
+    }
+</style>
 
 <div class="col-xs-12">
     <a href="/Master/CreateBrandMaster" class="btn btn-primary">
@@ -17,8 +30,46 @@
     <!-- Responsive table starts here -->
     <!-- For correct display on small screens you must add 'data-title' to each 'td' in your table -->
     <div class="table-responsive-vertical shadow-z-1">
+        @(Html.Kendo().Grid<InventoryManagement.Models.BrandMaster>()
+                            .Name("grid")
+                            .Columns(columns =>
+                            {
+                                columns.Bound(c => c.Name).HeaderHtmlAttributes(new { @class = "hidden-xs" });
+                                columns.Bound(c => c.Description).HeaderHtmlAttributes(new { @class = "hidden-xs" });
+
+                                columns.Command(command => { command.Edit(); command.Destroy(); }).Width(220).HeaderHtmlAttributes(new { @class = "hidden-xs" });
+
+                            })
+.Scrollable()
+.Editable(editable => editable.Mode(GridEditMode.InLine))
+.Pageable(pageable => pageable
+.Refresh(true)
+.PageSizes(true)
+
+.ButtonCount(5)
+
+)
+
+.DataSource(dataSource => dataSource
+.Ajax()
+.Model(model =>
+{
+model.Id(p => p.Id);
+
+}
+
+
+)
+
+.Read(read => read.Action("BrandMaster_Read", "master"))
+.Update(update => update.Action("UpdateBrandMaster", "master"))
+.Destroy(update => update.Action("Deletebrand", "master"))
+
+
+.PageSize(5)
+))
         <!-- Table starts here -->
-        <table id="table" class="table table-hover table-mc-light-blue">
+        @*<table id="table" class="table table-hover table-mc-light-blue">
             <thead>
                 <tr>
                     <th>Sno</th>
@@ -55,7 +106,7 @@
 
 
             </tbody>
-        </table>
+        </table>*@
     </div>
 
 </div>
