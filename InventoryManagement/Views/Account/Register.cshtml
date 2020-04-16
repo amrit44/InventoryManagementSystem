@@ -3,8 +3,13 @@
 @{
     ViewBag.Title = "Register";
 }
-
-
+<style>
+    .field-validation-error {
+        color: red;
+    }
+</style>
+<link href="~/Content/kendo/2014.1.318/kendo.common.min.css" rel="stylesheet" />
+<link href="~/Content/kendo/2014.1.318/kendo.bootstrap.min.css" rel="stylesheet" />
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
@@ -42,6 +47,7 @@
             <div class="col-md-4">
                 <label>Mobile</label>
                 @Html.TextBoxFor(m => m.MobileNo, new { @class = "form-control", @maxlength = 10 })
+                @Html.ValidationMessageFor(x => x.MobileNo)
             </div>
         </div>
         <div class="row">
@@ -55,6 +61,12 @@
             </div>
 
         </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label>Valid Till</label><br />
+                @Html.Kendo().DatePickerFor(x => x.UserExpiry)
+            </div>
+        </div>
         <br />
         <div class="row">
             <div class="col-md-4">
@@ -66,7 +78,7 @@
     </div>
 
 
- 
+
     @*<div class="form-group">
             @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
@@ -74,10 +86,10 @@
             </div>
         </div>*@
     @*<div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
-    </div>*@
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Register" />
+            </div>
+        </div>*@
 }
 
 @section Scripts {

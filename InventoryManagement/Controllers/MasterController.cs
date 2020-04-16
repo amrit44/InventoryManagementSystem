@@ -26,8 +26,20 @@ namespace InventoryManagement.Controllers
             itemlst = Commonhelper.GetItemMaster();
             return View(itemlst);
         }
-        [HttpGet]
         [PermissionsAttribute(Action = "Item", Permission = "IsAdd")]
+
+        public ActionResult Item_Read([DataSourceRequest]DataSourceRequest request)
+        {
+            return Json(GetItemMaster().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
+        }
+        private static IEnumerable<ItemMaster> GetItemMaster()
+        {
+            List<ItemMaster> itemlst = new List<ItemMaster>();
+            itemlst = Commonhelper.GetItemMaster();
+
+            return itemlst;
+        }
 
         public ActionResult CreateItem()
         {
@@ -293,6 +305,7 @@ namespace InventoryManagement.Controllers
                     master.CreatedBy = currentuser.Id;
                     master.CreatedDate = DateTime.Now;
                     master.Name = category.Name;
+                    master.Discount = category.Discount;
                     master.StoreId = currentuser.StoreId;
                     master.workstation = Commonhelper.GetStation();
                     master.FinancialYear = DateTime.Now.Year;
@@ -347,6 +360,7 @@ namespace InventoryManagement.Controllers
                     master.ModifiedBy = currentuser.Id;
                     master.ModifiedDate = DateTime.Now;
                     master.Name = category.Name;
+                    master.Discount = category.Discount;
                     master.Description = category.Description;
                     master.StoreId = currentuser.StoreId;
                     master.workstation = Commonhelper.GetStation();
@@ -469,17 +483,20 @@ namespace InventoryManagement.Controllers
         }
         [HttpPost]
         [PermissionsAttribute(Action = "SubCategoryMaster", Permission = "IsAdd")]
-        public ActionResult UpdateSubcategory(SubCategoryMaster subcategory)
+        public ActionResult UpdateSubcategory([DataSourceRequest] DataSourceRequest request, SubCategoryMaster subcategory)
         {
             List<string> res = new List<string>();
             var currentuser = Commonhelper.GetCurrentUserDetails();
-             try
+            SubCategoryMaster master = new SubCategoryMaster();
+            try
                 {
-                    SubCategoryMaster master = new SubCategoryMaster();
+                   
                     master.Id = subcategory.Id;
                     master.ModifiedBy = currentuser.Id;
                     master.ModifiedDate = DateTime.Now;
                     master.Name = subcategory.Name;
+                    master.CheckName = subcategory.Name;
+                    master.CategoryName = Commonhelper.GetCategoryName(subcategory.CategoryId);
                     master.CategoryId = subcategory.CategoryId;
                     master.Description = subcategory.Description;
                     master.StoreId = currentuser.StoreId;
@@ -489,20 +506,19 @@ namespace InventoryManagement.Controllers
                     try
                     {
                         Commonhelper.UpdateSubCategory(master);
-
-                       return RedirectToAction("SubCategory_Read");
+                       return Json(new[] { master }.ToDataSourceResult(request));
+                   /// return RedirectToActionPermanent("SubCategory_Read");
+                  ///  return RedirectToAction("Subcategory");
                     }
                     catch (Exception ex)
                     {
-                        return Content("<script language='javascript' type='text/javascript'>alert('Error in category creation!');</script>");
-
-                    }
+                    return Json(new[] { master }.ToDataSourceResult(request, ModelState));
                 }
+            }
                 catch (Exception ex)
                 {
-                    return Content("<script language='javascript' type='text/javascript'>alert('Error in category creation!');</script>");
-
-                }
+                return Json(new[] { master }.ToDataSourceResult(request, ModelState));
+              }
 
 
         }
@@ -587,17 +603,19 @@ namespace InventoryManagement.Controllers
             return _master;
         }
         [HttpPost]
-        public async System.Threading.Tasks.Task<ActionResult> UpdateBrandMaster(BrandMaster _brand)
+        public async System.Threading.Tasks.Task<ActionResult> UpdateBrandMaster([DataSourceRequest] DataSourceRequest request,BrandMaster _brand)
         {
             List<string> res = new List<string>();
             var currentuser = Commonhelper.GetCurrentUserDetails();
-           try
+            BrandMaster master = new BrandMaster();
+            try
                 {
-                    BrandMaster master = new BrandMaster();
+                    
                     master.Id = _brand.Id;
                     master.ModifiedBy = currentuser.Id;
                     master.ModifiedDate = DateTime.Now;
                     master.Name = _brand.Name;
+                    master.CheckName = _brand.Name;
                     master.Description = _brand.Description;
                     master.StoreId = currentuser.StoreId;
                     master.workstation = Commonhelper.GetStation();
@@ -606,16 +624,19 @@ namespace InventoryManagement.Controllers
                     try
                     {
                         Commonhelper.UpdateBrand(master);
-                    return RedirectToAction("BrandMaster");
-                   }
+                     return Json(new[] { master }.ToDataSourceResult(request, ModelState));
+                    }
                     catch (Exception ex)
                     {
-                    return RedirectToAction("BrandMaster");
+
+                    return Json(new[] { master }.ToDataSourceResult(request, ModelState));
+
                 }
-                }
+            }
                 catch (Exception ex)
                 {
-                return RedirectToAction("BrandMaster");
+                return Json(new[] { master }.ToDataSourceResult(request, ModelState));
+
                 }
 
         }
@@ -960,7 +981,7 @@ namespace InventoryManagement.Controllers
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
         }
-        public async System.Threading.Tasks.Task<ActionResult> Checkcategoryname(string Name, string Previousname)
+        public JsonResult Checkcategoryname(string Name, string Previousname)
         {
             if (Name == Previousname)
             {
@@ -976,13 +997,13 @@ namespace InventoryManagement.Controllers
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
         }
-        public async System.Threading.Tasks.Task<ActionResult> Checksubcategoryname(string CategoryId, string Name, string Previousname)
+        public async System.Threading.Tasks.Task<ActionResult> Checksubcategoryname(string Name, string Previousname)
         {
             if (Name == Previousname)
             {
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
-            bool check = Commonhelper.CheckSubcategoryname(CategoryId, Name);
+            bool check = Commonhelper.CheckSubcategoryname(Name);
             if (check)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);

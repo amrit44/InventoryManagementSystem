@@ -41,11 +41,22 @@
 
             </div>
             <div class="col-md-4" style="padding:1rem;">
-                <label>Description </label>
-                @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
+                <label>Discount </label>
+                @Html.TextBoxFor(x => x.Discount, new { @class = "form-control" ,@type="number"})
 
 
             </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="padding:2.5rem;">
+                    <label>Description </label>
+                    @Html.TextAreaFor(x => x.Description, new { @class = "form-control",@cols="20",@rows="2",@style="margin: 0px -426.672px 0px 0px; width: 817px; height: 53px;" })
+
+
+                </div>
+            </div>
+           
         </div>
         <div class="col-md-12">
             <div class="col-md-4" style="padding:1rem;">

@@ -488,6 +488,7 @@ namespace InventoryManagement.Helper
                 foreach (var _m in _Permission._ModulePermission.ToList())
                 {
                     MenuGroup mg = new MenuGroup();
+
                     mg.Id = _m.MenuId;
                     lst.Add(mg);
                 }
@@ -668,6 +669,7 @@ namespace InventoryManagement.Helper
                     if(_master!=null)
                     {
                         _master.Name = master.Name;
+                        _master.Discount = master.Discount;
                         _master.workstation = GetStation();
                         _master.ModifiedBy = master.ModifiedBy;
                         _master.ModifiedDate = DateTime.Now;
@@ -739,6 +741,7 @@ namespace InventoryManagement.Helper
                         sbcat.Isactive = subcat.Isactive;
                         sbcat.CategoryName = subcat._CategoryMaster.Name;
                         sbcat.Name = subcat.Name;
+                        sbcat.CheckName = subcat.Name;
                         sbcat.Description = subcat.Description;
                         _newmaster.Add(sbcat);
                     }
@@ -771,13 +774,28 @@ namespace InventoryManagement.Helper
         {
 
             List<BrandMaster> _master = new List<BrandMaster>();
+            List<BrandMaster> _masterlst = new List<BrandMaster>();
+
             using (var db = new ApplicationDbContext())
             {
                 _master = db.BrandMaster.Where(x=>x.Isactive==true).ToList();
+                if(_master.Count>0)
+                {
+                    foreach(var brand in _master)
+                    {
+                        BrandMaster _BrandMaster = new BrandMaster();
+                        _BrandMaster.Id = brand.Id;
+                        _BrandMaster.Name = brand.Name;
+                        _BrandMaster.CheckName = brand.Name;
+                        _BrandMaster.Description = brand.Description;
+                        _masterlst.Add(_BrandMaster);
+
+                    }
+                }
 
             }
 
-            return _master;
+            return _masterlst;
         }
         public static void SaveBrand(BrandMaster master)
         {
@@ -1026,13 +1044,13 @@ namespace InventoryManagement.Helper
             }
             return check;
         }
-        public static bool CheckSubcategoryname(string categoryId,string Name)
+        public static bool CheckSubcategoryname(string Name)
         {
             bool check = false;
 
             using (var db = new ApplicationDbContext())
             {
-                check = db.SubCategoryMaster.Any(x => x.Name == Name && x.CategoryId==categoryId && x.Isactive==true);
+                check = db.SubCategoryMaster.Any(x => x.Name == Name && x.Isactive==true);
             }
             return check;
         }
@@ -1061,13 +1079,37 @@ namespace InventoryManagement.Helper
         {
 
             List<CategoryMaster> _master = new List<CategoryMaster>();
+            List<CategoryMaster> _masterlst = new List<CategoryMaster>();
+
             using (var db = new ApplicationDbContext())
             {
                 _master = db.CategoryMaster.Where(x=>x.Isactive==true).ToList(); 
+                if(_master!=null)
+                {
+                    foreach(var item in _master)
+                    {
+                        CategoryMaster _CategoryMaster = new CategoryMaster();
+                        _CategoryMaster.Id = item.Id;
+                        if(item.Discount!=0)
+                        {
+                            _CategoryMaster.Discount = item.Discount;
+
+                        }
+                        else
+                        {
+                            _CategoryMaster.Discount =0;
+
+                        }
+                        _CategoryMaster.Name = item.Name;
+                        _CategoryMaster.Description = item.Description;
+                        _CategoryMaster.CheckName = item.Name;
+                        _masterlst.Add(_CategoryMaster);
+                    }
+                }
 
             }
 
-            return _master;
+            return _masterlst;
         }
         public static List<DropDownControl> GetSubCategoryByCategory(string CategoryId)
         {
@@ -1396,5 +1438,46 @@ namespace InventoryManagement.Helper
         {
             return GetAll();
         }
+        public static bool Checkmobile(string mobile)
+        {
+            bool check = false;
+
+            using (var db = new ApplicationDbContext())
+            {
+                check = db.Users.Any(x => x.MobileNo.Equals(mobile));
+            }
+            return check;
+        }
+        public static int GetSubmenuOrder(Guid menuId)
+        {
+            int order = 0;
+
+            using (var db = new ApplicationDbContext())
+            {
+                order = db.SubMenumaster.Where(x => x.SubMenumasterId==menuId).Select(x=>x.order).FirstOrDefault();
+            }
+            return order;
+        }
+        public static string GetCategoryName(string CategoryId)
+        {
+            string Name = string.Empty;
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                    Name = db.CategoryMaster.Where(x => x.Id == CategoryId).Select(x => x.Name).FirstOrDefault();
+                    return Name;
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+            return Name;
+        }
+
     }
 }

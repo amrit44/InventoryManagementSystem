@@ -1259,6 +1259,8 @@
     <Content Include="Content\kendo\2020.1.219\Uniform\sprite_kpi_2x.png" />
     <Content Include="Content\Login.css" />
     <Content Include="Content\sidebar.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="Content\util.css" />
     <Content Include="Content\_all-skins.min.css" />
     <Content Include="favicon.ico" />
@@ -3351,6 +3353,8 @@
     <Content Include="Content\kendo\2020.1.219-source\mobile\fiori\base.less" />
     <Content Include="Content\kendo\2020.1.219-source\mobile\fiori\all.less" />
     <Content Include="Content\kendo\2020.1.219-source\mobile\fiori\actionsheet.less" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\ControlSidebar.js" />
@@ -6070,6 +6074,8 @@
     <Content Include="Scripts\kendo\2020.1.219\messages\kendo.messages.zh-TW.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

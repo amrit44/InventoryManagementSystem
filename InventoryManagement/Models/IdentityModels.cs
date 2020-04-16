@@ -14,7 +14,9 @@ namespace InventoryManagement.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
-
+        [EmailAddress]
+        [Required]
+        public override string UserName { get; set; }
         [ForeignKey("_CompanyMaster")]
 
         public string CompanyId { get; set; }
@@ -30,8 +32,9 @@ namespace InventoryManagement.Models
         [Required]
         public string Password { get; set; }
         [Required]
+        [Remote("Checkmobile", "Account", ErrorMessage = "Number in use.", AdditionalFields = "previousnumber")]
+
         public string MobileNo { get; set; }
-       
         public string Code { get; set; }
   
         public string Url { get; set; }
@@ -45,7 +48,9 @@ namespace InventoryManagement.Models
         public bool? IsRetailCustomer { get; set; }
         public bool? IsWholeCustomer { get; set; }
         public bool Status { get; set; }
-        public DateTime? UserExpiry { get; set; }
+        [Required(ErrorMessage = "Expiry Date is required")]
+
+        public DateTime ? UserExpiry { get; set; }
         public DateTime Datecreated { get; set; }
         public string createdby { get; set; }
         public DateTime? Datemodified { get; set; }
@@ -63,6 +68,8 @@ namespace InventoryManagement.Models
 
         [NotMapped]
         public string UserRoleName { get; set; }
+        [NotMapped]
+        public string ExistsMobileNo { get; set; }
 
         //public virtual IdentityUserRole IdentityUserRole { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -229,6 +236,7 @@ namespace InventoryManagement.Models
         [Remote("Checkcategoryname", "Master", ErrorMessage = "Name in use.", AdditionalFields = "Previousname")]
 
         public string Name { get; set; }
+        public decimal ? Discount { get; set; }
         public string Description { get; set; }
         public int FinancialYear { get; set; }
         public string workstation { get; set; }
@@ -237,6 +245,8 @@ namespace InventoryManagement.Models
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
         public bool Isactive { get; set; }
+        [NotMapped]
+        public string CheckName { get; set; }
     }
     [Table("SubCategoryMaster")]
     public class SubCategoryMaster
@@ -256,7 +266,7 @@ namespace InventoryManagement.Models
         [ForeignKey("StoreId")]
         public StoreMaster _StoreMaster { get; set; }
         [Required(ErrorMessage = "Name Required.")]
-        [Remote("Checksubcategoryname", "Master", ErrorMessage = "Name in use.", AdditionalFields = "CategoryId,Previousname")]
+        [Remote("Checksubcategoryname", "Master", ErrorMessage = "Name in use.", AdditionalFields = "Previousname")]
         public string Name { get; set; }
         public int FinancialYear { get; set; }
         public string workstation { get; set; }
@@ -268,6 +278,8 @@ namespace InventoryManagement.Models
         public bool Isactive { get; set; }
         [NotMapped]
         public string CategoryName { get; set; }
+        [NotMapped]
+        public string CheckName { get; set; }
 
     }
     [Table("BrandMaster")]
@@ -294,6 +306,8 @@ namespace InventoryManagement.Models
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
         public bool Isactive { get; set; }
+        [NotMapped]
+        public string CheckName { get; set; }
     }
 
     [Table("ColorMaster")]
@@ -320,6 +334,8 @@ namespace InventoryManagement.Models
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
         public bool Isactive { get; set; }
+        [NotMapped]
+        public string CheckName { get; set; }
     }
     [Table("ItemMaster")]
     public class ItemMaster

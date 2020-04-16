@@ -3,56 +3,74 @@
 @{
     ViewBag.Title = "RegisteredAccounts";
 }
-    <link href="~/Content/kendo/2014.1.318/kendo.common.min.css" rel="stylesheet" />
-    <link href="~/Content/kendo/2014.1.318/kendo.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/kendo/2014.1.318/kendo.common.min.css" rel="stylesheet" />
+<link href="~/Content/kendo/2014.1.318/kendo.bootstrap.min.css" rel="stylesheet" />
 <style>
     .k-grid-actions {
         display: inline-block;
         margin-left: 5px;
     }
-    #grid{
-    font-size: medium !important;
-    font-family: Times New Roman, serif !important;
-    font-style: unset !important;
+
+    #grid {
+        font-size: medium !important;
+        font-family: Times New Roman, serif !important;
+        font-style: unset !important;
+    }
+
+    .k-edit-cell .k-widget.k-tooltip, html .k-grid-edit-row .k-widget.k-tooltip {
+        color: red !important;
     }
 </style>
 <div class="col-md-12">
-    <a href="/Account/Register" class="btn btn-primary">
-        <div class="d-flex w-100 justify-content-start align-items-center">
-            <span>Add New</span>
-        </div>
-    </a>
+    <h3 style="margin-top: 0rem;">Users</h3>
 </div>
-<br />
-<br />
-<div class="col-xs-12">
-    <div class="box table-responsive no-padding">
-        @(Html.Kendo().Grid<InventoryManagement.Models.ApplicationUser>()
+
+<div class="row">
+    <div class="col-md-12">
+        <a href="/Account/Register" class="btn btn-primary">
+            <div class="d-flex w-100 justify-content-start align-items-center">
+                <span>Add New</span>
+            </div>
+        </a>
+    </div>
+    
+</div>
+
+<hr />
+ @(Html.Kendo().Grid<InventoryManagement.Models.ApplicationUser>()
                                         .Name("grid")
                                         .Columns(columns =>
                                         {
-                                            columns.Bound(c => c.UserName).HeaderHtmlAttributes(new { @class = "hidden-xs" });
+                                            columns.Bound(c => c.UserName).HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(200);
                                             columns.Bound(c => c.CompanyName).Title("Company").HeaderHtmlAttributes(new { @class = "hidden-xs" });
                                             columns.Bound(c => c.FirstName).HeaderHtmlAttributes(new { @class = "hidden-xs" });
                                             columns.Bound(c => c.LastName).HeaderHtmlAttributes(new { @class = "hidden-xs" });
                                             columns.Bound(c => c.UserRole).EditorTemplateName("Roles").Title("Role").ClientTemplate("#=UserRoleName#").HeaderHtmlAttributes(new { @class = "hidden-xs" });
                                             columns.Bound(c => c.MobileNo).Title("Contact").HeaderHtmlAttributes(new { @class = "hidden-xs" });
-
+                                            columns.Bound(c => c.ExistsMobileNo).Hidden();
 
                                             columns.Bound(c => c.Status).Title("Status").EditorTemplateName("Boolean").ClientTemplate("#=StatusName#").HeaderHtmlAttributes(new { @class = "hidden-xs" });
 
-                                            columns.Command(command => { command.Edit(); command.Destroy(); }).Width(220).HeaderHtmlAttributes(new { @class = "hidden-xs" });
+                                            columns.Command(command =>
+                                                    {
+                                                        command.Edit();
+
+
+
+                                            }).Width(200).Title("Action").HeaderHtmlAttributes(new { @class = "hidden-xs" });
+
 
                                             columns.Template(c => @Html.ActionLink("Permission", "EditPermission", "Account", null, new { id = c.Id }).ToHtmlString())
                                            .ClientTemplate(@Html.ActionLink("Permission", "EditPermission", "Account", new { id = "#=Id#" }, new { @class = "k-button k-button-icontext k-grid-permission" }).ToHtmlString()).HeaderHtmlAttributes(new { @class = "hidden-xs" });
                                         })
 .Scrollable()
+.HtmlAttributes(new { style = "height:400px;" })
 .Editable(editable => editable.Mode(GridEditMode.InLine))
 .Pageable(pageable => pageable
  .Refresh(true)
  .PageSizes(true)
 
- .ButtonCount(5)
+ .ButtonCount(10)
 
  )
 
@@ -79,26 +97,107 @@
          .Destroy(update => update.Action("EditingPopup_Destroy", "Grid"))
 
 
- .PageSize(5)
-) )
-    </div>
-</div>
+ .PageSize(10)
+ .Events(events => events.Error("error_handler"))
+))
+
+
+ 
 
 @section Scripts
  {
-
+    @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
         $(document).ready(function () {
             $("form.k-edit-form").kendoValidator();
-           
+
         });
 
     </script>
     <script>
-        $(function() {
-   
-});
+        $(function () {
+
+        });
     </script>
 
+    <script type="text/javascript">
+        //adding remote rule to handle validation based on Remote attribute set in the model.
+        (function ($, kendo) {
+            $.extend(true, kendo.ui.validator, {
+                rules: {
+                    remote: function (input) {
+
+                        if (input.val() == "" || !input.attr("data-val-remote-url")) {
+                            return true;
+                        }
+
+                        if (input.attr("data-val-remote-recieved")) {
+                            input.attr("data-val-remote-recieved", "");
+                            return !(input.attr("data-val-remote"));
+                        }
+
+                        var url = input.attr("data-val-remote-url");
+                        var postData = {};
+                        postData[input.attr("data-val-remote-additionalfields").split(".")[1]] = input.val();
+                        var grid = $("#grid");
+                        var ctrl = grid.find("#ExistsMobileNo");
+                        var validator = $("#grid").kendoValidator().data("kendoValidator");
+                        var currentInput = input;
+                        input.attr("data-val-remote-requested", true);
+                        var number = input.val();
+
+                        $.ajax({
+                            url: url,
+                            type: "POST",
+                            data: { MobileNo: number, previousnumber: $(ctrl).val() },
+
+                            success: function (data) {
+
+
+                                if (data == true) {
+                                    input.attr("data-val-remote", "");
+                                     $('.k-grid-update').css('display', 'inline-block');
+                                }
+                                else {
+                                    input.attr("data-val-remote", data);
+                                     $('.k-grid-update').css('display', 'none');
+
+                                }
+                                input.attr("data-val-remote-recieved", true);
+                                validator.validateInput(currentInput);
+
+                            },
+                            error: function () {
+                                input.attr("data-val-remote-recieved", true);
+                                validator.validateInput(currentInput);
+
+                            }
+                        });
+                        return true;
+                    }
+                },
+                messages: {
+                    remote: function (input) {
+                        return input.attr("data-val-remote");
+                    }
+                }
+            });
+        })(jQuery, kendo);
+
+        //show server errors if any
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+    </script>
 
 }

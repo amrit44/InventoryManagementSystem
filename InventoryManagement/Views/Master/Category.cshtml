@@ -15,7 +15,15 @@
         font-family: Times New Roman, serif !important;
         font-style: unset !important;
     }
+
+    .k-edit-cell .k-widget.k-tooltip, html .k-grid-edit-row .k-widget.k-tooltip {
+        color: red !important;
+        float:left;
+    }
 </style>
+<div class="col-md-12">
+    <h3 style="margin-top: 0rem;">Category</h3>
+</div>
 <div class="col-xs-12">
     <a href="/Master/CreateCategory" class="btn btn-primary">
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -33,8 +41,9 @@
                                 .Columns(columns =>
                                 {
                                     columns.Bound(c => c.Name).HeaderHtmlAttributes(new { @class = "hidden-xs" });
+                                    columns.Bound(c => c.Discount).HeaderHtmlAttributes(new { @class = "hidden-xs" });
                                     columns.Bound(c => c.Description).HeaderHtmlAttributes(new { @class = "hidden-xs" });
-
+                                    columns.Bound(c => c.CheckName).Hidden();
                                     columns.Command(command => { command.Edit(); command.Destroy(); }).Width(220).HeaderHtmlAttributes(new { @class = "hidden-xs" });
 
                                 })
@@ -66,48 +75,98 @@ model.Id(p => p.Id);
 
 .PageSize(5)
 ))
-    <!-- Responsive table starts here -->
-    <!-- For correct display on small screens you must add 'data-title' to each 'td' in your table -->
-    <div class="table-responsive-vertical shadow-z-1">
-        <!-- Table starts here -->
-        @*<table id="table" class="table table-hover table-mc-light-blue">
-                <thead>
-                    <tr>
-                        <th>Sno</th>
-                        <th>Name</th>
-                        <th>Action</th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        var index = Model.IndexOf(item);
-                        <tr>
-                            <td data-title="ID">@(index + 1)</td>
-                            <td data-title="Name">@item.Name</td>
-                            <td data-title="Link">
-                                <a href="/Master/EditCategory/@item.Id" class="btn btn-default">
-                                    <div class="d-flex w-100 justify-content-start align-items-center">
-                                        <span>Edit</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="btn btn-danger del">
-                                    <div class="d-flex w-100 justify-content-start align-items-center">
-                                        <span>Delete</span>
-                                    </div>
-                                </a>
-
-
-                            </td>
-
-
-                        </tr>
-                    }
-
-
-                </tbody>
-            </table>*@
-    </div>
-
+    
 </div>
+
+
+@section Scripts
+ {
+    
+   
+
+    <script type="text/javascript">
+        //adding remote rule to handle validation based on Remote attribute set in the model.
+        (function ($, kendo) {
+            $.extend(true, kendo.ui.validator, {
+                rules: {
+                    remote: function (input) {
+                        
+                        if (input.val() == "" || !input.attr("data-val-remote-url")) {
+                            return true;
+                        }
+
+                        if (input.attr("data-val-remote-recieved")) {
+                            input.attr("data-val-remote-recieved", "");
+                            return !(input.attr("data-val-remote"));
+                        }
+
+                        var url = input.attr("data-val-remote-url");
+                        var postData = {};
+                        postData[input.attr("data-val-remote-additionalfields").split(".")[1]] = input.val();
+                        var grid = $("#grid");
+                        var ctrl = grid.find("#CheckName");
+                        var validator = $("#grid").kendoValidator().data("kendoValidator");
+                        var currentInput = input;
+                        input.attr("data-val-remote-requested", true);
+                        var Category = input.val();
+
+                        $.ajax({
+                            url: url,
+                            type: "POST",
+                            data: { Name: Category, Previousname: $(ctrl).val() },
+
+                            success: function (data) {
+
+                                debugger;
+                                if (data == true) {
+                                    input.attr("data-val-remote", "");
+                                    $('.k-grid-update').css('display', 'inline-block');
+                                }
+                                else {
+                                    
+                                    input.attr("data-val-remote", "Name in use");
+                                     $('.k-grid-update').css('display', 'none');
+                                   
+                                }
+                                input.attr("data-val-remote-recieved", true);
+                                validator.validateInput(currentInput);
+                               
+                            },
+                            error: function () {
+                                input.attr("data-val-remote-recieved", true);
+                                validator.validateInput(currentInput);
+
+                            }
+                        });
+                        return true;
+                    }
+                },
+                messages: {
+                    remote: function (input) {
+                     
+                       return input.attr("data-val-remote");
+                       
+                        
+                    }
+                }
+            });
+        })(jQuery, kendo);
+
+        //show server errors if any
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+    </script>
+
+}

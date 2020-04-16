@@ -8,7 +8,8 @@
         color: red;
     }
 </style>
-@using (Ajax.BeginForm("UpdateItem", "Master", new AjaxOptions { HttpMethod = "POST",OnSuccess = "Response" }))
+
+@using (Ajax.BeginForm("UpdateItem", "Master", new AjaxOptions { HttpMethod = "POST", OnSuccess = "Response" }))
 {
     <div class="fa-heading" style="font-family:fantasy;">Update Item </div>
 
@@ -117,7 +118,7 @@
                 </div>
                 <div class="col-md-4" style="padding:1rem;">
                     <label>Color</label>
-                    @Html.DropDownListFor(x => x.Color, new SelectList(Commonhelper.GetColor(), "Id", "Name",Model.Color), "Select", new { @class = "form-control" })
+                    @Html.DropDownListFor(x => x.Color, new SelectList(Commonhelper.GetColor(), "Id", "Name", Model.Color), "Select", new { @class = "form-control" })
                     @Html.ValidationMessageFor(x => x.Color)
 
 
@@ -131,7 +132,7 @@
                     <label>Item-Order</label>
                     @Html.TextBoxFor(x => x.ItemOrder, new { @class = "form-control" })
                     @Html.ValidationMessageFor(x => x.ItemOrder)
-                  
+
 
                 </div>
             </div>
@@ -282,14 +283,45 @@
     <script>
         function Response(res) {
 
-            alert(res.msg)
-            if (res.status == false) {
 
-            }
-            else if (res.status == true) {
+            if (res.status) {
+                        toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "positionClass": "toast-bottom-right",
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "300000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                toastr.success(res.msg);
                 window.location.href = "../Item";
-            }
-           /// 
+                    }
+                    else {
+                        toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "positionClass": "toast-bottom-right",
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "300000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        toastr.error(res.msg);
+                    }
+
+           
+            ///
         }
     </script>
 }

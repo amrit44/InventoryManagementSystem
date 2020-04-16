@@ -196,6 +196,7 @@ namespace InventoryManagement.Controllers
 
                     }
                     user.MobileNo = item.MobileNo;
+                    user.ExistsMobileNo = item.MobileNo;
 
                     user.UserRoleName = Commonhelper.getrolenameById(item.Roles.FirstOrDefault().RoleId);
                     user.UserRole = item.Roles.FirstOrDefault().RoleId;
@@ -246,7 +247,7 @@ namespace InventoryManagement.Controllers
                     //route values defining the grid state - current page, sort expression, filter etc.
                     RouteValueDictionary routeValues = this.GridRouteValues();
 
-                return RedirectToAction("Customers_Read", Commonhelper.GetAll());
+                return RedirectToAction("RegisteredAccounts");
            
 
             
@@ -275,7 +276,7 @@ namespace InventoryManagement.Controllers
                     CompanyId =new Guid(Commonhelper.GetCookie("CompanyId"));
                 }
                 
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Password = model.Password, FirstName = model.FirstName, LastName = model.LastName, MobileNo = model.MobileNo, createdby = User.Identity.GetUserId(), Datecreated = DateTime.Now, Status = true,StoreId=model.StoreId,CompanyId= CompanyId.ToString(), RegisteredDeailer=false, TaxExempted=false, IsVendor=false, IsRetailCustomer=false, IsWholeCustomer=false };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, Password = model.Password, FirstName = model.FirstName, LastName = model.LastName, MobileNo = model.MobileNo, createdby = User.Identity.GetUserId(), Datecreated = DateTime.Now, Status = true,StoreId=model.StoreId,CompanyId= CompanyId.ToString(), RegisteredDeailer=false, TaxExempted=false, IsVendor=false, IsRetailCustomer=false, IsWholeCustomer=false,UserExpiry=model.UserExpiry };
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -662,7 +663,7 @@ namespace InventoryManagement.Controllers
                             mp.IsEdit = child.IsEdit;
                             mp.Isview = child.Isview;
                             mp.Isdelete = child.Isdelete;
-                            mp.DisplayOrder = child.order;
+                            mp.DisplayOrder = Commonhelper.GetSubmenuOrder(mp.SubMenuId);
                             mp.Displayclass = child.Displayclass;
                             mp.DisplayName = child.DisplayName;
                             _master._ModulePermission.Add(mp);
@@ -1089,6 +1090,22 @@ namespace InventoryManagement.Controllers
             }
 
             base.Dispose(disposing);
+        }
+        public JsonResult Checkmobile(string MobileNo, string previousnumber)
+        {
+            if (MobileNo == previousnumber)
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            bool check = Commonhelper.Checkmobile(MobileNo);
+            if (check)
+            {
+                return Json("Mobile no in use.", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
         }
 
         #region Helpers

@@ -19,8 +19,8 @@
     <link href="https://kendo.cdn.telerik.com/2020.1.219/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
     <link href="https://kendo.cdn.telerik.com/2020.1.219/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.common-bootstrap.min.css" />
-    @*<link rel="stylesheet" href="http://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.bootstrap.min.css" />*@
     <link href="~/Content/flashy.css" rel="stylesheet" />
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
     @*<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">*@
     <style type="text/css">
         .jqstooltip {
@@ -48,7 +48,6 @@
             text-align: left;
         }
     </style>
-
     <script src="~/Scripts/kendo/2014.1.318/jquery.min.js"></script>
     <script src="~/Scripts/js/jszip.min.js"></script>
     <script src="~/Scripts/js/kendo.all.min.js"></script>
@@ -371,7 +370,7 @@
                         </a>
 
                     </li>
-                    @foreach (var item in _PermissionMaster.Menumaster)
+                    @foreach (var item in _PermissionMaster.Menumaster.OrderBy(x => x.DisplayOrder))
                     {
                         <li class="treeview">
                             <a href="#">
@@ -387,7 +386,11 @@
                                 {
                                     foreach (var ac in item._SubMenumaster.OrderBy(x => x.order))
                                     {
-                                        <li><a href="@ac.DisplayLink"><i class="@ac.Displayclass"></i>@ac.DisplayName</a></li>
+                                        if (ac.DisplayName != "Permission")
+                                        {
+                                            <li><a href="@ac.DisplayLink"><i class="@ac.Displayclass"></i>@ac.DisplayName</a></li>
+
+                                        }
                                         @*<li><a href="/Account/UserLevelPermission"><i class="fa fa-lock"></i> Permission</a></li>*@
                                     }
 
@@ -1340,10 +1343,11 @@
 
     </div>
 
-  
-    @*<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>*@
 
+    @*<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>*@
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <div class="jvectormap-label"></div>
+    <script src="~/Scripts/toastr.min.js"></script>
     @RenderSection("scripts", required: false)
     <script>
         $(document).ready(function () {
