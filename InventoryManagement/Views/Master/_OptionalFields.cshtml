@@ -49,7 +49,7 @@
         @*@Html.TextBoxFor(x => x.ItemOptionalDetails[index].Description, new { @class = "form-control lbl", @readonly = true })*@
 
         @Html.TextBoxFor(x => x.ItemOptionalDetails[index].OptionalValue, new { @class = "form-control" })
-
+        @Html.HiddenFor(x => x.ItemOptionalDetails[index].OptionalId)
 
     </div>
        

@@ -11,27 +11,10 @@
 
 @using (Ajax.BeginForm("UpdateItem", "Master", new AjaxOptions { HttpMethod = "POST", OnSuccess = "Response" }))
 {
-    <div class="fa-heading" style="font-family:fantasy;">Update Item </div>
-
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-4">
-
-            </div>
-            <div class="col-md-4">
-
-            </div>
-            <div class="col-md-4">
-                <label>
-
-                </label>
-
-                <input type="submit" value="Update" class="btn btn-primary" style="float:right;" />
-
-            </div>
-        </div>
+    <div class="col-md-12">
+        <h3 style="margin-top: 0rem;">Update Item </h3>
     </div>
+    <br />
     <hr />
     <div id="ItemTemplate">
         <div class="row">
@@ -246,7 +229,24 @@
         }
 
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4">
 
+            </div>
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+                <label>
+
+                </label>
+
+                <input type="submit" value="Update" class="btn btn-primary" style="float:right;" />
+
+            </div>
+        </div>
+    </div>
 
 
 }
@@ -285,42 +285,42 @@
 
 
             if (res.status) {
-                        toastr.options = {
-                            "closeButton": true,
-                            "debug": false,
-                            "positionClass": "toast-bottom-right",
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "300000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        };
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-bottom-right",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "300000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
                 toastr.success(res.msg);
                 window.location.href = "../Item";
-                    }
-                    else {
-                        toastr.options = {
-                            "closeButton": true,
-                            "debug": false,
-                            "positionClass": "toast-bottom-right",
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "300000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        };
-                        toastr.error(res.msg);
-                    }
+            }
+            else {
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-bottom-right",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "300000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+                toastr.error(res.msg);
+            }
 
-           
+
             ///
         }
     </script>

@@ -2,8 +2,12 @@
 @{
     ViewBag.Title = "Item";
 }
-<link href="~/Content/kendo/2014.1.318/kendo.common.min.css" rel="stylesheet" />
-<link href="~/Content/kendo/2014.1.318/kendo.bootstrap.min.css" rel="stylesheet" />
+@*<link href="~/Content/kendo/2014.1.318/kendo.common.min.css" rel="stylesheet" />
+    <link href="~/Content/kendo/2014.1.318/kendo.bootstrap.min.css" rel="stylesheet" />*@
+<link href="https://kendo.cdn.telerik.com/2020.1.406/styles/kendo.common-empty.min.css" rel="stylesheet-disabled">
+<link href="https://kendo.cdn.telerik.com/2020.1.406/styles/kendo.rtl.min.css" rel="stylesheet-disabled">
+<link href="https://kendo.cdn.telerik.com/2020.1.406/styles/kendo.default-v2.min.css" rel="stylesheet">
+<link href="https://kendo.cdn.telerik.com/2020.1.406/styles/kendo.default-v2.mobile.min.css" rel="stylesheet-disabled">
 <style>
     .k-grid-actions {
         display: inline-block;
@@ -30,84 +34,35 @@
 </div>
 <br />
 <br />
-@*<div class="col-xs-12">
 
-        <div class="box table-responsive no-padding">
-
-            <table class="table table-responsive">
-                <thead>
-                    <tr>
-                        <th>Sno</th>
-                        <th>Product Code</th>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Sub Category</th>
-                        <th>Mrp</th>
-                        <th>Cost Price</th>
-                        <th>Selling Price</th>
-                        <th>Action</th>
-                    </tr>
-                    @foreach (var item in Model)
-                    {
-                        var index = Model.IndexOf(item);
-                        <tr>
-                            <td>@(index + 1)</td>
-                            <td>@item.ProductCode</td>
-                            <td>@item.ProductName</td>
-                            <td>@item._CategoryMaster.Name</td>
-                            <td>@item._SubCategoryMaster.Name</td>
-                            <td>@item.Mrp</td>
-                            <td>@item.Costprice</td>
-                            <td>@item.Sellprice</td>
-                            <td>
-                                <a href="/Master/EditItem/@item.Id" class="btn btn-default">
-                                    <div class="d-flex w-100 justify-content-start align-items-center">
-                                        <span>Edit</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="btn btn-danger del" itemid="@item.Id">
-                                    <div class="d-flex w-100 justify-content-start align-items-center">
-                                        <span>Delete</span>
-                                    </div>
-                                </a>
-
-
-                            </td>
-                        </tr>
-
-                    }
-                </thead>
-            </table>
-
-        </div>
-    </div>*@
 
 
 @(Html.Kendo().Grid<InventoryManagement.Models.ItemMaster>()
                                        .Name("grid")
                                        .Columns(columns =>
                                        {
-                                           columns.Bound(c => c.ProductCode).HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(150);
-                                           columns.Bound(c => c.ProductName).Title("Product Name").HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(150);
-                                           columns.Bound(c => c._CategoryMaster.Name).Title("Category").HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(150);
-                                           columns.Bound(c => c._SubCategoryMaster.Name).Title("Subcategory").HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(150);
-                                           columns.Bound(c => c.Mrp).Title("Mrp").HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(100);
-                                           columns.Bound(c => c.Costprice).Title("Cost Price").HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(100);
-                                           columns.Bound(c => c.Sellprice).Title("Sell Price").HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(100);
-                                             columns.Template(c => @Html.ActionLink("Permission", "EditPermission", "Account", null, new { id = c.Id }).ToHtmlString())
-                                           .ClientTemplate(@Html.ActionLink("Edit", "EditItem", "master", new { id = "#=Id#" }, new { @class = "k-button k-button-icontext k-grid-permission" }).ToHtmlString()).HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(150);
+                                            columns.Bound(p => p.ProductCode).Filterable(false).HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(150);
+                                           //columns.Bound(c => c.ProductName).Title("Product Name").HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(150);
+                                           columns.Bound(p => p.ProductName).Width(500).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").SuggestionOperator(FilterType.Contains))).HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(250);
+                                           columns.Bound(c => c._CategoryMaster.Name).Title("Category").Filterable(false).HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(150);
+                                           columns.Bound(c => c._SubCategoryMaster.Name).Title("Subcategory").Filterable(false).HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(150);
+                                           columns.Bound(c => c.Mrp).Title("Mrp").Filterable(false).HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(100);
+                                           columns.Bound(c => c.Costprice).Title("Cost Price").Filterable(false).HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(100);
+                                           columns.Bound(c => c.Sellprice).Title("Sell Price").Filterable(false).HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(100);
+                                           columns.Template(c => @Html.ActionLink("Permission", "EditPermission", "Account", null, new { id = c.Id }).ToHtmlString())
+                                         .ClientTemplate(@Html.ActionLink("Edit", "EditItem", "master", new { id = "#=Id#" }, new { @class = "k-button k-button-icontext k-grid-permission" }).ToHtmlString()).Title("Action").HeaderHtmlAttributes(new { @class = "hidden-xs" }).Width(150);
 
 
                                        })
 .Scrollable()
+.Sortable()
+.Filterable(ftb => ftb.Mode(GridFilterMode.Row))
 .HtmlAttributes(new { style = "height:400px;" })
-.Editable(editable => editable.Mode(GridEditMode.InLine))
 .Pageable(pageable => pageable
 .Refresh(true)
 .PageSizes(true)
 
 .ButtonCount(10)
-
 )
 
 .DataSource(dataSource => dataSource
@@ -121,7 +76,7 @@
 
 
 )
-
+.ServerOperation(true)
 .Read(read => read.Action("Item_Read", "Master"))
 
 
@@ -129,26 +84,6 @@
 ))
 @section Scripts {
 
-    <script>
-    $(document).on('click','.del', function () {
-
-        var Id = $(this).attr('itemid');
-        var url = '@Url.Action("DeleteItem", "Master")';
-        debugger;
-
-            $.ajax({
-                url: url,
-                method:'POST',
-                data: { Id: Id},
-                success: function (response) {
-                    alert(response.msg)
-
-                },
-                failure: function (fail) {
-
-                }
-            })
-        })
-    </script>
-
+    <script src="https://kendo.cdn.telerik.com/2020.1.406/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.1.406/js/kendo.aspnetmvc.min.js"></script>
 }

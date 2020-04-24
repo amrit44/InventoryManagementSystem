@@ -1159,7 +1159,7 @@ namespace InventoryManagement.Helper
             List<ItemMaster> _master = new List<ItemMaster>();
             using (var db = new ApplicationDbContext())
             {
-                _master = db.ItemMaster.Include(x => x._CategoryMaster).Include(x => x._SubCategoryMaster).Include(x => x._BrandMaster).Include(x => x._StoreMaster).ToList();
+                _master = db.ItemMaster.Include(x => x._CategoryMaster).Include(x => x._SubCategoryMaster).ToList();
 
             }
 

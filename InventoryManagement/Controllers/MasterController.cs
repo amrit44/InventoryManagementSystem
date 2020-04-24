@@ -22,9 +22,7 @@ namespace InventoryManagement.Controllers
 
         public ActionResult Item()
         {
-            List<ItemMaster> itemlst = new List<ItemMaster>();
-            itemlst = Commonhelper.GetItemMaster();
-            return View(itemlst);
+            return View();
         }
         [PermissionsAttribute(Action = "Item", Permission = "IsAdd")]
 

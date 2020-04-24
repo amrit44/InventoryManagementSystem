@@ -10,40 +10,26 @@
 </style>
 @using (Ajax.BeginForm("CreateItem", "Master", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "", OnSuccess = "Response" }))
 {
-    <div class="fa-heading" style="font-family:fantasy;">Create Item </div>
-    @*<div class="row">
-            <div class="col-md-12">
-                <div class="col-md-4">
-
-                </div>
-                <div class="col-md-4">
-
-                </div>
-                <div class="col-md-4">
-                    <label>
-
-                    </label>
-
-                    <input type="submit" value="Create" class="btn btn-primary" style="float:right;" />
-
-                </div>
-            </div>
-        </div>*@
+    <div class="col-md-12">
+        <h3 style="margin-top: 0rem;">Create Item </h3>
+    </div>
+    <br />
     <hr />
+  
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-4" style="padding:1rem;">
                 @*@Html.Hidden("Previousproductcode", Model.ProductCode)
-        @Html.Hidden("Previousbarcode", Model.BarCode)
-        @Html.Hidden("Previousskucode", Model.SkuCode)
-        @Html.Hidden("Previoussapcode", Model.SapCode)
-        @Html.Hidden("Previoushsncode", Model.HsnCode)
-        @Html.Hidden("Previousproductname", Model.ProductName)*@
+                    @Html.Hidden("Previousbarcode", Model.BarCode)
+                    @Html.Hidden("Previousskucode", Model.SkuCode)
+                    @Html.Hidden("Previoussapcode", Model.SapCode)
+                    @Html.Hidden("Previoushsncode", Model.HsnCode)
+                    @Html.Hidden("Previousproductname", Model.ProductName)*@
                 <label>Product code</label>
                 @Html.TextBoxFor(x => x.ProductCode, new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.ProductCode)
                 @Html.HiddenFor(x => x.Id)
-               
+
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Product Name</label>
@@ -64,7 +50,7 @@
         <div class="col-md-12">
             <div class="col-md-4" style="padding:1rem;">
                 <label>Bar Code</label>
-                @Html.TextBoxFor(x => x.BarCode, new { @class = "form-control" , @maxlength = "25" })
+                @Html.TextBoxFor(x => x.BarCode, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.BarCode)
 
             </div>
@@ -78,7 +64,7 @@
                 @Html.TextBoxFor(x => x.SapCode, new { @class = "form-control", @maxlength = "25" })
                 @Html.ValidationMessageFor(x => x.SapCode)
             </div>
-           
+
         </div>
 
     </div>
@@ -117,12 +103,12 @@
             </div>
             <div class="col-md-4" style="padding:1rem;">
                 <label>Color</label>
-                @Html.DropDownListFor(x=>x.Color,new SelectList(Commonhelper.GetColor(), "Id", "Name"), "Select", new { @class = "form-control" })
+                @Html.DropDownListFor(x => x.Color, new SelectList(Commonhelper.GetColor(), "Id", "Name"), "Select", new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.Color)
 
 
             </div>
-         
+
         </div>
 
     </div>
